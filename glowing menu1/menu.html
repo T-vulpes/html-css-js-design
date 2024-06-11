@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>glowing menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+        }
+        .menuToggle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2em;
+            background-color: #1e1e1e;
+            transition: transform 1.5s;
+        }
+        .menu.active .menuToggle {
+            transform: rotate(315deg);
+        }
+        .menu {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .menu li {
+            position: absolute;
+            transform-origin: center;
+        }
+        .menu li a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5em;
+            background-color: #1e1e1e;
+            border-radius: 50%;
+            transition: 1s;
+            transition-delay: 0.5s;
+            color: transparent;
+        }
+        .menu li a i {
+            color: #fff;
+            transition: color 1s;
+        }
+        .menu li:nth-child(1) a { --clr: #ff0040; }
+        .menu li:nth-child(2) a { --clr: #00ff40; }
+        .menu li:nth-child(3) a { --clr: #0040ff; }
+        .menu li:nth-child(4) a { --clr: #ffff00; }
+        .menu li:nth-child(5) a { --clr: #00ffff; }
+        .menu li:nth-child(6) a { --clr: #ff00ff; }
+        .menu li:nth-child(7) a { --clr: #ff8000; }
+        .menu li:nth-child(8) a { --clr: #80ff00; }
+        .menu.active li a {
+            color: var(--clr);
+            box-shadow: 0 0 15px var(--clr);
+            animation: pulse 1s infinite alternate;
+        }
+        .menu.active li:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
+        .menu.active li:nth-child(2) { transform: rotate(45deg) translate(100px) rotate(-45deg); }
+        .menu.active li:nth-child(3) { transform: rotate(90deg) translate(100px) rotate(-90deg); }
+        .menu.active li:nth-child(4) { transform: rotate(135deg) translate(100px) rotate(-135deg); }
+        .menu.active li:nth-child(5) { transform: rotate(180deg) translate(100px) rotate(-180deg); }
+        .menu.active li:nth-child(6) { transform: rotate(225deg) translate(100px) rotate(-225deg); }
+        .menu.active li:nth-child(7) { transform: rotate(270deg) translate(100px) rotate(-270deg); }
+        .menu.active li:nth-child(8) { transform: rotate(315deg) translate(100px) rotate(-315deg); }
+
+        @keyframes pulse {
+            from {
+                box-shadow: 0 0 15px var(--clr), 0 0 25px var(--clr), 0 0 35px var(--clr), 0 0 45px var(--clr);
+            }
+            to {
+                box-shadow: 0 0 5px var(--clr), 0 0 10px var(--clr), 0 0 15px var(--clr), 0 0 20px var(--clr);
+            }
+        }
+        @keyframes line {
+            0% {
+                transform: scale(1) translateX(0);
+            }
+            50% {
+                transform: scale(1.5) translateX(50px);
+            }
+            100% {
+                transform: scale(1) translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <div class="menuToggle">+</div>
+        <ul>
+            <li><a href="#"><i class="fas fa-home"></i></a></li>
+            <li><a href="#"><i class="fas fa-bell"></i></a></li>
+            <li><a href="#"><i class="fas fa-plane"></i></a></li>
+            <li><a href="#"><i class="fas fa-video"></i></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i></a></li>
+            <li><a href="#"><i class="fas fa-key"></i></a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i></a></li>
+            <li><a href="#"><i class="fas fa-gamepad"></i></a></li>
+        </ul>
+    </div>
+    <script>
+        const menuToggle = document.querySelector('.menuToggle');
+        const menu = document.querySelector('.menu');
+        menuToggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

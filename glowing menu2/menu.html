@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glowing Menu2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+        }
+        .menu {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .menuToggle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 2em;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: transform 0.5s;
+        }
+        .menu ul {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            transform: translate(-50%, -50%);
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .menu ul li {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: #1e1e1e;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.5em;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: 0.5s;
+        }
+        .menu ul li:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
+        .menu ul li:nth-child(2) { transform: rotate(45deg) translate(100px) rotate(-45deg); }
+        .menu ul li:nth-child(3) { transform: rotate(90deg) translate(100px) rotate(-90deg); }
+        .menu ul li:nth-child(4) { transform: rotate(135deg) translate(100px) rotate(-135deg); }
+        .menu ul li:nth-child(5) { transform: rotate(180deg) translate(100px) rotate(-180deg); }
+        .menu ul li:nth-child(6) { transform: rotate(225deg) translate(100px) rotate(-225deg); }
+        .menu ul li:nth-child(7) { transform: rotate(270deg) translate(100px) rotate(-270deg); }
+        .menu ul li:nth-child(8) { transform: rotate(315deg) translate(100px) rotate(-315deg); }
+        .menu ul li a {
+            color: #fff;
+            transition: 0.5s;
+        }
+        .menu ul li a i {
+            transition: color 0.5s;
+        }
+        .menu ul li:nth-child(1) { --clr: #ff0040; }
+        .menu ul li:nth-child(2) { --clr: #00ff40; }
+        .menu ul li:nth-child(3) { --clr: #0040ff; }
+        .menu ul li:nth-child(4) { --clr: #ffff00; }
+        .menu ul li:nth-child(5) { --clr: #00ffff; }
+        .menu ul li:nth-child(6) { --clr: #ff00ff; }
+        .menu ul li:nth-child(7) { --clr: #ff8000; }
+        .menu ul li:nth-child(8) { --clr: #80ff00; }
+        .menu.active ul li a i {
+            color: var(--clr);
+            box-shadow: 0 0 20px var(--clr);
+        }
+        .menu.active ul li {
+            animation: pulse 1s infinite alternate;
+        }
+        .menu.active ul li:nth-child(1) { transform: rotate(0deg) translate(100px) rotate(0deg); }
+        .menu.active ul li:nth-child(2) { transform: rotate(45deg) translate(100px) rotate(-45deg); }
+        .menu.active ul li:nth-child(3) { transform: rotate(90deg) translate(100px) rotate(-90deg); }
+        .menu.active ul li:nth-child(4) { transform: rotate(135deg) translate(100px) rotate(-135deg); }
+        .menu.active ul li:nth-child(5) { transform: rotate(180deg) translate(100px) rotate(-180deg); }
+        .menu.active ul li:nth-child(6) { transform: rotate(225deg) translate(100px) rotate(-225deg); }
+        .menu.active ul li:nth-child(7) { transform: rotate(270deg) translate(100px) rotate(-270deg); }
+        .menu.active ul li:nth-child(8) { transform: rotate(315deg) translate(100px) rotate(-315deg); }
+
+        @keyframes pulse {
+            from {
+                box-shadow: 0 0 15px var(--clr), 0 0 25px var(--clr), 0 0 35px var(--clr), 0 0 45px var(--clr);
+            }
+            to {
+                box-shadow: 0 0 5px var(--clr), 0 0 10px var(--clr), 0 0 15px var(--clr), 0 0 20px var(--clr);
+            }
+        }
+        @keyframes line {
+            0% {
+                transform: scale(1) translateX(0);
+            }
+            50% {
+                transform: scale(1.5) translateX(50px);
+            }
+            100% {
+                transform: scale(1) translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <div class="menuToggle">+</div>
+        <ul>
+            <li><a href="#"><i class="fas fa-home"></i></a></li>
+            <li><a href="#"><i class="fas fa-bell"></i></a></li>
+            <li><a href="#"><i class="fas fa-plane"></i></a></li>
+            <li><a href="#"><i class="fas fa-video"></i></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i></a></li>
+            <li><a href="#"><i class="fas fa-key"></i></a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i></a></li>
+            <li><a href="#"><i class="fas fa-gamepad"></i></a></li>
+        </ul>
+    </div>
+    <script>
+        const menuToggle = document.querySelector('.menuToggle');
+        const menu = document.querySelector('.menu');
+        menuToggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
