@@ -1,0 +1,150 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #1c1c1c;
+    color: white;
+}
+
+/* Genel Ayarlar */
+nav {
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul li {
+    flex: 1;
+}
+
+nav ul li a {
+    display: block;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Dropdown Menu */
+.dropdown-menu ul li a {
+    background-color: #1a1a1a;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.dropdown-menu ul li a:hover {
+    background-color: #00ff00;
+    color: #1a1a1a;
+}
+
+.dropdown-menu ul li a i {
+    margin-right: 8px;
+}
+
+/* Mega Menu */
+.mega-menu ul li a {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+}
+
+.mega-menu ul li a:hover {
+    background-color: #0056b3;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    width: 100%;
+    background-color: #FFC107;
+    padding: 20px 0;
+}
+
+.sidebar-menu ul {
+    flex-direction: column;
+}
+
+.sidebar-menu ul li a {
+    background-color: #FFC107;
+    color: white;
+    border-radius: 4px;
+}
+
+.sidebar-menu ul li a:hover {
+    background-color: #ff9800;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: relative;
+}
+
+.hamburger-menu .menu-icon {
+    display: block;
+    cursor: pointer;
+    padding: 15px;
+    background-color: #DC3545;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.hamburger-menu ul {
+    display: none;
+    flex-direction: column;
+    background-color: #DC3545;
+}
+
+.hamburger-menu input[type="checkbox"]:checked + .menu-icon + ul {
+    display: flex;
+}
+
+.hamburger-menu ul li a {
+    background-color: #DC3545;
+    color: white;
+    border-radius: 4px;
+}
+
+.hamburger-menu ul li a:hover {
+    background-color: #c82333;
+}
+
+/* Accordion Menu */
+.accordion-menu ul {
+    flex-direction: column;
+}
+
+.accordion-menu ul li a {
+    background-color: #6F42C1;
+    color: white;
+    border-radius: 4px;
+}
+
+.accordion-menu ul li a:hover {
+    background-color: #563D7C;
+}
+
+.accordion-menu .submenu {
+    display: none;
+    background-color: #6F42C1;
+    flex-direction: column;
+}
+
+.accordion-menu ul li.active .submenu {
+    display: flex;
+}
+
+.accordion-menu .submenu li a {
+    padding: 10px 30px;
+}
