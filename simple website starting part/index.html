@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HomePage</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<seciton>
+    <header>
+        <a href="#"><img src="images/logo.png" class="logo"/></a>
+     <ul>
+  	 <li><a href="#">Home</a></li>
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">Top Picks</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </header>
+    
+    
+    <div class="content">
+        <div class="textbox">
+            <h2>Discover Your Next Favorite Movie</h2>
+            <p>Explore a world of great movies, carefully curated just for you. Whether you're into thrillers, comedies, or dramas, we've got you covered.</p>
+            <a href="#">Explore More</a>
+        </div>
+        <div class="imgbox">
+            <img src="images/img1.jpg" class="movie" />
+        </div>
+        
+        <ul class="thumb">
+        	<li><img src="images/thumb1.jpg" onclick="imgslider('images/img1.jpg')"/></li>
+            <li><img src="images/thumb2.jpg" onclick="imgslider('images/img2.jpg')"/></li>
+            <li><img src="images/thumb3.jpg" onclick="imgslider('images/img3.jpg')"/></li>
+        </ul>
+        
+        <ul class="social">
+        	<li><a href="#"><img src="images/facebook.png" /></a></li>
+            <li><a href="#"><img src="images/instagram.png" /></a></li>
+            <li><a href="#"><img src="images/twitter.png" /></a></li>
+        </ul>
+        
+        
+    </div>
+    
+    
+</section>
+
+<script type="text/javascript">
+
+	function imgslider(anything){
+		document.querySelector('.movie').src = anything;
+	}
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+*{
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+    font-family: "Poppins", sans-serif;
+background-color: #efece7;
+}
+
+section{
+	position:relative;
+	width:100%;
+	min-height:100vh;
+	background-color:#fff;
+	align-items:center;
+	justify-content:space-between;
+	display:flex;
+	padding:100px;}
+	
+header{
+	position:relative;
+	top:0;
+	left:0;
+	padding:20px 100px;
+	align-items:center;
+	justify-content:space-between;
+	display:flex;
+}
+
+.logo{
+	position:relative;
+	max-width:80px;}
+
+header ul{
+	position:relative;
+	display:flex;}
+
+header ul li{
+	list-style:none;}
+
+header ul li a{
+	display:inline-block;
+	font-weight:400;
+	text-decoration:none;
+	margin-left:40px;
+	color:#333;}
+
+header ul li a:hover{color:#24375d;font-weight:bold;}
+	
+	
+.content{
+	position:relative;
+	width:100%;
+	align-items:center;
+	justify-content:space-between;
+	display:flex;
+	padding: 25px;}
+
+.content .textbox{
+	position:relative;
+	max-width:800px;}
+
+.content .textbox h2{
+	color:#333;
+	font-size:4em;
+	line-height:1.3em;
+	font-weight:500;}
+
+.content .textbox h2 span{
+	font-size:1.3em;
+	font-weight:900;
+	color:#017143;}
+
+.content .textbox a{
+	display:inline-block;
+	margin-top:20px;
+	padding:8px 20px;
+	background-color:#24375d;
+	color:#fff;
+	border-radius:40px;
+	font-weight:500;
+	letter-spacing:1px;
+	text-decoration:none;}
+	
+.content .imgbox{
+	width:600px;
+	padding-right:50px;
+	display:flex;
+	justify-content:flex-end;
+}
+
+.content .imgbox img{ max-width:350px;}
+
+.thumb{
+	position:absolute;
+	left:12%;
+	bottom:75%;
+	transform:translateX(-50%);
+	display:flex;
+}
+
+.thumb li{
+	list-style:none;
+	display:inline-block;
+	margin:0 20px;
+	cursor:pointer;
+}
+
+.thumb li:hover{
+	transform:translateY(-15%);
+}
+
+.thumb li img{
+	max-width:60px;
+}
+
+.social{
+	position:absolute;
+	top:50%;
+	right:15px;
+	transform:translateY(-50%);
+	align-items:center;
+	justify-content:center;
+	display:flex;
+	flex-direction:column;
+}
+
+.social img{
+	width:50px;
+	height:50px;
+}
+.social li { list-style:none;}
+.social li a{
+	display:inline-block;
+	margin:5px 0;
+	transform:scale(0.6);
+}
