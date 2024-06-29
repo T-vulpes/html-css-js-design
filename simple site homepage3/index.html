@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Home-Page</title>
+<link href="stil.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+<script src="https:://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+
+</head>
+
+<body>
+<div class="container">
+	<div class="navbar">
+    	<div class="logo">
+        	<span>Творческий</span>
+        </div>
+        
+        <div class="search">
+        	<i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </div>
+    
+    
+    <div class="images">
+    	<div class="img img-1"></div>
+        <div class="img img-2"></div>
+        <div class="img img-3"></div>
+        <div class="img img-4"></div>
+        <div class="img img-5"></div>
+    </div>
+    
+    <div class="title">
+    	<span>Творческий</span>
+    </div>
+    
+    <div class="side-icon icn">
+    	<i class="fa-solid fa-circle-left"></i>
+        <i class="fa-solid fa-circle-right"></i>
+    </div>
+    
+    <div class="bottom-bar">
+    	<div>great views</div>
+        <div>2024</div>
+        <div>как на небесах</div>
+    </div>
+    
+    <div class="media">
+    	<ul>
+        	<li><i class="fa-brands fa-facebook"></i></li>
+            <li><i class="fa-brands fa-twitter"></i></li>
+            <li><i class="fa-brands fa-instagram"></i></li>
+        </ul>
+    </div>
+    
+</div>
+
+<script>
+	TweenMax.staggerFrom(".logo",1.6,{
+		delay:0.2,
+		opacity:0,
+		y:20,
+		ease:Expo.easeInOut
+	});
+	
+	TweenMax.staggerFrom(".search",1.6,{
+		delay:0.2,
+		opacity:0,
+		y:20,
+		ease:Expo.easeInOut
+	});
+	
+	TweenMax.staggerFrom(".img",3,{
+		delay:0.7,
+		opacity:0,
+		y:70,
+		ease:Expo.easeInOut
+	});
+	
+	TweenMax.staggerFrom(".bottom-bar",2,{
+		delay:2,
+		opacity:0,
+		x:-40,
+		ease:Expo.easeInOut
+	});
+	
+	TweenMax.staggerFrom(".icn",2,{
+		delay:2.5,
+		opacity:0,
+		y:40,
+		ease:Expo.easeInOut
+	});
+	
+	TweenMax.staggerFrom(".title span",3,{
+		delay:3,
+		opacity:0,
+		x:-100,
+		ease:Expo.easeInOut
+	});
+	
+	TweenMax.staggerFrom(".media ul li",3,{
+		delay:4.5,
+		opacity:0,
+		y:50,
+		ease:Expo.easeInOut
+	});
+	
+</script>
+</body>
+</html>
