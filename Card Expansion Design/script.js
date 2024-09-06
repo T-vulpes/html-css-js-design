@@ -5,20 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const cardContent = document.getElementById('cardContent');
     
     cards.forEach(card => {
-        // Click event for "read-more" button
         card.querySelector('.read-more').addEventListener('click', (event) => {
-            event.stopPropagation(); // Stop event from bubbling up to the card click event
+            event.stopPropagation(); 
             const fullText = card.querySelector('.full-text').innerHTML;
             cardContent.innerHTML = fullText;
-            expandedCard.style.display = 'flex'; // Show the expanded card
+            expandedCard.style.display = 'flex'; 
         });
     });
 
-    // Close button to close the expanded card
     closeBtn.addEventListener('click', () => {
-        expandedCard.style.display = 'none'; // Hide the expanded card
+        expandedCard.style.display = 'none';
     });
     
-    // Make sure the initial state is with all 4 cards visible (not expanded)
     expandedCard.style.display = 'none';
 });
