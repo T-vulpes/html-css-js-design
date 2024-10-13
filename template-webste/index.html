@@ -151,8 +151,6 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
             </div>
     </div>
 </section>
-<!-- Contact end -->
- <!-- Team Members Section -->
 <section id="team">
     <h2>Team Members</h2>
     <div class="team-members">
@@ -189,8 +187,6 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
     </div>
 </section>
 
-
-<!-- Footer -->
 <footer id="footer">
     <div class="footer">
         <div class="footer-content">
@@ -208,7 +204,6 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
         </div>
     </div>
 </footer>
-<!-- Footer end -->
 
 </body>
 <script>
@@ -230,7 +225,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Scroll olduğunda 'discover' bölümünün görünürlüğünü kontrol et
 window.addEventListener('scroll', function() {
   const discoverSection = document.querySelector('.discover-section');
   const sectionPosition = discoverSection.getBoundingClientRect().top;
@@ -241,18 +235,11 @@ window.addEventListener('scroll', function() {
   }
 });
 
-
-// Yıldız div'ini seç
 const star = document.getElementById('star');
-
-// Fare hareketini dinle ve yıldızı takip ettir
 document.addEventListener('mousemove', function(e) {
     // Fare hareket ettikçe yıldızın pozisyonunu güncelle
     star.style.left = `${e.pageX}px`;
     star.style.top = `${e.pageY}px`;
 });
-
-
-
 </script>
 </html>
