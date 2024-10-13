@@ -413,9 +413,6 @@ margin-top:8%;
     border-radius: 10px;
 }
 
-
-
-/* Team Members Section */
 #team {
     padding: 50px 0;
     background-color: #151515;
@@ -428,14 +425,12 @@ margin-top:8%;
     margin-bottom: 40px;
 }
 
-/* Team members grid */
 .team-members {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-/* Individual team member card */
 .team-member {
     background-color: #1a1a1a;
     padding: 20px;
@@ -444,7 +439,6 @@ margin-top:8%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
 }
-
 
 .team-member:hover {
     transform: translateY(-10px);
@@ -470,16 +464,10 @@ margin-top:8%;
     color: #ddd;
 }
 
-/* Hover effect */
-
 .team-member:hover img {
     transform: scale(1.1);
 }
 
-
-
-
-/* Footer */
 #footer {
     background-color: #0d0d0d;
     padding: 30px 0;
@@ -515,15 +503,14 @@ z-index:999;
     position: absolute;
     width: 40px;
     height: 40px;
-    pointer-events: none; /* Yıldız fare ile etkileşimde bulunmasın */
+    pointer-events: none; 
     transform: translate(-50%, -50%);
-    filter: brightness(2); /* Parlaklık ekliyoruz */
+    filter: brightness(2); 
 
 }
-
 .star img {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.8)); /* Parlaklık ve ışık efekti */
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.8)); 
 
 }
