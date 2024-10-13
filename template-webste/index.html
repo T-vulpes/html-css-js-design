@@ -55,7 +55,6 @@
                     <p>At SpaceT, we are driven by a singular passion: to unlock the mysteries of the universe and bring the stars within reach. Since our founding in 2024, we have committed ourselves to advancing space exploration and pushing the boundaries of human knowledge. From launching deep space missions that venture far beyond our solar system to exploring the surfaces of neighboring planets, we are continually pushing the limits of what is possible in space travel.
 <br><br>
 Our dedicated team of engineers, scientists, and visionaries work around the clock to design and execute missions that seek to unravel the most profound questions about the cosmos. Through innovation, determination, and an unyielding desire to explore, we aim to inspire future generations, expand our understanding of the universe, and bring the distant worlds closer to home.<br><br>
-
 At SpaceT, the sky is not the limit—it’s just the beginning.</p>
                 </div>
             </div>
@@ -113,16 +112,12 @@ At SpaceT, the sky is not the limit—it’s just the beginning.</p>
                     <p>Our spacecraft are designed to explore the furthest reaches of the universe. From distant stars to unknown galaxies, SpaceT's fleet is at the forefront of interstellar discovery. With each mission, we push the boundaries of science and technology, daring to go where no one has gone before. Our highly advanced vessels are equipped to traverse the most hostile environments in space, allowing us to collect invaluable data from planets, nebulae, and cosmic phenomena that have remained untouched for millennia.
 <br><br>
 At SpaceT, we believe that space is the final frontier, and with the power of innovation, we are forging the path for future generations to explore and colonize new worlds. Each mission is a leap forward in understanding our place in the universe, and we are proud to be leading the way. The adventure is just beginning, and the stars are waiting for us. Join us as we unlock the secrets of the cosmos and pave the way for a brighter tomorrow.
-
 </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Discover end -->
-
-<!-- Contact Section -->
 <section id="contact" class="fade-in from-right">
         <div class="page-title">
             <h2>Contact the Cosmos</h2>
@@ -228,8 +223,7 @@ window.addEventListener('scroll', () => {
 window.addEventListener('scroll', function() {
   const discoverSection = document.querySelector('.discover-section');
   const sectionPosition = discoverSection.getBoundingClientRect().top;
-  const screenPosition = window.innerHeight / 1.3; // Ekranın %70'ine geldiğinde tetikleme
-
+  const screenPosition = window.innerHeight / 1.3; 
   if (sectionPosition < screenPosition) {
     discoverSection.classList.add('show');
   }
@@ -237,7 +231,6 @@ window.addEventListener('scroll', function() {
 
 const star = document.getElementById('star');
 document.addEventListener('mousemove', function(e) {
-    // Fare hareket ettikçe yıldızın pozisyonunu güncelle
     star.style.left = `${e.pageX}px`;
     star.style.top = `${e.pageY}px`;
 });
