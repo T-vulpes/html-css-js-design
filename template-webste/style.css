@@ -32,7 +32,6 @@
   }
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -261,7 +260,6 @@ box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     line-height: 1.6;
 }
 
-/* Missions Section */
 #missions{
     margin-bottom: 8%;
 margin-top: 8%;
@@ -311,7 +309,6 @@ margin-top: 8%;
   transform: scale(1.1);
 }
 
-/* Discover Section */
 #discover {
     padding: 100px 0;
     background-color: #151515;
@@ -325,7 +322,6 @@ margin-top: 8%;
   transition: transform 0.8s ease-out, opacity 0.8s ease-out;
 }
 
-/* Dönüş tamamlandığında görünür hale getir */
 .discover-section.show {
   opacity: 1;
   transform: rotateX(0deg);
@@ -363,9 +359,6 @@ margin-top: 8%;
     color: #ddd;
     line-height: 1.6;
 }
-
-/* Contact Section */
-/* Contact Section */
 #contact {
 margin-bottom:8%;
 margin-top:8%;
