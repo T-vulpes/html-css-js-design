@@ -1,0 +1,345 @@
+*{
+padding:0;
+margin:0;
+box-sizing:border-box;
+}
+
+.container{
+position:relative;
+width:100%;
+height:100vh;
+background-color:rgba(248,230,161,0.89);
+overflow:hidden;
+animation:animated 5s linear infinite;
+}
+
+@keyframes animated{
+0%{
+background-color:rgba(248,230,161,0.89);
+}
+
+20%{
+background-color:rgba(192,148,161,0.89);
+}
+
+40%{
+background-color:rgba(161,148,161,0.89);
+}
+
+60%{
+background-color:rgba(161,205,248,0.89);
+}
+
+80%{
+background-color:rgba(207,161,161,0.89);
+}
+
+100%{
+background-color:rgba(207,161,161,0.89);
+}
+
+}
+
+
+.content{
+position:absolute;
+top:45%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.content h1{
+font-size:5rem;
+text-transform:capitalize;
+font-weight:900;
+color:#000;
+padding:10px 0;
+letter-spacing:2px;
+}
+
+.content h2{
+font-size:2.5rem;
+font-weight:600;
+color:#000;
+}
+
+.content .btns{
+padding:20px 0;
+}
+
+.content  .btns button{
+padding:16px 30px;
+background-coor:#fff;
+color:#000;
+font-weight:600;
+font-size:20px;
+border:5px solid #000;
+letter-spacing:2px;
+text-transform:uppercase;
+cursor:pointer;
+transition:0.3s;
+}
+
+.content  .btns button:hover{
+background-color:#000;
+color:#fff;
+}
+
+.img-content {
+    position: relative;
+    top: 100px; /* Increase space from the text */
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Add space between the images */
+    justify-content: center;
+}
+
+.img-box{
+position:relative;
+width:120px;
+height:120px;
+cursor:pointer;
+transition:0.5s
+}
+
+.img-box img{
+width:100%;
+}
+
+.img-box h1{
+position:absolute;
+padding:12px 35px;
+width:auto;
+height:12vh;
+    background-color: rgba(255, 255, 255, 0.7); /* Yarı saydam beyaz arka plan */
+
+border:5px solid #000;
+font-size:25px;
+font-weight:600;
+letter-spacing:2px;
+text-transform:capitalize;
+border-radius:25px;
+left:15vh;
+top:12vh;
+transform:rotate(16deg)translateX(30px);
+transition:0.5s;
+pointer-events:none;
+cursor:pointer;
+opacity:0;
+}
+
+.img-box:hover h1{
+transform:rotate(16deg)translateX(-10px);
+opacity:1;
+}
+
+.box-01{
+position:relative;
+animation:box1 4s linear infinite;
+top:-15vh;
+left:40vh;
+}
+
+@keyframes box1{
+0%{
+transform:translateY(10px);
+}
+
+50%{
+transform:translateY(-10px);
+}
+
+100%{
+transform:translateY(10px);
+}
+
+}
+
+.box-02{
+position:absolute;
+left:30vh;
+top:15vh;
+animation:box2 4s linear infinite;
+}
+
+@keyframes box2{
+0%{
+transform:translateY(-10px);
+}
+
+50%{
+transform:translateY(10px);
+}
+
+100%{
+transform:translateY(-10px);
+}
+
+}
+
+
+
+.box-02 h1{
+transform:rotate(0deg)translateX(10px);
+top:0vh;
+left: -30vh;
+}
+
+.box-03{
+position:absolute;
+left:90vh;
+top:-20vh;
+animation:box2 4s linear infinite;
+}
+
+.box-03 h1{
+transform:rotate(-16deg)translateX(-50px);
+top:0vh;
+}
+
+
+.box-04{
+position:absolute;
+right:2vh;
+top:-5vh;
+animation:box2 4s linear infinite;
+}
+
+.box-04 h1{
+transform:rotate(0deg)translateX(-50px);
+top:0vh;
+left:-25vh;
+}
+
+
+.box-05{
+position:absolute;
+left:30vh;
+top:-15vh;
+animation:box1 4s linear infinite;
+}
+
+.box-05 h1{
+transform:rotate(0deg)translateY(50px);
+bottom:0vh;
+left.-10vh;
+}
+
+.box-06{
+position:absolute;
+left:45vh;
+top:55vh;
+animation:box2 4s linear infinite;
+}
+
+.box-06 h1{
+transform:rotate(0deg)translat  eX(-80px);
+bottom:0vh;
+left.20vh;
+}
+
+
+.box-07{
+position:absolute;
+right:10vh;
+top:25vh;
+animation:box1 4s linear infinite;
+}
+
+.box-07 h1{
+transform:rotate(60deg)translateX(80px);
+top:0vh;
+left:-25vh;
+
+}
+
+
+.box-08{
+position:absolute;
+left:45vh;
+top:35vh;
+animation:box2 4s linear infinite;
+}
+
+.box-08 h1{
+transform:rotate(0deg)translateX(80px);
+bottom:5vh;
+left:12vh;
+
+}
+
+
+.box-09{
+position:absolute;
+top:60vh;
+animation:box1 4s linear infinite;
+}
+.box-09 h1{
+transform:rotate(0deg)translateX(50px);
+top:10vh;
+}
+
+.box-10{
+position:absolute;
+right:30vh;
+top:55vh;
+animation:box2 4s linear infinite;
+}
+.box-10 h1{
+transform:rotate(0deg)translateX(50px);
+top:5vh;
+}
+
+.box-11{
+position:absolute;
+left:5vh;
+top:-5vh;
+animation:box1 4s linear infinite;
+}
+
+.box-12{
+position:absolute;
+left:2vh;
+top:40vh;
+animation:box2 4s linear infinite;
+}
+
+.babuls{
+position:relative;
+display:flex;
+}
+
+.babuls span{
+position:relative;
+width:7px;
+height:7px;
+background-color:#4fc3dc;
+border-radius:50%;
+margin:12px 12px;
+box-shadow:0 0 0 3px #4fc3dc44,
+0 0 30px #4fc3dc,
+0 0 70px #4fc3dc44;
+animation:babuls 15s linear infinite;
+animation-duration:calc(125s/var(--i));
+
+
+
+}
+
+.babuls span:nth-child(even){
+background-color:#ff2d75;
+box-shadow:0 0 0 5px #ff2d7544,
+0 0 50px #ff2d75,
+0 0 100px #ff2d75;
+}
+
+@keyframes babuls{
+0%{
+transform:translateY(100vh) scale(0);
+}
+
+100%{
+transform:translateY(-10vh) scale(1);
+}
+}
