@@ -37,9 +37,7 @@ background-color:rgba(207,161,161,0.89);
 100%{
 background-color:rgba(207,161,161,0.89);
 }
-
 }
-
 
 .content{
 position:absolute;
@@ -112,8 +110,7 @@ position:absolute;
 padding:12px 35px;
 width:auto;
 height:12vh;
-    background-color: rgba(255, 255, 255, 0.7); /* Yarı saydam beyaz arka plan */
-
+background-color: rgba(255, 255, 255, 0.7);
 border:5px solid #000;
 font-size:25px;
 font-weight:600;
@@ -177,8 +174,6 @@ transform:translateY(-10px);
 }
 
 }
-
-
 
 .box-02 h1{
 transform:rotate(0deg)translateX(10px);
@@ -251,9 +246,7 @@ animation:box1 4s linear infinite;
 transform:rotate(60deg)translateX(80px);
 top:0vh;
 left:-25vh;
-
 }
-
 
 .box-08{
 position:absolute;
@@ -322,9 +315,6 @@ box-shadow:0 0 0 3px #4fc3dc44,
 0 0 70px #4fc3dc44;
 animation:babuls 15s linear infinite;
 animation-duration:calc(125s/var(--i));
-
-
-
 }
 
 .babuls span:nth-child(even){
