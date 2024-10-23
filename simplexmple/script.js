@@ -5,14 +5,13 @@ document.addEventListener("DOMContentLoaded", function() {
             prevEl: '.swiper-button-prev',
         },
         effect: 'slide',
-        speed: 1000,  // Slayt geçiş hızı (yavaşlatılmış)
+        speed: 1000,  
         on: {
             init: function () {
-                // İlk slayt sayfa yüklendiğinde animasyonla gelecek
                 const activeSlide = this.slides[this.activeIndex];
                 setTimeout(() => {
                     animateSlide(activeSlide);
-                }, 100);  // Gecikme biraz artırıldı
+                }, 100);
             },
             slideChangeTransitionStart: function () {
                 resetSlides(this.slides);
@@ -24,23 +23,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Slaytları sıfırlayan fonksiyon (animasyonları hazırlamak için)
     function resetSlides(slides) {
         slides.forEach(slide => {
             slide.style.opacity = 0;
             slide.style.transform = 'translateX(100px)';
-            slide.style.transition = 'none';  // Anında görünmez yapıyoruz, geçiş yok
+            slide.style.transition = 'none';  
         });
     }
 
-    // Aktif slaytı animasyonla gösteren fonksiyon
     function animateSlide(slide) {
         slide.style.opacity = 1;
         slide.style.transform = 'translateX(0)';
-        slide.style.transition = 'opacity 1.5s ease, transform 1.5s ease';  // Geçiş daha yavaş
+        slide.style.transition = 'opacity 1.5s ease, transform 1.5s ease';  
     }
-
-    // Sayfa yüklendiğinde ilk aktif slaytı anında görünür yap
     window.onload = function() {
         const firstSlide = document.querySelector('.swiper-slide-active');
         firstSlide.style.opacity = 1;
