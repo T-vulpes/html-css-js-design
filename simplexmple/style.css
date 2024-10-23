@@ -164,16 +164,16 @@ header {
     top: 50%;
     display: flex;
     justify-content: space-between;
-    z-index: 10; /* Ensure arrows are above content */
+    z-index: 10;
 }
 
 .arrow {
     width: 50px;
     height: 50px;
-    background-color: rgb(201, 151, 85); /* Your preferred background color */
-    color: white; /* Text color */
-    border: none; /* Remove blue border */
-    border-radius: 10%; /* Make the arrows circular */
+    background-color: rgb(201, 151, 85); 
+    color: white; 
+    border: none;
+    border-radius: 10%; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,8 +182,8 @@ header {
 }
 
 .arrow:hover {
-    background-color: #fff; /* White on hover */
-    color: rgb(201, 151, 85); /* Arrow color */
+    background-color: #fff; 
+    color: rgb(201, 151, 85);
     animation: rotate-arrow 0.5s;
 
 }
@@ -204,7 +204,7 @@ header {
 .swiper-button-next:after, .swiper-button-prev:after {
     color: black;
     font-weight: 600;
-font-size:15px !important;
+    font-size:15px !important;
 }
 
 .swiper-button-prev {
