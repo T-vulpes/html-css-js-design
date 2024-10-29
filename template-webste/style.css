@@ -32,7 +32,6 @@
   }
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -95,9 +94,8 @@ body {
 }
 
 h2 {
-
-    color:#ff4f81;
-    font-size: 36px;
+  color:#ff4f81;
+  font-size: 36px;
   text-align: center;
   margin-bottom: 50px;
   position: relative;
@@ -311,7 +309,6 @@ margin-top: 8%;
   transform: scale(1.1);
 }
 
-/* Discover Section */
 #discover {
     padding: 100px 0;
     background-color: #151515;
@@ -325,7 +322,6 @@ margin-top: 8%;
   transition: transform 0.8s ease-out, opacity 0.8s ease-out;
 }
 
-/* Dönüş tamamlandığında görünür hale getir */
 .discover-section.show {
   opacity: 1;
   transform: rotateX(0deg);
@@ -372,15 +368,15 @@ margin-top:8%;
   color: #fff;
   padding: 100px 0;
   z-index: 2;
-    background: url(images/contact-bg.jpg);
+  background: url(images/contact-bg.jpg);
   position: relative;
-    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
 }
 
 .contact-cards {
  display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .contact-card {
@@ -420,9 +416,6 @@ margin-top:8%;
     border-radius: 10px;
 }
 
-
-
-/* Team Members Section */
 #team {
     padding: 50px 0;
     background-color: #151515;
