@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<!-- Header -->
 <header id="header">
     <div class="header">
         <div class="container"> 
@@ -37,9 +36,6 @@
         </div>
     </div>
 </header>
-<!-- Header end -->
-
-<!-- About Section -->
 <section id="about" class="fade-in from-left">
     <div class="about">
         <div class="container">
@@ -65,9 +61,6 @@ At SpaceT, the sky is not the limit—it’s just the beginning.</p>
         </div>
     </div>
 </section>
-<!-- About end -->
-
-<!-- Missions Section -->
 <section id="missions" class="fade-in from-right">
         <div class="missions-title">
             <h2>Our Galactic Missions</h2>
@@ -103,10 +96,6 @@ At SpaceT, the sky is not the limit—it’s just the beginning.</p>
         
     </div>
 </section>
-
-<!-- Missions end -->
-
-<!-- Discover Section -->
 <section id="discover" class="discover-section">
     <div class="discover">
         <div class="container">
@@ -129,9 +118,7 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
         </div>
     </div>
 </section>
-<!-- Discover end -->
 
-<!-- Contact Section -->
 <section id="contact" class="fade-in from-right">
         <div class="page-title">
             <h2>Contact the Cosmos</h2>
@@ -160,8 +147,6 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
             </div>
     </div>
 </section>
-<!-- Contact end -->
- <!-- Team Members Section -->
 <section id="team">
     <h2>Team Members</h2>
     <div class="team-members">
@@ -197,9 +182,6 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
         </div>
     </div>
 </section>
-
-
-<!-- Footer -->
 <footer id="footer">
     <div class="footer">
         <div class="footer-content">
@@ -217,8 +199,6 @@ At SpaceT, we believe that space is the final frontier, and with the power of in
         </div>
     </div>
 </footer>
-<!-- Footer end -->
-
 </body>
 <script>
 window.addEventListener('scroll', () => {
@@ -238,8 +218,6 @@ window.addEventListener('scroll', () => {
         }
     });
 });
-
-// Scroll olduğunda 'discover' bölümünün görünürlüğünü kontrol et
 window.addEventListener('scroll', function() {
   const discoverSection = document.querySelector('.discover-section');
   const sectionPosition = discoverSection.getBoundingClientRect().top;
@@ -250,18 +228,11 @@ window.addEventListener('scroll', function() {
   }
 });
 
-
-// Yıldız div'ini seç
 const star = document.getElementById('star');
-
-// Fare hareketini dinle ve yıldızı takip ettir
 document.addEventListener('mousemove', function(e) {
     // Fare hareket ettikçe yıldızın pozisyonunu güncelle
     star.style.left = `${e.pageX}px`;
     star.style.top = `${e.pageY}px`;
 });
-
-
-
 </script>
 </html>
