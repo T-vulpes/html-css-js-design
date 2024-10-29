@@ -32,6 +32,7 @@
   }
 }
 
+
 * {
     margin: 0;
     padding: 0;
@@ -95,8 +96,8 @@ body {
 
 h2 {
 
-  color:#ff4f81;
-  font-size: 36px;
+    color:#ff4f81;
+    font-size: 36px;
   text-align: center;
   margin-bottom: 50px;
   position: relative;
@@ -134,7 +135,7 @@ p {
     background-image: url(images/space-bg.jpg);
     background-position: center;
     background-size: cover;
-    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     height: 100vh;
 }
 
@@ -214,6 +215,7 @@ p {
     background-color: #ff2a67;
 }
 
+/* About Section */
 #about {
     padding: 100px 0;
     background-color: #151515;
@@ -259,9 +261,10 @@ p {
     line-height: 1.6;
 }
 
+/* Missions Section */
 #missions{
-  margin-bottom: 8%;
-  margin-top: 8%;
+    margin-bottom: 8%;
+margin-top: 8%;
 }
 
 .mission-grid {
@@ -308,6 +311,7 @@ p {
   transform: scale(1.1);
 }
 
+/* Discover Section */
 #discover {
     padding: 100px 0;
     background-color: #151515;
@@ -321,6 +325,7 @@ p {
   transition: transform 0.8s ease-out, opacity 0.8s ease-out;
 }
 
+/* Dönüş tamamlandığında görünür hale getir */
 .discover-section.show {
   opacity: 1;
   transform: rotateX(0deg);
@@ -358,15 +363,18 @@ p {
     color: #ddd;
     line-height: 1.6;
 }
+
+/* Contact Section */
+/* Contact Section */
 #contact {
 margin-bottom:8%;
 margin-top:8%;
-color: #fff;
-padding: 100px 0;
-z-index: 2;
-background: url(images/contact-bg.jpg);
-position: relative;
-box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  padding: 100px 0;
+  z-index: 2;
+    background: url(images/contact-bg.jpg);
+  position: relative;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
 }
 
 .contact-cards {
@@ -412,6 +420,9 @@ box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
+
+
+/* Team Members Section */
 #team {
     padding: 50px 0;
     background-color: #151515;
@@ -424,12 +435,14 @@ box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     margin-bottom: 40px;
 }
 
+/* Team members grid */
 .team-members {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
+/* Individual team member card */
 .team-member {
     background-color: #1a1a1a;
     padding: 20px;
@@ -438,6 +451,7 @@ box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
 }
+
 
 .team-member:hover {
     transform: translateY(-10px);
@@ -463,10 +477,16 @@ box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     color: #ddd;
 }
 
+/* Hover effect */
+
 .team-member:hover img {
     transform: scale(1.1);
 }
 
+
+
+
+/* Footer */
 #footer {
     background-color: #0d0d0d;
     padding: 30px 0;
@@ -502,14 +522,15 @@ z-index:999;
     position: absolute;
     width: 40px;
     height: 40px;
-    pointer-events: none; 
+    pointer-events: none; /* Yıldız fare ile etkileşimde bulunmasın */
     transform: translate(-50%, -50%);
-    filter: brightness(2); 
+    filter: brightness(2); /* Parlaklık ekliyoruz */
 
 }
+
 .star img {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.8)); 
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.8)); /* Parlaklık ve ışık efekti */
 
 }
