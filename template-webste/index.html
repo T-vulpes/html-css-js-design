@@ -221,7 +221,7 @@ window.addEventListener('scroll', () => {
 window.addEventListener('scroll', function() {
   const discoverSection = document.querySelector('.discover-section');
   const sectionPosition = discoverSection.getBoundingClientRect().top;
-  const screenPosition = window.innerHeight / 1.3; // Ekranın %70'ine geldiğinde tetikleme
+  const screenPosition = window.innerHeight / 1.3; 
 
   if (sectionPosition < screenPosition) {
     discoverSection.classList.add('show');
@@ -230,7 +230,6 @@ window.addEventListener('scroll', function() {
 
 const star = document.getElementById('star');
 document.addEventListener('mousemove', function(e) {
-    // Fare hareket ettikçe yıldızın pozisyonunu güncelle
     star.style.left = `${e.pageX}px`;
     star.style.top = `${e.pageY}px`;
 });
