@@ -1,0 +1,158 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.head-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.boxes {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    padding: 20px;
+}
+.box {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    transition: flex 0.5s ease, transform 0.5s ease;
+    height: 90%; /* Fotoğraf boyutunu artırdık */
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.5s ease;
+}
+
+.box:hover {
+    flex: 2.2;
+}
+
+.box:hover img {
+    transform: scale(1.1) translateX(10%);
+}
+
+.box::before {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: background-color 0.5s ease;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.box:hover::before {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    z-index: 2;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.box:hover .content {
+    opacity: 1;
+    transform: translateY(-50%) translateX(10px);
+}
+
+.content .movie-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 5px;
+    color: #ffdf00;
+}
+
+.content .season {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #ccc;
+    letter-spacing: 1px;
+}
+
+.content .rating {
+    display: flex;
+    margin-top: 10px;
+    color: #ffcc00;
+}
+
+.content .rating .black {
+    color: #555;
+}
+
+.movie-details {
+    margin-top: 15px;
+    line-height: 1.5;
+    color: #b3b3b3;
+    font-size: 0.9rem;
+    max-width: 90%;
+}
+
+.attist {
+    display: flex;
+    margin-top: 15px;
+}
+
+.attist .attist-title p {
+    padding: 4px 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #888;
+    margin-right: 15px;
+}
+
+.artist-name p {
+    padding: 4px 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #bbb;
+}
+
+
