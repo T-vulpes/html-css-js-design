@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Showcase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            <a href="#">wardrobe</a>
+        </div>
+        <div class="menu-icon">
+            <div class="menu-line line-1"></div>
+            <div class="menu-line line-2"></div>
+            <div class="menu-line line-3"></div>
+        </div>
+        <div class="contact">
+            <a href="#">contact</a>
+        </div>
+    </header>
+
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="slide-content">
+                    <div class="title">
+                        <p>wardrobes with new designs</p>
+                        <h1>WARDROBE</h1>
+                    </div>
+
+                    <div class="imgbx">
+                        <!-- Fotoğrafa tıklanınca modal açılır -->
+                        <img id="slideshow-image" src="img/img.jpg" alt="Wardrobe Image" >
+                        <img id="slideshow-image" src="img/img2.jpg" alt="Wardrobe Image" >
+                    </div>
+
+                    <div class="details">
+                        <p class="head">Definition</p>
+                        <p class="note">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non suscipit eros. Nam venenatis porta quam ut eleifend.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text">
+                    <svg width="300" height="300" viewBox="0 0 300 300">
+                        <defs>
+                            <path id="circlePath" d="M 150, 150 m -100, 0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0"/>
+                        </defs>
+                        <text fill="#000" font-size="24" font-family="Arial" text-anchor="middle">
+                            <textPath href="#circlePath" startOffset="50%">
+                                click to the full image * click to the full image *
+                            </textPath>
+                        </text>
+                    </svg>
+                </div>
+
+                <div class="social-link">
+                    <a href="#">facebook</a>
+                    <a href="#">instagram</a>
+                    <a href="#">linkedin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Yapısı -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    const text = document.getElementById("text");
+    text.innerHTML = text.textContent.replace(/\S/g, "<span>$&</span>");
+    const ele = text.querySelectorAll('span');
+    for (let i = 0; i < ele.length; i++) {
+        ele[i].style.transform = "rotate(" + i * 19 + "deg)";
+    }
+
+    anime({
+        targets: 'header',
+        translateY: [-30, 0],
+        opacity: [0, 1],
+        easing: 'linear'
+    });
+
+    anime({
+        targets: '.social-link',
+        translateY: [30, 0],
+        opacity: [0, 1],
+        easing: 'linear'
+    });
+
+    anime({
+        targets: '.imgbx',
+        width: [0, 520],
+        opacity: [0, 1],
+        easing: 'linear'
+    });
+
+    anime({
+        targets: '.details',
+        width: [0, 300],
+        opacity: [0, 1],
+        easing: 'linear'
+    });
+
+    anime({
+        targets: '.details p',
+        translateX: [-25, 0],
+        opacity: [0, 1],
+        easing: 'linear',
+        delay: 1000
+    });
+
+    anime({
+        targets: '.title',
+        translateX: [75, 0],
+        opacity: [0, 1],
+        easing: 'linear'
+    });
+
+    // İki resim arasında slayt geçişi
+    const images = ["img/img.jpg", "img/img2.jpg"]; // Resim dosya yolları
+    let currentIndex = 0;
+
+    function changeImage() {
+        const imgElement = document.getElementById("slideshow-image");
+        imgElement.style.opacity = 0; // Yumuşak geçiş için opaklığı sıfırla
+
+        setTimeout(() => {
+            currentIndex = (currentIndex + 1) % images.length; // Sonraki fotoğrafa geç
+            imgElement.src = images[currentIndex]; // Yeni fotoğrafı ayarla
+            imgElement.style.opacity = 1; // Opaklığı geri getir
+        }, 500);
+    }
+
+    setInterval(changeImage, 4000); // 4 saniyede bir resim değiştir
+
+</script>
+</body>
+</html>

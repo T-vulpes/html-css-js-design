@@ -1,0 +1,218 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body, html {
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
+    background-color: rgb(237, 229, 250);
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+header {
+    position: relative;
+    width: 100%;
+    padding: 30px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+header .logo a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+header .logo a:hover {
+    letter-spacing: 1px;
+}
+
+.menu-icon {
+    position: relative;
+}
+
+.menu-icon .menu .menu-line {
+    width: 50px;
+    height: 10px;
+    cursor: pointer;
+}
+
+.menu-icon .menu .menu-line .line {
+    background-color: #000;
+    width: 100%;
+    height: 2px;
+    display: block;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.5s, width 0.5s;
+}
+
+.contact a {
+    font-size: 15px;
+    font-weight: 400;
+    color: #000;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.contact a::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    opacity: 0;
+    transition: 0.5s ease-in-out;
+}
+
+.contact a:hover::before {
+    opacity: 1;
+}
+
+.swiper {
+    position: absolute;
+    top: -5%;
+    width: 100%;
+    height: 100vh;
+}
+
+.swiper-wrapper {}
+
+.swiper-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide-content .imgbx {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    height: 360px;
+    overflow: hidden;
+    animation: fadeChange 4s infinite; /* Yalnızca fotoğraf değişimi için animasyon */
+}
+
+@keyframes fadeChange {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.slide-content .imgbx img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.slide-content .title {
+    position: absolute;
+    top: 40%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.slide-content .title p {
+    font-size: 14px;
+    color: #ff0;
+    font-weight: 600;
+}
+
+.slide-content .title h1 {
+    font-size: 4rem;
+    color: #FFD700;
+}
+
+.details {
+    position: absolute;
+    right: 30vh;
+    bottom: 14.5vh;
+    width: 300px;
+    height: 180px;
+    padding: 25px 30px;
+    color: #000;
+    background-color: #f0d3ff; /* Daha soft renk */
+}
+
+.details .head {
+    font-size: 20px;
+}
+
+.details .note {
+    margin-top: 15px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.text {
+    position: absolute;
+    top: 6%;
+    left: 65%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.text svg {
+    animation: rotateText 10s linear infinite; /* Yazıyı döndürme */
+}
+
+@keyframes rotateText {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.social-link {
+    position: absolute;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.social-link a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #000;
+    margin: 0 8px;
+    transition: 0.5s ease-in;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
