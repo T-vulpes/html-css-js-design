@@ -69,8 +69,6 @@
     </div>
 </div>
 
-<!-- Modal Yapısı -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
     const text = document.getElementById("text");
@@ -123,22 +121,21 @@
         easing: 'linear'
     });
 
-    // İki resim arasında slayt geçişi
-    const images = ["img/img.jpg", "img/img2.jpg"]; // Resim dosya yolları
+    const images = ["img/img.jpg", "img/img2.jpg"]; 
     let currentIndex = 0;
 
     function changeImage() {
         const imgElement = document.getElementById("slideshow-image");
-        imgElement.style.opacity = 0; // Yumuşak geçiş için opaklığı sıfırla
+        imgElement.style.opacity = 0; 
 
         setTimeout(() => {
-            currentIndex = (currentIndex + 1) % images.length; // Sonraki fotoğrafa geç
-            imgElement.src = images[currentIndex]; // Yeni fotoğrafı ayarla
-            imgElement.style.opacity = 1; // Opaklığı geri getir
+            currentIndex = (currentIndex + 1) % images.length; 
+            imgElement.src = images[currentIndex];
+            imgElement.style.opacity = 1; 
         }, 500);
     }
 
-    setInterval(changeImage, 4000); // 4 saniyede bir resim değiştir
+    setInterval(changeImage, 4000); 
 
 </script>
 </body>
