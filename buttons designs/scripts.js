@@ -1,4 +1,4 @@
-// 9. Loading Button
+// Loading Button
 document.querySelector('.btn-loading').addEventListener('click', function() {
     this.innerHTML = 'Loading...';
     this.disabled = true;
@@ -8,7 +8,7 @@ document.querySelector('.btn-loading').addEventListener('click', function() {
     }, 3000);
 });
 
-// 10. Ripple Effect Button
+// Ripple Effect Button
 document.querySelectorAll('.btn-ripple').forEach(button => {
     button.addEventListener('click', function (e) {
         let rect = this.getBoundingClientRect();
