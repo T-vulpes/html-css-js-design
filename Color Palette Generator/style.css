@@ -11,8 +11,7 @@ body {
 }
 
 .container {
-    text-align: center;
-}
+    text-align: center;}
 
 h1 {
     margin-bottom: 20px;
@@ -71,5 +70,4 @@ button:hover {
 }
 
 .color-box:hover .color-code {
-    opacity: 1;
-}
+    opacity: 1;}
