@@ -11,7 +11,6 @@ function generatePalette() {
         const colorCode = document.createElement('div');
         colorCode.className = 'color-code';
         colorCode.textContent = color;
-
         colorBox.appendChild(colorCode);
         palette.appendChild(colorBox);
     }
