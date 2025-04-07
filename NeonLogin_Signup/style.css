@@ -24,7 +24,6 @@ body {
   min-height: 500px;
 }
 
-/* Form Containers */
 .form-container {
   position: absolute;
   top: 0;
@@ -45,7 +44,6 @@ body {
   z-index: 1;
 }
 
-/* Active Classes (JS ile kontrol) */
 .container.right-panel-active .sign-in-container {
   transform: translateX(100%);
 }
