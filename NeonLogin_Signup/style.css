@@ -54,7 +54,6 @@ body {
   z-index: 5;
 }
 
-/* Form */
 form {
   background: #111;
   display: flex;
@@ -88,7 +87,6 @@ input:focus {
   box-shadow: 0 0 10px #ff00ff;
 }
 
-/* Button */
 button {
   margin-top: 20px;
   border-radius: 20px;
@@ -110,13 +108,11 @@ button:hover {
   box-shadow: 0 0 20px #00f0ff;
 }
 
-/* Ghost button (overlaydeki) */
 button.ghost {
   background-color: transparent;
   border-color: #fff;
 }
 
-/* Overlay Container */
 .overlay-container {
   position: absolute;
   top: 0;
