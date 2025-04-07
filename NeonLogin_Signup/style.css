@@ -128,7 +128,6 @@ button.ghost {
   transform: translateX(-100%);
 }
 
-/* Overlay */
 .overlay {
   background: linear-gradient(45deg, #ff00cc, #333399);
   background-repeat: no-repeat;
@@ -147,7 +146,6 @@ button.ghost {
   transform: translateX(50%);
 }
 
-/* Overlay panels */
 .overlay-panel {
   position: absolute;
   display: flex;
@@ -179,7 +177,6 @@ button.ghost {
   transform: translateX(20%);
 }
 
-/* Link */
 a {
   color: #00f0ff;
   font-size: 12px;
