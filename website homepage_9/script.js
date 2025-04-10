@@ -1,4 +1,3 @@
-// Yıldızların yavaşça sağa sola dalgalanmasını sağlayan küçük bir JS animasyonu
 const stars = document.querySelectorAll('.star');
 
 stars.forEach(star => {
