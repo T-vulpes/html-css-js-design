@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile Drawing</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.15/paper-full.min.js"></script>
+  <style>
+    canvas { border: 1px solid #aaa; margin-top: 20px; }
+    label { display: inline-block; width: 180px; margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Parameters</h2>
+  <label>Width (mm): <input type="number" id="width" value="5000" /></label><br>
+  <label>Height (mm): <input type="number" id="height" value="5000" /></label><br>
+  <label>Vertical Bar Count: <input type="number" id="vCount" value="2" /></label><br>
+  <label>Horizontal Bar Count: <input type="number" id="hCount" value="2" /></label><br>
+  <label>Profile Thickness: <input type="number" id="profile" value="1667" /></label><br>
+
+  <canvas id="canvas" width="1100" height="1100"></canvas>
+
+  <script>
+    paper.setup('canvas');
+
+    const inputs = {
+      width: document.getElementById('width'),
+      height: document.getElementById('height'),
+      vCount: document.getElementById('vCount'),
+      hCount: document.getElementById('hCount'),
+      profile: document.getElementById('profile')
+    };
+
+    function draw() {
+      paper.project.activeLayer.removeChildren();
+
+      const width = parseInt(inputs.width.value);
+      const height = parseInt(inputs.height.value);
+      const vCount = parseInt(inputs.vCount.value);
+      const hCount = parseInt(inputs.hCount.value);
+      const profile = parseInt(inputs.profile.value);
+
+      const scale = 0.11; // Reduced scale factor
+      const startX = 100;
+      const startY = 100;
+      const w = width * scale;
+      const h = height * scale;
+
+      new paper.Path.Rectangle({
+        point: [startX, startY],
+        size: [w, h],
+        strokeColor: 'black',
+        strokeWidth: 2
+      });
+
+      const totalV = vCount + 1;
+      const totalH = hCount + 1;
+      const vGap = width / totalV;
+      const hGap = height / totalH;
+
+      for (let i = 1; i < totalV; i++) {
+        const x = startX + vGap * i * scale;
+        new paper.Path.Line({
+          from: [x, startY],
+          to: [x, startY + h],
+          strokeColor: 'red'
+        });
+        new paper.PointText({
+          point: [x - 20, startY + h + 15],
+          content: `${Math.round(vGap)} mm`,
+          fillColor: 'black',
+          fontSize: 10
+        });
+      }
+
+      for (let j = 1; j < totalH; j++) {
+        const y = startY + hGap * j * scale;
+        new paper.Path.Line({
+          from: [startX, y],
+          to: [startX + w, y],
+          strokeColor: 'blue'
+        });
+        new paper.PointText({
+          point: [startX + w + 10, y + 5],
+          content: `${Math.round(hGap)} mm`,
+          fillColor: 'black',
+          fontSize: 10
+        });
+      }
+
+      new paper.PointText({
+        point: [startX + w / 2 - 40, startY + h + 35],
+        content: `Total Width: ${width} mm`,
+        fillColor: 'black'
+      });
+
+      new paper.PointText({
+        point: [startX + w + 20, startY + h / 2],
+        content: `Total Height: ${height} mm`,
+        fillColor: 'black'
+      });
+
+      paper.view.draw();
+    }
+
+    Object.values(inputs).forEach(input => {
+      input.addEventListener('input', draw);
+    });
+
+    draw(); 
+  </script>
+</body>
+</html>
