@@ -31,7 +31,6 @@ body {
   border-radius: 2px;
 }
 
-/* Çizgilerin konumları */
 .top {
   transform: translateY(-10px);
 }
@@ -44,7 +43,6 @@ body {
   transform: translateY(10px);
 }
 
-/* Aktif sınıf geldiğinde */
 .menu-toggle.active .top {
   transform: rotate(45deg);
 }
