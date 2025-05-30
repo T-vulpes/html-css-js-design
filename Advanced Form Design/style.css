@@ -51,6 +51,4 @@ form h2 {
     transition: background 0.3s ease;
 }
 
-.btn-submit:hover {
-    background: #ff6347;
-}
+.btn-submit:hover {background: #ff6347;}
