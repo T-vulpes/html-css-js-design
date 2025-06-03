@@ -16,7 +16,7 @@ if ('webkitSpeechRecognition' in window) {
 
   recognition.onresult = (event) => {
     const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
-    console.log("Heard:", transcript); // Geliştiriciler için çıktı
+    console.log("Heard:", transcript); 
 
     statusText.innerText = `Heard: "${transcript}"`;
 
