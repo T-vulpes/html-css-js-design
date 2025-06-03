@@ -9,7 +9,6 @@ if ('webkitSpeechRecognition' in window) {
   recognition.lang = "en-US"; 
   recognition.continuous = true; 
   recognition.interimResults = false;
-
   recognition.onstart = () => {
     statusText.innerText = "Listening...";
   };
