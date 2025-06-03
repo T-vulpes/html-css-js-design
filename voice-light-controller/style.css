@@ -1,0 +1,27 @@
+body {
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  background: #111;
+  color: white;
+  padding-top: 50px;
+}
+
+.light {
+  width: 150px;
+  height: 150px;
+  margin: 30px auto;
+  background-color: gray;
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background: #ff0080;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
