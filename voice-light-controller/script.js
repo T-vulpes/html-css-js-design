@@ -6,8 +6,8 @@ let recognition;
 
 if ('webkitSpeechRecognition' in window) {
   recognition = new webkitSpeechRecognition();
-  recognition.lang = "en-US"; // İngilizce
-  recognition.continuous = true; // Sürekli dinleme
+  recognition.lang = "en-US"; 
+  recognition.continuous = true; 
   recognition.interimResults = false;
 
   recognition.onstart = () => {
