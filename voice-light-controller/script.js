@@ -45,7 +45,6 @@ if ('webkitSpeechRecognition' in window) {
   };
 
   recognition.onend = () => {
-    // Stop listening komutu verilmediyse tekrar başlat
     if (statusText.innerText !== "Stopped listening.") {
       recognition.start();
     }
