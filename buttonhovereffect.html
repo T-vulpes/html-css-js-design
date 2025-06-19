@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fashion Button - Modern</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #f9f6f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .fashion-button {
+      position: relative;
+      padding: 16px 48px 16px 56px;
+      font-size: 17px;
+      color: #2b2b2b;
+      background-color: #fceeee;
+      border: 2px solid #d8a3a3;
+      border-radius: 12px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.7s ease;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fashion-button .icon {
+      font-size: 18px;
+    }
+
+    .fashion-button::before,
+    .fashion-button::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: #d291bc;
+      top: 0;
+      left: 0;
+      transition: width 0.7s ease;
+    }
+
+    .fashion-button::after {
+      top: auto;
+      bottom: 0;
+      right: 0;
+      left: auto;
+    }
+
+    .fashion-button span::before,
+    .fashion-button span::after {
+      content: '';
+      position: absolute;
+      height: 0;
+      width: 2px;
+      background: #d291bc;
+      left: 0;
+      top: 0;
+      transition: height 0.7s ease;
+    }
+
+    .fashion-button span::after {
+      top: auto;
+      bottom: 0;
+      left: auto;
+      right: 0;
+    }
+
+    .fashion-button:hover::before,
+    .fashion-button:hover::after {
+      width: 100%;
+    }
+
+    .fashion-button:hover span::before,
+    .fashion-button:hover span::after {
+      height: 100%;
+    }
+
+    .fashion-button:hover {
+      background-color: #fbe3e8;
+      color: #6e2f5c;
+      border-color: #d291bc;
+      box-shadow: 0 4px 10px rgba(210, 145, 188, 0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <button class="fashion-button">
+    <div class="icon">🛍️</div>
+    <span></span>Shop Now
+  </button>
+
+</body>
+</html>
