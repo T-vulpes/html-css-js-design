@@ -382,21 +382,21 @@ section{
 .footer{
     background:var(--black);
     text-align: center;
-    padding: 3rem 0; /* Padding artırıldı */
+    padding: 3rem 0; 
 }
 
 .footer .share{
-    padding:1.5rem 0; /* Padding artırıldı */
+    padding:1.5rem 0; 
 }
 
 .footer .share a{
     height: 5rem;
     width: 5rem;
     line-height: 5rem;
-    font-size: 2.2rem; /* İkon boyutu */
+    font-size: 2.2rem; 
     color:#fff;
-    border:.1rem solid rgba(255,255,255,.3); /* Daha belirgin kenarlık */
-    margin:.5rem; /* Boşluk artırıldı */
+    border:.1rem solid rgba(255,255,255,.3);
+    margin:.5rem;
     border-radius: 50%;
     transition: background-color .3s ease;
 }
@@ -410,15 +410,15 @@ section{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    padding:2.5rem 0; /* Padding artırıldı */
-    gap:1.5rem; /* Boşluk artırıldı */
+    padding:2.5rem 0; 
+    gap:1.5rem; 
 }
 
 .footer .links a{
-    padding:.8rem 2.5rem; /* Padding artırıldı */
+    padding:.8rem 2.5rem;
     color:#fff;
     border:.1rem solid rgba(255,255,255,.3);
-    font-size: 1.8rem; /* Font boyutu */
+    font-size: 1.8rem; 
     border-radius: .5rem;
     transition: background-color .3s ease;
 }
@@ -429,9 +429,9 @@ section{
 }
 
 .footer .credit{
-    font-size: 1.8rem; /* Font boyutu */
+    font-size: 1.8rem;
     color:#fff;
-    font-weight: 300; /* Daha ince font */
+    font-weight: 300; 
     padding:2rem;
 }
 
@@ -439,7 +439,6 @@ section{
     color:var(--main-color);
 }
 
-/* Media Queries */
 @media (max-width:991px){
     html{
         font-size: 55%;
@@ -473,13 +472,9 @@ section{
         padding:.5rem;
         font-size: 2rem;
     }
-    /* Arama formu kaldırıldığı için bu media query kaldırılabilir */
-    /* .header .search-form{
-        width: 90%;
-        right: 2rem;
-    } */
+    
     .home{
-        background-position: center; /* Mobil görünümde hero görseli ortalandı */
+        background-position: center; 
         text-align: center;
     }
     .home .content h3{
@@ -489,7 +484,7 @@ section{
         font-size: 1.5rem;
     }
     .contact .row .image {
-        display: none; /* Küçük ekranlarda iletişim görseli gizlendi */
+        display: none; 
     }
 }
 
