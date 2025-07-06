@@ -121,7 +121,7 @@ section{
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background:url(../images/hero-bg.png) no-repeat; /* Yeni bir hero görseli */
+    background:url(../images/hero-bg.png) no-repeat;
     background-size: cover;
     background-position: center;
     color: #fff; 
