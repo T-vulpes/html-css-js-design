@@ -35,13 +35,13 @@ html::-webkit-scrollbar-track{
 }
 
 html::-webkit-scrollbar-thumb{
-    background: var(--main-color); /* Ana renkte kaydırma çubuğu */
+    background: var(--main-color); 
     border-radius: 5rem;
 }
 
 body{
     background: var(--bg);
-    color: var(--text-color); /* Genel metin rengi */
+    color: var(--text-color); 
 }
 
 section{
@@ -50,7 +50,7 @@ section{
 
 .heading{
     text-align: center;
-    color:var(--black); /* Başlık rengi */
+    color:var(--black); 
     text-transform: uppercase;
     padding-bottom: 3.5rem;
     font-size: 4rem;
