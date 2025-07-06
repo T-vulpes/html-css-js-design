@@ -356,7 +356,7 @@ section{
 }
 
 .contact .row form .inputBox input,
-.contact .row form textarea{ /* Textarea için de stil */
+.contact .row form textarea{
     width: 100%;
     padding:2rem;
     font-size: 1.7rem;
