@@ -124,8 +124,8 @@ section{
     background:url(../images/hero-bg.png) no-repeat; /* Yeni bir hero görseli */
     background-size: cover;
     background-position: center;
-    color: #fff; /* Metin rengi beyaz */
-    text-shadow: 0 .2rem .5rem rgba(0,0,0,.5); /* Hafif gölge */
+    color: #fff; 
+    text-shadow: 0 .2rem .5rem rgba(0,0,0,.5); 
 }
 
 .home .content{
@@ -133,7 +133,7 @@ section{
 }
 
 .home .content h3{
-    font-family: 'Montserrat', sans-serif; /* Daha modern bir font */
+    font-family: 'Montserrat', sans-serif; 
     font-size: 6rem;
     text-transform: uppercase;
     color:#fff;
@@ -142,17 +142,16 @@ section{
 
 .home .content p{
     font-size: 2rem;
-    font-weight: 300; /* Daha ince font */
+    font-weight: 300; 
     line-height: 1.8;
     padding:1rem 0;
     color:#eee;
 }
 
-/* About Section */
 .about .row{
     display: flex;
     align-items: center;
-    background:#fff; /* Beyaz arka plan */
+    background:#fff; 
     flex-wrap: wrap;
     border-radius: 1rem;
     box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
@@ -160,12 +159,12 @@ section{
 
 .about .row .image{
     flex:1 1 45rem;
-    padding: 2rem; /* Resim etrafında boşluk */
+    padding: 2rem; 
 }
 
 .about .row .image img{
     width: 100%;
-    border-radius: .5rem; /* Resme hafif yuvarlak köşeler */
+    border-radius: .5rem; 
 }
 .about .row .content{
     flex:1 1 45rem;
@@ -184,15 +183,14 @@ section{
     line-height: 1.8;
 }
 
-/* Projects Section (Menu ve Products birleşimi) */
 .projects .box-container{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap:2rem; /* Daha fazla boşluk */
+    gap:2rem; 
 }
 
 .projects .box-container .box{
-    padding:3rem; /* Padding azaltıldı */
+    padding:3rem; 
     text-align: center;
     background: #fff;
     border-radius: 1rem;
@@ -201,11 +199,11 @@ section{
 }
 
 .projects .box-container .box:hover {
-    transform: translateY(-1rem); /* Hover'da hafif kalkma efekti */
+    transform: translateY(-1rem); 
 }
 
 .projects .box-container .box img{
-    height: 18rem; /* Proje görseli boyutu */
+    height: 18rem; 
     width: 100%;
     object-fit: cover;
     margin-bottom: 1.5rem;
@@ -216,7 +214,7 @@ section{
     color: var(--black);
     font-size: 2.2rem;
     padding:1rem 0;
-    text-transform: none; /* Proje başlıklarında capitalize kaldırıldı */
+    text-transform: none; 
 }
 
 .projects .box-container .box p{
@@ -227,7 +225,6 @@ section{
     text-transform: none;
 }
 
-/* Skills Section (Review yerine) */
 .skills .box-container{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
@@ -248,7 +245,7 @@ section{
 }
 
 .skills .box-container .box i{
-    font-size: 5rem; /* İkon boyutu */
+    font-size: 5rem; 
     color: var(--main-color);
     margin-bottom: 1.5rem;
 }
@@ -265,7 +262,6 @@ section{
     color:var(--text-color);
 }
 
-/* Experience Section (Blogs yerine) */
 .experience .box-container{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
