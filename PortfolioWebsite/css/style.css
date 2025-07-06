@@ -306,10 +306,9 @@ section{
     text-transform: none;
 }
 
-/* Contact Section */
 .contact .row{
     display: flex;
-    background:#fff; /* Beyaz arka plan */
+    background:#fff; 
     flex-wrap: wrap;
     gap:1rem;
     border-radius: 1rem;
@@ -319,7 +318,7 @@ section{
 .contact .row .image{
     flex:1 1 45rem;
     width: 100%;
-    object-fit: contain; /* Görselin tamamını sığdır */
+    object-fit: contain; 
     padding: 2rem;
 }
 
@@ -345,13 +344,13 @@ section{
     align-items: center;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    background:var(--bg); /* Daha açık bir arka plan */
+    background:var(--bg); 
     border:var(--border);
     border-radius: .5rem;
 }
 
 .contact .row form .inputBox span{
-    color:var(--main-color); /* İkon rengi */
+    color:var(--main-color); 
     font-size: 2rem;
     padding-left: 2rem;
 }
@@ -367,14 +366,12 @@ section{
     border: none;
 }
 .contact .row form textarea {
-    padding: 1.5rem 2rem; /* Textarea için uygun padding */
+    padding: 1.5rem 2rem; 
     border:var(--border);
     border-radius: .5rem;
     color:var(--text-color);
 }
 
-
-/* Footer */
 .footer{
     background:var(--black);
     text-align: center;
