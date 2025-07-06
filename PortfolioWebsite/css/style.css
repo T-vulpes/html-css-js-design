@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&family=Montserrat:wght@400;700&display=swap');
 
 :root{
-    --main-color:#6c63ff; /* Mor tonları */
-    --black:#2c3e50; /* Koyu gri/lacivert */
-    --bg:#ecf0f1; /* Açık gri */
-    --light-grey: #bdc3c7; /* Daha açık gri */
-    --text-color: #34495e; /* Koyu gri metin */
-    --border:.1rem solid rgba(0,0,0,.1); /* Daha az belirgin kenarlık */
+    --main-color:#6c63ff; 
+    --black:#2c3e50; 
+    --bg:#ecf0f1; 
+    --light-grey: #bdc3c7; 
+    --text-color: #34495e;
+    --border:.1rem solid rgba(0,0,0,.1); 
 }
 
 *{
