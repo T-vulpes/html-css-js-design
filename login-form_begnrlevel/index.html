@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Space Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="container">
+    <div class="form-box" id="loginForm">
+      <h2>Welcome, Commander</h2>
+      <input type="text" id="loginUsername" placeholder="Galactic ID">
+      <input type="password" id="loginPassword" placeholder="Access Code">
+      <button onclick="login()">Engage</button>
+      <p id="loginMessage"></p>
+      <p class="switch">No ID? <a href="#" onclick="showRegister()">Register</a></p>
+    </div>
+
+    <div class="form-box hidden" id="registerForm">
+      <h2>Create New Identity</h2>
+      <input type="text" id="regUsername" placeholder="New Galactic ID">
+      <input type="password" id="regPassword" placeholder="Create Access Code">
+      <button onclick="register()">Register</button>
+      <p id="registerMessage"></p>
+      <p class="switch">Already a pilot? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
