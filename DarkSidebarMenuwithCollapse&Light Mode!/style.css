@@ -103,13 +103,11 @@ body.light {
   color: #aaa;
 }
 
-/* Ana içerik */
 .main-content {
   flex: 1;
   padding: 40px;
 }
 
-/* COLLAPSED MENÜ */
 .sidebar.collapsed {
   width: 70px;
 }
