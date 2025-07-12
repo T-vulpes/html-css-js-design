@@ -83,24 +83,6 @@ body.light {
 .sidebar ul li span {
   transition: opacity 0.2s;
 }
-
-.submenu {
-  list-style: none;
-  padding-left: 30px;
-  margin-top: 5px;
-  display: none;
-}
-
-.sidebar ul li.open .submenu {
-  display: block;
-}
-
-.submenu li {
-  padding: 8px 0;
-  font-size: 14px;
-  color: #aaa;
-}
-
 .main-content {
   flex: 1;
   padding: 40px;
