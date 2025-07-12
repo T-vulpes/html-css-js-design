@@ -92,7 +92,6 @@ body.light {
   width: 70px;
 }
 .sidebar.collapsed span,
-.sidebar.collapsed .submenu,
 .sidebar.collapsed .theme-toggle,
 .sidebar.collapsed .menu-top h2 {
   display: none;
