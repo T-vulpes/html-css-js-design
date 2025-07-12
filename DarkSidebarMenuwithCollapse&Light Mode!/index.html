@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Sidebar Menu</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="dark">
+
+  <div class="sidebar" id="sidebar">
+    <div class="menu-top">
+      <h2>MENU</h2>
+      <button onclick="toggleTheme()" class="theme-toggle">🌓</button>
+      <button onclick="toggleCollapse()" class="collapse-toggle">≡</button>
+    </div>
+    <ul>
+      <li class="active"><i class="fas fa-home"></i><span>Dashboard</span></li>
+      <li onclick="toggleSubmenu(this)">
+        <i class="fas fa-rocket"></i><span>Missions</span>
+        <ul class="submenu">
+          <li>Alpha</li>
+          <li>Beta</li>
+        </ul>
+      </li>
+      <li><i class="fas fa-user"></i><span>Profile</span></li>
+      <li><i class="fas fa-cog"></i><span>Settings</span></li>
+      <li><i class="fas fa-sign-out-alt"></i><span>Logout</span></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <h1>Welcome to the Control Panel</h1>
+    <p>This is your main content area. Try toggling the theme or collapsing the menu!</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
