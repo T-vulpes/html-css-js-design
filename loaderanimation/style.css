@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body, html {
   height: 100%;
   background-color: #0b0c1a;
@@ -43,7 +44,6 @@ body, html {
   100% { transform: translate(-50px, -100px); }
 }
 
-/* Glow ring */
 .glow-ring {
   width: 150px;
   height: 150px;
