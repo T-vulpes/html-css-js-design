@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Architecture Tower Loader</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f4f4f4;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .tower-loader {
+      position: relative;
+      width: 100px;
+      height: 150px;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+
+    .floor {
+      width: 100px;
+      height: 20px;
+      background: #444;
+      margin-bottom: 5px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      animation: dropIn 1.5s ease-in-out infinite;
+      transform-origin: top;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      border-radius: 3px;
+    }
+
+    .floor:nth-child(1) { top: 120px; animation-delay: 0s; background: #666; }
+    .floor:nth-child(2) { top: 95px;  animation-delay: 0.2s; background: #777; }
+    .floor:nth-child(3) { top: 70px;  animation-delay: 0.4s; background: #888; }
+    .floor:nth-child(4) { top: 45px;  animation-delay: 0.6s; background: #999; }
+    .floor:nth-child(5) { top: 20px;  animation-delay: 0.8s; background: #aaa; }
+
+    @keyframes dropIn {
+      0% {
+        transform: translateY(-80px) rotateX(45deg) scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        transform: translateY(0) rotateX(0deg) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .loader-text {
+      position: absolute;
+      top: 170px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: #333;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="tower-loader">
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="floor"></div>
+    <div class="loader-text">Building Design...</div>
+  </div>
+</body>
+</html>
