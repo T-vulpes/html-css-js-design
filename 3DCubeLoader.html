@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Cube Loader</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f0f0f0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 800px;
+    }
+
+    .scene {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spin 3s infinite linear;
+    }
+
+    .face {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: #333;
+      opacity: 0.85;
+      border: 2px solid #fff;
+      box-sizing: border-box;
+    }
+
+    .face.front  { transform: translateZ(40px); background-color: #333; }
+    .face.back   { transform: rotateY(180deg) translateZ(40px); background-color: #444; }
+    .face.right  { transform: rotateY(90deg) translateZ(40px); background-color: #555; }
+    .face.left   { transform: rotateY(-90deg) translateZ(40px); background-color: #666; }
+    .face.top    { transform: rotateX(90deg) translateZ(40px); background-color: #777; }
+    .face.bottom { transform: rotateX(-90deg) translateZ(40px); background-color: #888; }
+
+    @keyframes spin {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+      100% {
+        transform: rotateX(360deg) rotateY(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face right"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+  </div>
+</body>
+</html>
