@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Architecture Loader</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #0e0e0e;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #text {
+      position: absolute;
+      bottom: 20%;
+      width: 100%;
+      text-align: center;
+      color: #00ffe1;
+      font-size: 18px;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div id="text">Loading Design...</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js"></script>
+  <script>
+    // Sahne
+    const scene = new THREE.Scene();
+
+    // Kamera
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 3;
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Geometri
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ffe1, wireframe: true });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // Döngü
+    function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Yeniden boyutlanma
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
