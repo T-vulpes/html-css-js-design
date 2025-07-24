@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadılar Bayramı Örümcek</title>
+  <style>
+    body {
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .button-wrapper {
+      position: relative;
+    }
+
+    .halloween-button {
+      position: relative;
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 22px;
+      color: #000;
+      background-color: #fff;
+      border: 3px solid #000;
+      width: 320px;
+      height: 110px;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 1;
+    }
+
+    .halloween-button:hover {
+      transform: scale(1.05) rotate(-1deg);
+      box-shadow: 0 12px 24px rgba(255, 102, 0, 0.4);
+    }
+
+    .web-corner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.2;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .web-top-left {
+      top: 5px;
+      left: 5px;
+    }
+
+    .web-bottom-right {
+      bottom: 5px;
+      right: 5px;
+      transform: rotate(180deg);
+    }
+
+    .spider {
+      position: absolute;
+      width: 40px;
+      height: auto;
+      z-index: 3;
+      pointer-events: none;
+      transition: top 0.2s linear, left 0.2s linear;
+    }
+
+    .button-text {
+      position: relative;
+      z-index: 4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="button-wrapper">
+  <button class="halloween-button" id="halloweenBtn">
+    <!-- Örümcek ağı süsleri -->
+    <img src="spdrweb.png" alt="Web Top Left" class="web-corner web-top-left">
+    <img src="spdrweb.png" alt="Web Bottom Right" class="web-corner web-bottom-right">
+
+    <!-- Örümcek -->
+    <img src="spider.png" alt="Spider" class="spider" id="spiderImg">
+
+    <!-- Buton yazısı -->
+    <span class="button-text">Trick or Treat!</span>
+  </button>
+</div>
+
+<script>
+  const button = document.getElementById("halloweenBtn");
+  const spider = document.getElementById("spiderImg");
+
+  let moveInterval;
+  let followMouse = false;
+
+  // Rastgele dolaşması için
+  function moveSpiderRandomly() {
+    const rect = button.getBoundingClientRect();
+    const maxX = rect.width - 40;
+    const maxY = rect.height - 40;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    spider.style.left = `${x}px`;
+    spider.style.top = `${y}px`;
+  }
+
+  // Sürekli dolaşmayı başlat
+  function startRandomMovement() {
+    moveInterval = setInterval(moveSpiderRandomly, 500);
+  }
+
+  // Dolaşmayı durdur
+  function stopRandomMovement() {
+    clearInterval(moveInterval);
+  }
+
+  // Butona girince fareyi takip et
+  button.addEventListener("mouseenter", () => {
+    followMouse = true;
+    stopRandomMovement();
+  });
+
+  // Butondan çıkınca tekrar rastgele dolaş
+  button.addEventListener("mouseleave", () => {
+    followMouse = false;
+    startRandomMovement();
+  });
+
+  // Farenin konumunu takip et
+  button.addEventListener("mousemove", (e) => {
+    if (followMouse) {
+      const rect = button.getBoundingClientRect();
+      const x = e.clientX - rect.left - 20;
+      const y = e.clientY - rect.top - 20;
+      spider.style.left = `${x}px`;
+      spider.style.top = `${y}px`;
+    }
+  });
+
+  // Başlangıçta görünür yap ve hareketi başlat
+  spider.style.opacity = "1";
+  startRandomMovement();
+</script>
+
+</body>
+</html>
