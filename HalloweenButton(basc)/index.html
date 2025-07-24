@@ -96,7 +96,6 @@
   let moveInterval;
   let followMouse = false;
 
-  // Rastgele dolaşması için
   function moveSpiderRandomly() {
     const rect = button.getBoundingClientRect();
     const maxX = rect.width - 40;
@@ -116,7 +115,6 @@
     clearInterval(moveInterval);
   }
 
-  // Butona girince fareyi takip et
   button.addEventListener("mouseenter", () => {
     followMouse = true;
     stopRandomMovement();
