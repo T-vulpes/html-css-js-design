@@ -109,12 +109,9 @@
     spider.style.top = `${y}px`;
   }
 
-  // Sürekli dolaşmayı başlat
   function startRandomMovement() {
     moveInterval = setInterval(moveSpiderRandomly, 500);
   }
-
-  // Dolaşmayı durdur
   function stopRandomMovement() {
     clearInterval(moveInterval);
   }
