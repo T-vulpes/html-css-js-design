@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Büyük Uçaklı Submit Butonu</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .submit-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(30, 80, 200, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 18px;
+      padding: 14px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      background: rgba(30, 80, 200, 0.35);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+      transform: translateY(-2px);
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: skewX(-20deg);
+      transition: left 0.5s;
+    }
+
+    .submit-btn:hover::before {
+      left: 125%;
+      transition: left 0.5s;
+    }
+
+    .plane {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .submit-btn:hover .plane {
+      transform: translateY(-4px) rotate(10deg);
+    }
+
+    .submit-btn.fly .plane {
+      animation: fly-away 1.2s forwards;
+    }
+
+    .submit-btn.fly .text {
+      opacity: 0.4;
+    }
+
+    @keyframes fly-away {
+      0%   { transform: translate(0, 0) rotate(0); }
+      30%  { transform: translate(60px, -30px) rotate(20deg); }
+      100% { transform: translate(300px, -200px) rotate(45deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="submit-btn" onclick="flyPlane(this)">
+    <span class="text">Submit</span>
+    <img src="plane.png" alt="Plane" class="plane">
+  </button>
+
+  <script>
+    function flyPlane(button) {
+      if (button.classList.contains('fly')) return;
+
+      const textEl = button.querySelector('.text');
+      const originalText = textEl.innerText;
+
+      textEl.innerText = 'Gönderiliyor...';
+      button.classList.add('fly');
+
+      setTimeout(() => {
+        textEl.innerText = 'Gönderildi ✅';
+
+        setTimeout(() => {
+          button.classList.remove('fly');
+          textEl.innerText = originalText;
+        }, 2000);
+      }, 1300);
+    }
+  </script>
+
+</body>
+</html>
