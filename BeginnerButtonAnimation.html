@@ -72,11 +72,9 @@
     function instantDone(btn) {
       const originalText = "Submit";
 
-      // Değiştir yazıyı hemen
       btn.innerText = "Done ✅";
       btn.classList.add("done");
 
-      // 2 saniye sonra orijinal haline dönsün (opsiyonel)
       setTimeout(() => {
         btn.innerText = originalText;
         btn.classList.remove("done");
