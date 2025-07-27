@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mechanical Button - Instant Feedback</title>
+  <style>
+    body {
+      margin: 0;
+      background: #1e1e2f;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .mech-btn {
+      background: linear-gradient(145deg, #2a2a3d, #181824);
+      border: none;
+      color: #fff;
+      padding: 18px 50px;
+      font-size: 18px;
+      border-radius: 12px;
+      box-shadow:
+        inset 0 -4px 6px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.5),
+        0 0 0 2px #3f3f5a;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mech-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff6ec4, #7873f5);
+      animation: moveLine 2s linear infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes moveLine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .mech-btn:active {
+      transform: translateY(2px);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        0 0 0 2px #3f3f5a;
+    }
+
+    .mech-btn.done {
+      background: linear-gradient(145deg, #197d5c, #145342);
+      color: #d8ffd6;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="mech-btn" onclick="instantDone(this)">
+    Submit
+  </button>
+
+  <script>
+    function instantDone(btn) {
+      const originalText = "Submit";
+
+      // Değiştir yazıyı hemen
+      btn.innerText = "Done ✅";
+      btn.classList.add("done");
+
+      // 2 saniye sonra orijinal haline dönsün (opsiyonel)
+      setTimeout(() => {
+        btn.innerText = originalText;
+        btn.classList.remove("done");
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
