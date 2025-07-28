@@ -47,7 +47,6 @@ class Particle {
       this.x -= forceDirectionX * force * this.density;
       this.y -= forceDirectionY * force * this.density;
     } else {
-      // return to base
       if (this.x !== this.baseX) {
         let dx = this.x - this.baseX;
         this.x -= dx / 10;
