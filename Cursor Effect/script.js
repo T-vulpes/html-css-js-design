@@ -2,11 +2,9 @@ const colors = ['#ff3c38', '#00f0ff', '#47ff58', '#fffc00', '#ff00ea'];
 const cursorDot = document.getElementById("cursorDot");
 
 document.addEventListener("mousemove", (e) => {
-  // Update cursor
   cursorDot.style.left = `${e.clientX - 5}px`;
   cursorDot.style.top = `${e.clientY - 5}px`;
 
-  // Create particles
   for (let i = 0; i < 5; i++) {
     const particle = document.createElement("div");
     particle.classList.add("particle");
