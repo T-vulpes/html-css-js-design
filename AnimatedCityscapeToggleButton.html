@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Şehirli Flying Button</title>
+<style>
+  body {
+    background: #eee;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .toggle-button {
+    position: relative;
+    width: 160px;
+    height: 80px;
+    border-radius: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    user-select: none;
+    background: linear-gradient(to bottom, #87ceeb 0%, #b0e0ff 100%);
+    transition: background 1s ease-in-out;
+  }
+
+  .toggle-button.off {
+    background: linear-gradient(to bottom, #0b1d3f 0%, #1e2a55 100%);
+    transition: background 1s ease-in-out;
+  }
+
+  /* Güneş ve ay için kutucuk */
+  .sun, .moon {
+    position: absolute;
+    top: 12px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  }
+
+  .sun {
+    left: 16px;
+    background: radial-gradient(circle at center, #ffd93b 60%, #fcbf49 90%);
+    box-shadow: 0 0 16px 4px #ffd93b;
+  }
+
+  .moon {
+    right: 16px;
+    background: #f0f0f0;
+    box-shadow: inset -8px 0 0 0 #0b1d3f;
+    transform: translateX(20px);
+    opacity: 0;
+  }
+
+  /* Ay görünür olunca */
+  .toggle-button.off .moon {
+    opacity: 1;
+    transform: translateX(0);
+    box-shadow: inset -8px 0 0 0 #b0e0ff;
+  }
+
+  .toggle-button.off .sun {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  /* Şehir silueti */
+  .cityscape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0 16px;
+    box-sizing: border-box;
+    transition: filter 1s ease-in-out;
+  }
+
+  .toggle-button.off .cityscape {
+    filter: brightness(0.5);
+  }
+
+  .building {
+    background: #333;
+    width: 16px;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.5);
+    transition: background 1s ease-in-out;
+    position: relative;
+  }
+
+  /* Farklı bina boyları */
+  .b1 { height: 20px; }
+  .b2 { height: 28px; }
+  .b3 { height: 24px; }
+  .b4 { height: 16px; }
+  .b5 { height: 30px; }
+
+  /* Işıklar */
+  .window {
+    position: absolute;
+    background: #ffd93b;
+    width: 4px;
+    height: 6px;
+    border-radius: 1px;
+    top: 6px;
+    left: 4px;
+    box-shadow: 9px 15px #ffd93b, 4px 22px #ffd93b;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .toggle-button.off .window {
+    opacity: 0.2;
+  }
+</style>
+</head>
+<body>
+
+<div id="toggle" class="toggle-button on" title="Toggle Day/Night">
+  <div class="sun"></div>
+  <div class="moon"></div>
+  <div class="cityscape">
+    <div class="building b1"><div class="window"></div></div>
+    <div class="building b2"><div class="window"></div></div>
+    <div class="building b3"><div class="window"></div></div>
+    <div class="building b4"><div class="window"></div></div>
+    <div class="building b5"><div class="window"></div></div>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('toggle');
+
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('off');
+    toggle.classList.toggle('on');
+  });
+</script>
+
+</body>
+</html>
