@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Creative Neon Cursor with Pulse & Trail</title>
+  <style>
+    :root{
+      --bg:#0d0d0d;
+      --dot-size:10px;
+      --ring-size:40px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Arial, sans-serif;
+      background:var(--bg);
+      color:white;
+      cursor:none;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:1rem;
+    }
+    h1{font-size:2rem;text-align:center;}
+    p{color:#ccc;max-width:500px;text-align:center;}
+
+    .cursor-dot, .cursor-ring, .cursor-trail{
+      position:fixed;left:0;top:0;pointer-events:none;z-index:9999;
+      will-change:transform;
+    }
+    .cursor-dot{
+      width:var(--dot-size);height:var(--dot-size);
+      background:radial-gradient(circle, #ff00cc, #333399);
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      box-shadow:0 0 8px #ff00cc, 0 0 16px #333399;
+      animation:pulse 1s infinite alternate;
+    }
+    .cursor-ring{
+      width:var(--ring-size);height:var(--ring-size);
+      border:2px solid rgba(255,0,204,0.6);
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      box-shadow:0 0 12px rgba(255,0,204,0.6);
+      transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.3s ease;
+    }
+    .cursor-hover .cursor-ring{
+      border-color:rgba(0,255,204,0.8);
+      box-shadow:0 0 14px rgba(0,255,204,0.8);
+      transform:translate(-50%,-50%) scale(1.2);
+    }
+    .cursor-trail{
+      width:6px;height:6px;
+      background:#ff00cc;
+      border-radius:50%;
+      opacity:0.6;
+      transform:translate(-50%,-50%);
+      box-shadow:0 0 6px #ff00cc;
+      animation:fadeOut 0.5s forwards;
+    }
+    @keyframes pulse {
+      0% { transform:translate(-50%,-50%) scale(1); }
+      100% { transform:translate(-50%,-50%) scale(1.5); }
+    }
+    @keyframes fadeOut {
+      to { opacity:0; transform:translate(-50%,-50%) scale(0.5); }
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ Neon Cursor ✨<br>Pulsing Center, Hover Effect & Trail Animation</h1>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <script>
+    const dot = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+    const speed = 0.15;
+
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+
+      createTrail(mouseX, mouseY);
+    });
+
+    function animate(){
+      ringX += (mouseX - ringX) * speed;
+      ringY += (mouseY - ringY) * speed;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    document.querySelectorAll('h1, p').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    function createTrail(x, y){
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      trail.style.left = x + 'px';
+      trail.style.top = y + 'px';
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 500);
+    }
+  </script>
+</body>
+</html>
