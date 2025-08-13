@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Round Track</title>
+  <style>
+    :root{
+      --size: min(86vmin, 720px);
+      --bg1:#0e1016; --bg2:#171b22; --panel:#111827; --text:#f2f5f7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    body{display:grid;place-items:center;background: radial-gradient(1200px 100% at 50% -10%, var(--bg2) 0%, var(--bg1) 40%, #0a0d12 100%); color:var(--text)}
+    .wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .hud{width:var(--size);max-width:95vw;display:flex;justify-content:space-between;align-items:center;opacity:.9}
+    .btn{padding:8px 12px;border-radius:12px;border:1px solid #ffffff22;background:#2a2e39;color:#fff;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+
+    .stage{position:relative;width:var(--size);height:var(--size);border-radius:24px;overflow:hidden;box-shadow:0 10px 30px #0007, inset 0 0 0 2px #ffffff12;background:#0b0f17}
+
+    canvas{width:100%;height:100%;display:block}
+
+    .overlay{position:absolute;inset:0;display:grid;place-items:center;background:#0b0f14cc;color:#fff;text-align:center;padding:24px;backdrop-filter: blur(2px)}
+    .card{background:var(--panel);border:1px solid #ffffff1a;padding:18px 20px;border-radius:16px;box-shadow:0 10px 30px #0007}
+    .title{font-size:20px;font-weight:800;margin:0 0 6px}
+    .muted{opacity:.85;font-size:14px;margin:0 0 12px}
+    .keys{font-size:13px;opacity:.75}
+    .keys kbd{background:#000;border:1px solid #ffffff22;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hud">
+      <div>Car: <span id="count">0</span></div>
+      <div>Scor: <span id="score">0.0</span>s</div>
+      <button class="btn" id="restart">Restart</button>
+    </div>
+
+    <div class="stage" id="stage" role="application" aria-label="Round Track Game">
+      <canvas id="game"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="card">
+          <p class="title">Round Track – Click and Car Appears</p>
+          <p class="muted">There are no cars at the beginning. <b>Click/Tap on the track</b> → A car will land at that angle and start rotating clockwise. If the cars collide, the game will be over.</p>
+          <p class="keys">Tips: You can add more cars by clicking multiple times. Reset with <kbd>R</kbd>.</p>
+          <div style="margin-top:10px"><button class="btn" id="startBtn">Start</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const canvas = document.getElementById('game');
+  const stage = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const startBtn = document.getElementById('startBtn');
+  const restartBtn = document.getElementById('restart');
+  const scoreEl = document.getElementById('score');
+  const countEl = document.getElementById('count');
+
+  let W=0,H=0,cx=0,cy=0;            // canvas boyutu ve merkez
+  let rOuter=0,rInner=0,rMid=0;     // pist yarıçapları
+  const trackWidthFactor = 0.16;    // pist kalınlığı (oransal)
+
+  const cars = []; // {angle, angVel, len, wid, color}
+  let running=false, last=0, timeAlive=0;
+
+  function resize(){
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const rect = stage.getBoundingClientRect();
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    W = rect.width; H = rect.height; cx=W/2; cy=H/2;
+    const baseR = Math.min(W,H)*0.38;
+    rOuter = baseR;
+    rInner = baseR * (1 - trackWidthFactor);
+    rMid   = (rOuter + rInner)/2;
+  }
+
+  function drawTrack(){
+    // arka plan grid/siluet
+    ctx.clearRect(0,0,W,H);
+    const grd = ctx.createRadialGradient(cx,cy, Math.min(W,H)*0.05, cx,cy, Math.min(W,H)*0.6);
+    grd.addColorStop(0,'#0f1420');
+    grd.addColorStop(1,'#0a0e14');
+    ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+
+    // pist gövdesi
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx,cy,rOuter,0,Math.PI*2);
+    ctx.arc(cx,cy,rInner,0,Math.PI*2,true);
+    ctx.closePath();
+    const asphalt = ctx.createLinearGradient(0,0,W,H);
+    asphalt.addColorStop(0,'#2b303c');
+    asphalt.addColorStop(1,'#1e242f');
+    ctx.fillStyle = asphalt;
+    ctx.fill();
+
+    // orta şerit kesik çizgi
+    ctx.setLineDash([14,12]);
+    ctx.lineDashOffset = - (timeAlive*80)%26;
+    ctx.strokeStyle = '#ffffffc0';
+    ctx.lineWidth = Math.max(2, (rOuter-rInner)*0.08);
+    ctx.beginPath();
+    ctx.arc(cx,cy,rMid,0,Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function addCarAtAngle(angle){
+    // Araç boyutları (ekrandan bağımsız, oransal)
+    const len = Math.max(30, (rOuter-rInner)*0.9); // tangensel uzunluk
+    const wid = Math.max(16, (rOuter-rInner)*0.55); // radyal genişlik
+    // Farklı küçük hızlar verelim ki çarpışma olasılığı artsın
+    const base = 1.1; // rad/s
+    const jitter = (Math.random()*0.35 - 0.175); // ±0.175
+    const angVel = -(base + jitter); // saat yönü için negatif
+
+    const color = pickColor();
+    cars.push({angle, angVel, len, wid, color});
+    countEl.textContent = cars.length;
+  }
+
+  function pickColor(){
+    const palette = ['#60a5fa','#34d399','#fbbf24','#fb7185','#a78bfa','#f472b6','#22d3ee'];
+    return palette[Math.floor(Math.random()*palette.length)];
+  }
+
+  function wrapAngle(a){
+    a%= (Math.PI*2); if(a<0) a+=Math.PI*2; return a;
+  }
+
+  function angleDiff(a,b){
+    let d = Math.abs(a-b)% (Math.PI*2);
+    return d>Math.PI ? (Math.PI*2 - d) : d;
+  }
+
+  function drawCar(c){
+    const x = cx + rMid * Math.cos(c.angle);
+    const y = cy + rMid * Math.sin(c.angle);
+    const rot = c.angle - Math.PI/2; // saat yönünde teğet yönü
+
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(rot);
+
+    // gölge
+    ctx.globalAlpha = 0.35;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(-c.len/2, -c.wid/2 + 4, c.len, c.wid);
+    ctx.globalAlpha = 1;
+
+    // araç gövdesi
+    roundRect(-c.len/2, -c.wid/2, c.len, c.wid, 6, c.color, '#00000055');
+
+    // camlar
+    ctx.fillStyle = 'rgba(185,221,255,.9)';
+    ctx.fillRect(-c.len*0.32, -c.wid*0.33, c.len*0.22, c.wid*0.66);
+    ctx.fillRect(c.len*0.10, -c.wid*0.33, c.len*0.22, c.wid*0.66);
+
+    ctx.restore();
+  }
+
+  function roundRect(x,y,w,h,r,fill,stroke){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.lineTo(x+w-r,y);
+    ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r);
+    ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h);
+    ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r);
+    ctx.arcTo(x,y,x+r,y,r);
+    ctx.closePath();
+    if(fill){ ctx.fillStyle = fill; ctx.fill(); }
+    if(stroke){ ctx.strokeStyle = stroke; ctx.lineWidth = 3; ctx.stroke(); }
+  }
+
+  function projectToTrack(clientX, clientY){
+    const rect = canvas.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    const dx = x - cx; const dy = y - cy;
+    const dist = Math.hypot(dx,dy);
+    if(dist < rInner || dist > rOuter) return null; // pist dışında
+    const angle = Math.atan2(dy, dx);
+    return wrapAngle(angle);
+  }
+
+  function onPointer(e){
+    if(!running) return;
+    const p = e.touches ? e.touches[0] : e;
+    const ang = projectToTrack(p.clientX, p.clientY);
+    if(ang==null) return; // yalnızca pistte
+    addCarAtAngle(ang);
+  }
+
+  function restart(){
+    cars.length = 0; countEl.textContent = '0';
+    timeAlive = 0; scoreEl.textContent = '0.0';
+    last = 0; running = true; overlay.style.display='none';
+    requestAnimationFrame(loop);
+  }
+
+  function gameOver(){
+    running = false;
+    overlay.querySelector('.title').textContent = 'Game Over';
+    overlay.querySelector('.muted').innerHTML = `Duration: <b>${scoreEl.textContent}</b> s. Add a car by clicking on the track, restart with <kbd>R</kbd>.`;
+    overlay.style.display = 'grid';
+  }
+
+  function checkCollisions(){
+    // Açısal mesafe üzerinden çarpışma: eşik = (len1+len2)/2R
+    for(let i=0;i<cars.length;i++){
+      for(let j=i+1;j<cars.length;j++){
+        const a = cars[i], b = cars[j];
+        const halfA = (a.len/2)/rMid;
+        const halfB = (b.len/2)/rMid;
+        if(angleDiff(a.angle,b.angle) < (halfA + halfB)*0.85){ // hafif tolerans
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function loop(ts){
+    if(!running) return;
+    if(!last) last = ts;
+    const dt = Math.min(32, ts-last); // ms
+    last = ts;
+
+    timeAlive += dt/1000;
+    scoreEl.textContent = timeAlive.toFixed(1);
+
+    // güncelle
+    for(const c of cars){ c.angle = wrapAngle(c.angle + c.angVel * (dt/1000)); }
+
+    // çiz
+    drawTrack();
+    for(const c of cars){ drawCar(c); }
+
+    // çarpışma
+    if(checkCollisions()) { gameOver(); return; }
+
+    requestAnimationFrame(loop);
+  }
+
+  // events
+  startBtn?.addEventListener('click', restart);
+  restartBtn?.addEventListener('click', restart);
+  window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='r') restart(); });
+  canvas.addEventListener('pointerdown', onPointer);
+  canvas.addEventListener('touchstart', onPointer, {passive:true});
+  window.addEventListener('resize', ()=>{ resize(); drawTrack(); for(const c of cars){} });
+
+  // init
+  resize();
+  drawTrack();
+  </script>
+</body>
+</html>
