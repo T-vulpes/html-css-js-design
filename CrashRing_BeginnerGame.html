@@ -113,9 +113,9 @@
   function addCarAtAngle(angle){
     const len = Math.max(30, (rOuter-rInner)*0.9); 
     const wid = Math.max(16, (rOuter-rInner)*0.55);
-    const base = 1.1; // rad/s
-    const jitter = (Math.random()*0.35 - 0.175); // ±0.175
-    const angVel = -(base + jitter); // saat yönü için negatif
+    const base = 1.1; 
+    const jitter = (Math.random()*0.35 - 0.175); 
+    const angVel = -(base + jitter); 
 
     const color = pickColor();
     cars.push({angle, angVel, len, wid, color});
@@ -139,7 +139,7 @@
   function drawCar(c){
     const x = cx + rMid * Math.cos(c.angle);
     const y = cy + rMid * Math.sin(c.angle);
-    const rot = c.angle - Math.PI/2; // saat yönünde teğet yönü
+    const rot = c.angle - Math.PI/2; 
 
     ctx.save();
     ctx.translate(x,y);
@@ -258,6 +258,7 @@
   </script>
 </body>
 </html>
+
 
 
 
