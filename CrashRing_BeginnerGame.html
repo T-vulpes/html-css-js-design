@@ -244,17 +244,14 @@
     // güncelle
     for(const c of cars){ c.angle = wrapAngle(c.angle + c.angVel * (dt/1000)); }
 
-    // çiz
     drawTrack();
     for(const c of cars){ drawCar(c); }
 
-    // çarpışma
     if(checkCollisions()) { gameOver(); return; }
 
     requestAnimationFrame(loop);
   }
 
-  // events
   startBtn?.addEventListener('click', restart);
   restartBtn?.addEventListener('click', restart);
   window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='r') restart(); });
@@ -262,10 +259,10 @@
   canvas.addEventListener('touchstart', onPointer, {passive:true});
   window.addEventListener('resize', ()=>{ resize(); drawTrack(); for(const c of cars){} });
 
-  // init
   resize();
   drawTrack();
   </script>
 </body>
 </html>
+
 
