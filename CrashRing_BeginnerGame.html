@@ -145,20 +145,15 @@
     ctx.translate(x,y);
     ctx.rotate(rot);
 
-    // gölge
     ctx.globalAlpha = 0.35;
     ctx.fillStyle = '#000';
     ctx.fillRect(-c.len/2, -c.wid/2 + 4, c.len, c.wid);
     ctx.globalAlpha = 1;
 
-    // araç gövdesi
     roundRect(-c.len/2, -c.wid/2, c.len, c.wid, 6, c.color, '#00000055');
-
-    // camlar
     ctx.fillStyle = 'rgba(185,221,255,.9)';
     ctx.fillRect(-c.len*0.32, -c.wid*0.33, c.len*0.22, c.wid*0.66);
     ctx.fillRect(c.len*0.10, -c.wid*0.33, c.len*0.22, c.wid*0.66);
-
     ctx.restore();
   }
 
@@ -258,6 +253,7 @@
   </script>
 </body>
 </html>
+
 
 
 
