@@ -179,7 +179,7 @@
     const y = clientY - rect.top;
     const dx = x - cx; const dy = y - cy;
     const dist = Math.hypot(dx,dy);
-    if(dist < rInner || dist > rOuter) return null; // pist dışında
+    if(dist < rInner || dist > rOuter) return null; 
     const angle = Math.atan2(dy, dx);
     return wrapAngle(angle);
   }
@@ -188,7 +188,7 @@
     if(!running) return;
     const p = e.touches ? e.touches[0] : e;
     const ang = projectToTrack(p.clientX, p.clientY);
-    if(ang==null) return; // yalnızca pistte
+    if(ang==null) return; 
     addCarAtAngle(ang);
   }
 
@@ -207,7 +207,6 @@
   }
 
   function checkCollisions(){
-    // Açısal mesafe üzerinden çarpışma: eşik = (len1+len2)/2R
     for(let i=0;i<cars.length;i++){
       for(let j=i+1;j<cars.length;j++){
         const a = cars[i], b = cars[j];
@@ -253,6 +252,7 @@
   </script>
 </body>
 </html>
+
 
 
 
