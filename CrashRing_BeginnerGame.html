@@ -100,7 +100,6 @@
     ctx.fillStyle = asphalt;
     ctx.fill();
 
-    // orta şerit kesik çizgi
     ctx.setLineDash([14,12]);
     ctx.lineDashOffset = - (timeAlive*80)%26;
     ctx.strokeStyle = '#ffffffc0';
@@ -112,10 +111,8 @@
   }
 
   function addCarAtAngle(angle){
-    // Araç boyutları (ekrandan bağımsız, oransal)
-    const len = Math.max(30, (rOuter-rInner)*0.9); // tangensel uzunluk
-    const wid = Math.max(16, (rOuter-rInner)*0.55); // radyal genişlik
-    // Farklı küçük hızlar verelim ki çarpışma olasılığı artsın
+    const len = Math.max(30, (rOuter-rInner)*0.9); 
+    const wid = Math.max(16, (rOuter-rInner)*0.55);
     const base = 1.1; // rad/s
     const jitter = (Math.random()*0.35 - 0.175); // ±0.175
     const angVel = -(base + jitter); // saat yönü için negatif
@@ -261,6 +258,7 @@
   </script>
 </body>
 </html>
+
 
 
 
