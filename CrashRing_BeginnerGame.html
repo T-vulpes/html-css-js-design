@@ -212,7 +212,7 @@
         const a = cars[i], b = cars[j];
         const halfA = (a.len/2)/rMid;
         const halfB = (b.len/2)/rMid;
-        if(angleDiff(a.angle,b.angle) < (halfA + halfB)*0.85){ // hafif tolerans
+        if(angleDiff(a.angle,b.angle) < (halfA + halfB)*0.85){ 
           return true;
         }
       }
@@ -228,15 +228,12 @@
 
     timeAlive += dt/1000;
     scoreEl.textContent = timeAlive.toFixed(1);
-
-    // güncelle
     for(const c of cars){ c.angle = wrapAngle(c.angle + c.angVel * (dt/1000)); }
 
     drawTrack();
     for(const c of cars){ drawCar(c); }
 
     if(checkCollisions()) { gameOver(); return; }
-
     requestAnimationFrame(loop);
   }
 
@@ -252,6 +249,7 @@
   </script>
 </body>
 </html>
+
 
 
 
