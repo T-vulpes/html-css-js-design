@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SigortaCo - Giriş</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height: 100%; font-family: Inter, Arial, sans-serif; color: #222; background: #fff; }
+
+    /* ===== NAV ===== */
+    nav {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 34px;
+        background: rgba(0,0,0,0.35);
+        z-index: 9999;
+        transition: background .25s ease, box-shadow .25s ease;
+        backdrop-filter: blur(4px);
+    }
+    nav.scrolled { background: rgba(0,0,0,0.9); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
+    .logo { color: #fff; font-weight: 800; font-size: 1.3rem; text-decoration: none; }
+    nav ul { list-style: none; display: flex; gap: 28px; align-items:center; }
+    nav ul a { color: #fff; text-decoration: none; font-weight: 600; }
+    nav ul a:hover { color: #ffd24d; }
+    .login-btn {
+        background: #f5b400;
+        color: #111;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .login-btn:hover { background: #d99a00; }
+
+    /* ===== HERO / VIDEO ===== */
+    .video-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .video-container video {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 2;
+    }
+    .hero-text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        text-align: center;
+        color: #fff;
+        z-index: 3;
+        padding: 0 20px;
+    }
+    .hero-text h1 {
+        font-size: clamp(1.6rem, 3.5vw, 3.2rem);
+        margin-bottom: 10px;
+    }
+    .hero-text p {
+        font-size: clamp(.95rem, 1.6vw, 1.1rem);
+        margin-bottom: 18px;
+        opacity: .95;
+    }
+    .hero-text .cta {
+        display: inline-block;
+        background: #f5b400;
+        color: #111;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .hero-text .cta:hover { background: #d99a00; }
+
+    .spacer { height: 68px; }
+
+    /* ===== FEATURES ===== */
+    .features {
+        display: flex;
+        gap: 26px;
+        justify-content: center;
+        align-items: stretch;
+        padding: 48px 16px;
+        background: #f7f7f8;
+        flex-wrap: wrap;
+    }
+    .feature-box {
+        background: #fff;
+        width: 260px;
+        padding: 22px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        text-align: center;
+    }
+    .feature-box img { width: 56px; margin-bottom: 12px; }
+    .feature-box h3 { margin-bottom: 8px; font-size: 1.05rem; }
+    .feature-box p { font-size: .95rem; color:#444; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials {
+        padding: 48px 16px;
+        background: #fff;
+        text-align: center;
+    }
+    .testimonial-wrapper {
+        max-width: 720px;
+        margin: 18px auto 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .testimonial-container {
+        display: flex;
+        width: 100%;
+        will-change: transform;
+        transition: transform .45s cubic-bezier(.22,.9,.3,1);
+    }
+    .testimonial {
+        flex: 0 0 100%;
+        padding: 26px;
+        font-style: italic;
+        text-align: center;
+        line-height: 1.6;
+        color: #222;
+        background: #fafafa;
+        border-radius: 10px;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .testimonial-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: rgba(0,0,0,0.45);
+        color: #fff;
+        font-size: 20px;
+        z-index: 6;
+    }
+    .testimonial-btn:hover { background: rgba(0,0,0,0.75); }
+    .prev-btn { left: 6px; }
+    .next-btn { right: 6px; }
+
+    /* ===== CONTACT ===== */
+    .contact {
+        background: #222;
+        color: #fff;
+        padding: 48px 16px;
+        text-align: center;
+    }
+    .contact form {
+        max-width: 520px;
+        margin: 0 auto;
+    }
+    .contact input, .contact textarea, .contact select {
+        width: 100%;
+        padding: 12px 14px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: none;
+        font-size: 1rem;
+    }
+    .contact textarea { min-height: 120px; }
+    .contact button {
+        background: #f5b400;
+        color: #111;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .contact button:hover { background: #d99a00; }
+
+.footer {
+    background: #111;
+    color: #ddd;
+    padding-top: 40px;
+    font-size: 0.95rem;
+}
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+.footer-col {
+    flex: 1 1 250px;
+}
+.footer-col h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+.footer-col h4 {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    color: #f5b400;
+}
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-col ul li {
+    margin-bottom: 8px;
+}
+.footer-col ul a {
+    color: #ddd;
+    text-decoration: none;
+}
+.footer-col ul a:hover {
+    color: #f5b400;
+}
+.social-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.social-links img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+.social-links img:hover {
+    filter: brightness(0) invert(1) sepia(1) hue-rotate(10deg) saturate(5);
+}
+.footer-bottom {
+    text-align: center;
+    padding: 15px;
+    background: #0a0a0a;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+    <a class="logo" href="#">SigortaCo</a>
+    <ul>
+        <li><a href="#top">Ana Sayfa</a></li>
+        <li><a href="#about">Hakkımızda</a></li>
+        <li><a href="#services">Hizmetler</a></li>
+        <li><a href="#contact">İletişim</a></li>
+        <li><a class="login-btn" href="#login">Müşteri Girişi</a></li>
+    </ul>
+</nav>
+
+<!-- HERO / VIDEO -->
+<div class="video-container" id="top">
+    <video autoplay muted loop playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <div class="hero-text">
+        <h1>İyileşeceğiz, sizin yanınızdayız</h1>
+        <p>Güveniniz, gücümüzdür — hasar süreçlerinizde yanınızdayız.</p>
+        <a class="cta" href="#contact">Hemen Bize Ulaşın</a>
+    </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- FEATURES -->
+<section class="features" id="services">
+    <div class="feature-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png">
+        <h3>Hızlı Hasar İşlemleri</h3>
+        <p>Hasar bildiriminizden sonra hızla süreci başlatıyoruz.</p>
+    </div>
+    <div class="feature-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png">
+        <h3>7/24 Destek</h3>
+        <p>Çağrı merkezimiz ve online destek ile her an yanınızdayız.</p>
+    </div>
+    <div class="feature-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
+        <h3>Binlerce Memnun Müşteri</h3>
+        <p>Güvenle hizmet veren geniş müşteri ağımız.</p>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+    <h2>Müşteri Yorumları</h2>
+    <div class="testimonial-wrapper">
+        <button class="testimonial-btn prev-btn">&#10094;</button>
+        <div class="testimonial-container" id="testimonial-container">
+            <div class="testimonial">"Hasar kaydımı yaptığımda ertesi gün ödemem hesabıma geçti. Harika bir hizmet!" – Ayşe K.</div>
+            <div class="testimonial">"7/24 aradım ve anında yardımcı oldular. Gerçekten güvenilir bir firma." – Mehmet T.</div>
+            <div class="testimonial">"Araç kazamdan sonra tüm işlemlerim çok hızlı halledildi. Teşekkürler!" – Elif D.</div>
+        </div>
+        <button class="testimonial-btn next-btn">&#10095;</button>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+    <h2>Bize Ulaşın</h2>
+    <form id="contact-form">
+        <input type="text" placeholder="Adınız" required />
+        <input type="email" placeholder="E-posta Adresiniz" required />
+        <select required>
+            <option value="">Konu Seçin</option>
+            <option value="teklif">Sigorta Teklifi</option>
+            <option value="hasar">Hasar Bildirimi</option>
+            <option value="destek">Genel Destek</option>
+        </select>
+        <textarea placeholder="Mesajınız" required></textarea>
+        <button type="submit">Gönder</button>
+    </form>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>SigortaCo</h3>
+            <p>SigortaCo olarak, müşterilerimize en güvenilir ve hızlı sigorta hizmetlerini sunuyoruz. Her zaman yanınızdayız.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Hızlı Linkler</h4>
+            <ul>
+                <li><a href="#top">Ana Sayfa</a></li>
+                <li><a href="#about">Hakkımızda</a></li>
+                <li><a href="#services">Hizmetler</a></li>
+                <li><a href="#contact">İletişim</a></li>
+                <li><a href="#login">Müşteri Girişi</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>İletişim</h4>
+            <p>📍 İstanbul, Türkiye</p>
+            <p>📞 +90 555 123 45 67</p>
+            <p>✉️ info@sigortaco.com</p>
+            <div class="social-links">
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
+                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 SigortaCo. Tüm hakları saklıdır.</p>
+    </div>
+</footer>
+
+<script>
+/* NAV scroll effect */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* TESTIMONIAL SLIDER */
+const wrapper = document.querySelector('.testimonial-wrapper');
+const container = document.getElementById('testimonial-container');
+const slides = document.querySelectorAll('.testimonial');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+
+let currentIndex = 0;
+let autoTimer;
+
+function updateSlidePosition(index) {
+    const slideWidth = wrapper.offsetWidth;
+    container.style.transform = `translateX(-${index * slideWidth}px)`;
+}
+
+function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateSlidePosition(currentIndex);
+}
+
+function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateSlidePosition(currentIndex);
+}
+
+nextBtn.addEventListener('click', () => { stopAuto(); nextSlide(); startAuto(); });
+prevBtn.addEventListener('click', () => { stopAuto(); prevSlide(); startAuto(); });
+
+function startAuto() { stopAuto(); autoTimer = setInterval(nextSlide, 4000); }
+function stopAuto() { clearInterval(autoTimer); }
+
+wrapper.addEventListener('mouseenter', stopAuto);
+wrapper.addEventListener('mouseleave', startAuto);
+window.addEventListener('resize', () => updateSlidePosition(currentIndex));
+
+updateSlidePosition(0);
+startAuto();
+
+/* FORM fake submit */
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Mesajınız gönderildi!');
+});
+</script>
+</body>
+</html>
