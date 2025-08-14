@@ -383,7 +383,6 @@
 </footer>
 
 <script>
-/* NAV scroll effect */
 const nav = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
@@ -430,11 +429,12 @@ startAuto();
 /* FORM fake submit */
 document.getElementById('contact-form').addEventListener('submit', (e) => {
     e.preventDefault();
-    alert('Mesajınız gönderildi!');
+    alert('Your message has been sent!');
 });
 </script>
 </body>
 </html>
+
 
 
 
