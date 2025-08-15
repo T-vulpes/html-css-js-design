@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Animasyonlu Bayraklar</title>
+<style>
+body {
+    background: #111;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    margin: 0;
+}
+header { padding: 20px; }
+button {
+    background: #444; border: none; padding: 10px 20px; margin: 0 10px;
+    color: white; cursor: pointer; border-radius: 5px; font-size: 16px; transition: 0.3s;
+}
+button:hover { background: #666; }
+.flag-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+svg {
+    width: 450px;
+    height: auto;
+    border: 2px solid #fff;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+.reveal { clip-path: inset(0 100% 0 0); animation: revealFlag 1.5s forwards; }
+@keyframes revealFlag { to { clip-path: inset(0 0 0 0); } }
+</style>
+</head>
+<body>
+
+<header>
+<button onclick="showFlag('usa')">Amerika</button>
+<button onclick="showFlag('russia')">Rusya</button>
+<button onclick="showFlag('india')">Hindistan</button>
+</header>
+
+<div class="flag-container" id="flag-container">
+<p>Bir bayrak seçin</p>
+</div>
+
+<script>
+function showFlag(country) {
+    const container = document.getElementById('flag-container');
+    container.innerHTML = '';
+
+    if (country === 'usa') {
+        container.innerHTML = `
+        <svg class="reveal" viewBox="0 0 741 494">
+            <!-- Arka plan -->
+            <rect width="741" height="494" fill="white"/>
+            <!-- 13 kırmızı şerit -->
+            <g fill="#B22234">
+                ${Array.from({length:13}).map((_,i)=> i%2===0? `<rect width="741" height="${494/13}" y="${i*(494/13)}"/>` : '').join('')}
+            </g>
+            <!-- Mavi dikdörtgen -->
+            <rect width="296" height="${(494/13)*7}" fill="#3C3B6E"/>
+            <!-- Yıldızlar -->
+            <g fill="white">
+                ${(()=>{
+                    let stars = "";
+                    let starSize = 18;
+                    let hSpacing = 49.3;
+                    let vSpacing = 29.6;
+                    let startY = 26;
+                    for (let row = 0; row < 9; row++) {
+                        let cols = (row % 2 === 0) ? 6 : 5;
+                        let startX = (row % 2 === 0) ? 25 : 50;
+                        for (let col = 0; col < cols; col++) {
+                            stars += `<text x="${startX + col * hSpacing}" y="${startY + row * vSpacing}" font-size="${starSize}" font-family="serif">★</text>`;
+                        }
+                    }
+                    return stars;
+                })()}
+            </g>
+        </svg>`;
+    }
+
+    else if (country === 'russia') {
+        container.innerHTML = `
+        <svg class="reveal" viewBox="0 0 3 2">
+            <rect width="3" height="0.666" y="0" fill="white"/>
+            <rect width="3" height="0.666" y="0.666" fill="#0039A6"/>
+            <rect width="3" height="0.666" y="1.334" fill="#D52B1E"/>
+        </svg>`;
+    }
+
+    else if (country === 'india') {
+        container.innerHTML = `
+        <svg class="reveal" viewBox="0 0 3 2">
+            <rect width="3" height="0.666" y="0" fill="#FF9933"/>
+            <rect width="3" height="0.666" y="0.666" fill="white"/>
+            <rect width="3" height="0.666" y="1.334" fill="#138808"/>
+            <g>
+                <circle cx="1.5" cy="1" r="0.2" stroke="#000080" stroke-width="0.03" fill="none"/>
+                ${Array.from({length:24}).map((_,i)=>{
+                    const angle=(i*15)*Math.PI/180;
+                    const x1=1.5+Math.cos(angle)*0.2;
+                    const y1=1+Math.sin(angle)*0.2;
+                    const x2=1.5+Math.cos(angle)*0.35;
+                    const y2=1+Math.sin(angle)*0.35;
+                    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#000080" stroke-width="0.01"/>`;
+                }).join('')}
+            </g>
+        </svg>`;
+    }
+}
+</script>
+
+</body>
+</html>
