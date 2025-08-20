@@ -99,7 +99,6 @@
       }
     });
 
-    // ------- Game State -------
     let cars = [];
     let time = 0;
     let over = false;
@@ -108,7 +107,6 @@
     const carRightImg = new Image(); carRightImg.src = 'car_right.png';
     const carDownImg  = new Image(); carDownImg.src  = 'car_down.png';
 
-    // Spawners & score
     setInterval(()=>{ if(!over) spawnCar(); }, 1800);
     setInterval(()=>{
       if(over) return;
@@ -166,6 +164,7 @@
   </script>
 </body>
 </html>
+
 
 
 
