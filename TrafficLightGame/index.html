@@ -125,25 +125,22 @@
 
     function update(){
       if(over) return;
-
       const allowH = (phase==='H_GREEN' || phase==='H_YELLOW');
       const allowV = (phase==='V_GREEN' || phase==='V_YELLOW');
 
       cars.forEach(c=>{
         if(c.dir==='right'){
-          // 230: kavşak başlangıcı (stop çizgisi gibi)
           if(c.x + c.w < 230 || allowH){ c.x += c.speed; }
         }else{
           if(c.y + c.h < 230 || allowV){ c.y += c.speed; }
         }
       });
 
-      // Collision
       for(let i=0;i<cars.length;i++){
         for(let j=i+1;j<cars.length;j++){
           const a=cars[i], b=cars[j];
           if(a.x<b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y){
-            over=true; alert('💥 Çarpışma! Skor: '+time+' sn'); location.reload();
+            over=true; alert('💥 Clash! Score: '+time+' sn'); location.reload();
           }
         }
       }
@@ -164,6 +161,7 @@
   </script>
 </body>
 </html>
+
 
 
 
