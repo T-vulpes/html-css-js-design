@@ -159,16 +159,12 @@
 
     function draw(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      // roads
       ctx.fillStyle = "#7f8c8d";
       ctx.fillRect(200,0,100,500); // vertical
       ctx.fillRect(0,200,500,100); // horizontal
-      // lane dashes
       ctx.strokeStyle="#fff"; ctx.setLineDash([20,20]);
       ctx.beginPath(); ctx.moveTo(250,0); ctx.lineTo(250,500); ctx.moveTo(0,250); ctx.lineTo(500,250); ctx.stroke();
       ctx.setLineDash([]);
-
-      // cars
       cars.forEach(c=> ctx.drawImage(c.img, c.x, c.y, c.w, c.h));
     }
 
@@ -176,6 +172,7 @@
   </script>
 </body>
 </html>
+
 
 
 
