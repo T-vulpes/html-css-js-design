@@ -67,7 +67,7 @@
     </div>
 
     <div id="panel">
-      <h2>🚦 Trafik Oyunu</h2>
+      <h2>🚦 Traffic Game</h2>
       <div class="info">⏱️ Time: <span id="score">0</span> sn</div>
       <div class="info">🎮 Control: <b>change</b>the light with the spacebar..!</div>
       <div class="info">💡 The goal: Keep the cars running for as long as possible without crashing!</div>
@@ -81,7 +81,7 @@
     const sigH = document.getElementById('sigH');
     const sigV = document.getElementById('sigV');
 
-    function setSignal(el, color){ // 'red' | 'yellow' | 'green'
+    function setSignal(el, color){ // red|yellow|green
       el.querySelectorAll('.lamp').forEach(l=>l.classList.remove('on'));
       el.querySelector(`.lamp.${color}`)?.classList.add('on');
     }
@@ -166,6 +166,7 @@
   </script>
 </body>
 </html>
+
 
 
 
