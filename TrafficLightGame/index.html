@@ -75,12 +75,9 @@
   </div>
 
   <script>
-    // ------- Canvas Setup -------
     const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
     const scoreEl = document.getElementById("score");
-
-    // ------- Lights (CSS) -------
     const sigH = document.getElementById('sigH');
     const sigV = document.getElementById('sigV');
 
@@ -89,11 +86,8 @@
       el.querySelector(`.lamp.${color}`)?.classList.add('on');
     }
 
-    // Phase: H_GREEN -> H_YELLOW -> V_GREEN -> V_YELLOW -> ...
     let phase = 'H_GREEN';
     setSignal(sigH,'green'); setSignal(sigV,'red');
-
-    // Space triggers change with short yellow
     document.addEventListener('keydown', e=>{
       if(e.code!=='Space') return;
       if(phase==='H_GREEN'){
@@ -172,6 +166,7 @@
   </script>
 </body>
 </html>
+
 
 
 
