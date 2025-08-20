@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trafik Işığı Oyunu – CSS 3’lü Lamba</title>
+  <style>
+    /* ——— Layout & Theme ——— */
+    body{
+      margin:0; height:100vh;
+      display:flex; justify-content:center; align-items:center;
+      background:linear-gradient(135deg,#1e272e,#485460); color:#fff;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+    #container{ display:flex; gap:20px; align-items:flex-start; }
+    #stage{ position:relative; }
+    canvas{
+      background:#34495e; border:4px solid #ecf0f1; border-radius:12px;
+      box-shadow:0 18px 40px rgba(0,0,0,.45);
+      display:block;
+    }
+    /* ——— Side Panel ——— */
+    #panel{
+      width:230px; background:rgba(0,0,0,.6);
+      padding:18px; border-radius:12px; display:flex; flex-direction:column; gap:14px;
+      box-shadow:0 10px 26px rgba(0,0,0,.45);
+    }
+    #panel h2{ margin:0 0 8px; font-size:22px; }
+    .info{ background:rgba(255,255,255,.1); padding:12px; border-radius:10px; }
+    #score{ font-weight:800; font-size:22px; color:#2ecc71; }
+
+    /* ——— CSS Traffic Lights ——— */
+    .signal{
+      position:absolute; background:#0f1419; border:2px solid #0a0d11;
+      padding:8px 6px; border-radius:10px; width:34px;
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      box-shadow: inset 0 2px 6px #000, 0 8px 18px rgba(0,0,0,.5);
+    }
+    .signal .lamp{
+      width:18px; height:18px; border-radius:50%;
+      background:#1e2329; box-shadow: inset 0 -2px 4px rgba(0,0,0,.6);
+      opacity:.35; transition: all .18s ease;
+    }
+    .lamp.red.on    { background:#ff4b4b;  opacity:1; box-shadow: 0 0 8px #ff4b4bcc, 0 0 22px #ff4b4b66, inset 0 -2px 4px #7a0000;}
+    .lamp.yellow.on { background:#ffd24b; opacity:1; box-shadow: 0 0 8px #ffd24bcc, 0 0 22px #ffd24b66, inset 0 -2px 4px #7a5a00;}
+    .lamp.green.on  { background:#2ecc71; opacity:1; box-shadow: 0 0 8px #2ecc71cc, 0 0 22px #2ecc7166, inset 0 -2px 4px #0a5a2c;}
+
+    /* küçük vizör (direğe benzesin) */
+    .signal::before{
+      content:""; position:absolute; left:-6px; top:50%; width:6px; height:22px; transform:translateY(-50%);
+      background:#0a0d11; border-radius:3px 0 0 3px;
+    }
+
+    /* konumlar (500x500 tuval varsayımı) */
+    /* Yatay trafiği kontrol eden lamba: kavşağın sol altı */
+    #sigH{ left:150px; top:300px; }
+    /* Dikey trafiği kontrol eden lamba: kavşağın sol üstü */
+    #sigV{ left:300px; top:150px; transform: rotate(90deg); } /* görsel yön için opsiyonel döndürme */
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="stage">
+      <canvas id="game" width="500" height="500"></canvas>
+
+      <!-- CSS Trafik Lambaları -->
+      <div class="signal" id="sigH">
+        <div class="lamp red"   data-color="red"></div>
+        <div class="lamp yellow" data-color="yellow"></div>
+        <div class="lamp green" data-color="green"></div>
+      </div>
+      <div class="signal" id="sigV">
+        <div class="lamp red"   data-color="red"></div>
+        <div class="lamp yellow" data-color="yellow"></div>
+        <div class="lamp green" data-color="green"></div>
+      </div>
+    </div>
+
+    <div id="panel">
+      <h2>🚦 Trafik Oyunu</h2>
+      <div class="info">⏱️ Süre: <span id="score">0</span> sn</div>
+      <div class="info">🎮 Kontrol: <b>Boşluk</b> ile ışığı değiştir</div>
+      <div class="info">💡 Amaç: Arabaları çarpıştırmadan en uzun süre idare et!</div>
+    </div>
+  </div>
+
+  <script>
+    // ------- Canvas Setup -------
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const scoreEl = document.getElementById("score");
+
+    // ------- Lights (CSS) -------
+    const sigH = document.getElementById('sigH');
+    const sigV = document.getElementById('sigV');
+
+    function setSignal(el, color){ // 'red' | 'yellow' | 'green'
+      el.querySelectorAll('.lamp').forEach(l=>l.classList.remove('on'));
+      el.querySelector(`.lamp.${color}`)?.classList.add('on');
+    }
+
+    // Phase: H_GREEN -> H_YELLOW -> V_GREEN -> V_YELLOW -> ...
+    let phase = 'H_GREEN';
+    setSignal(sigH,'green'); setSignal(sigV,'red');
+
+    // Space triggers change with short yellow
+    document.addEventListener('keydown', e=>{
+      if(e.code!=='Space') return;
+      if(phase==='H_GREEN'){
+        phase='H_YELLOW'; setSignal(sigH,'yellow'); setSignal(sigV,'red');
+        setTimeout(()=>{ phase='V_GREEN'; setSignal(sigH,'red'); setSignal(sigV,'green'); }, 700);
+      }else if(phase==='V_GREEN'){
+        phase='V_YELLOW'; setSignal(sigV,'yellow'); setSignal(sigH,'red');
+        setTimeout(()=>{ phase='H_GREEN'; setSignal(sigV,'red'); setSignal(sigH,'green'); }, 700);
+      }
+    });
+
+    // ------- Game State -------
+    let cars = [];
+    let time = 0;
+    let over = false;
+    let baseSpeed = 2;
+
+    const carRightImg = new Image(); carRightImg.src = 'car_right.png';
+    const carDownImg  = new Image(); carDownImg.src  = 'car_down.png';
+
+    // Spawners & score
+    setInterval(()=>{ if(!over) spawnCar(); }, 1800);
+    setInterval(()=>{
+      if(over) return;
+      time++; scoreEl.textContent = time;
+      if(time%10===0) baseSpeed += 0.5;
+    }, 1000);
+
+    function spawnCar(){
+      const dir = Math.random()<0.5 ? 'right' : 'down';
+      if(dir==='right'){
+        cars.push({x:-44, y:235, w:40, h:25, speed:baseSpeed, dir, img:carRightImg});
+      }else{
+        cars.push({x:235, y:-44, w:25, h:40, speed:baseSpeed, dir, img:carDownImg});
+      }
+    }
+
+    function update(){
+      if(over) return;
+
+      const allowH = (phase==='H_GREEN' || phase==='H_YELLOW');
+      const allowV = (phase==='V_GREEN' || phase==='V_YELLOW');
+
+      cars.forEach(c=>{
+        if(c.dir==='right'){
+          // 230: kavşak başlangıcı (stop çizgisi gibi)
+          if(c.x + c.w < 230 || allowH){ c.x += c.speed; }
+        }else{
+          if(c.y + c.h < 230 || allowV){ c.y += c.speed; }
+        }
+      });
+
+      // Collision
+      for(let i=0;i<cars.length;i++){
+        for(let j=i+1;j<cars.length;j++){
+          const a=cars[i], b=cars[j];
+          if(a.x<b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y){
+            over=true; alert('💥 Çarpışma! Skor: '+time+' sn'); location.reload();
+          }
+        }
+      }
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // roads
+      ctx.fillStyle = "#7f8c8d";
+      ctx.fillRect(200,0,100,500); // vertical
+      ctx.fillRect(0,200,500,100); // horizontal
+      // lane dashes
+      ctx.strokeStyle="#fff"; ctx.setLineDash([20,20]);
+      ctx.beginPath(); ctx.moveTo(250,0); ctx.lineTo(250,500); ctx.moveTo(0,250); ctx.lineTo(500,250); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // cars
+      cars.forEach(c=> ctx.drawImage(c.img, c.x, c.y, c.w, c.h));
+    }
+
+    (function loop(){ update(); draw(); requestAnimationFrame(loop); })();
+  </script>
+</body>
+</html>
