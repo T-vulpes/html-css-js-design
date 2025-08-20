@@ -41,16 +41,11 @@
     .lamp.yellow.on { background:#ffd24b; opacity:1; box-shadow: 0 0 8px #ffd24bcc, 0 0 22px #ffd24b66, inset 0 -2px 4px #7a5a00;}
     .lamp.green.on  { background:#2ecc71; opacity:1; box-shadow: 0 0 8px #2ecc71cc, 0 0 22px #2ecc7166, inset 0 -2px 4px #0a5a2c;}
 
-    /* küçük vizör (direğe benzesin) */
     .signal::before{
       content:""; position:absolute; left:-6px; top:50%; width:6px; height:22px; transform:translateY(-50%);
       background:#0a0d11; border-radius:3px 0 0 3px;
     }
-
-    /* konumlar (500x500 tuval varsayımı) */
-    /* Yatay trafiği kontrol eden lamba: kavşağın sol altı */
     #sigH{ left:150px; top:300px; }
-    /* Dikey trafiği kontrol eden lamba: kavşağın sol üstü */
     #sigV{ left:300px; top:150px; transform: rotate(90deg); } /* görsel yön için opsiyonel döndürme */
   </style>
 </head>
@@ -59,7 +54,6 @@
     <div id="stage">
       <canvas id="game" width="500" height="500"></canvas>
 
-      <!-- CSS Trafik Lambaları -->
       <div class="signal" id="sigH">
         <div class="lamp red"   data-color="red"></div>
         <div class="lamp yellow" data-color="yellow"></div>
@@ -182,5 +176,6 @@
   </script>
 </body>
 </html>
+
 
 
