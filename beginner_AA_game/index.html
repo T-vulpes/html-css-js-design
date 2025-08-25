@@ -170,17 +170,12 @@
       }
     }
 
-    // Döndürme ve hareket
     function update() {
       if (gameOver) return;
-
       rotation += 1.5;
       if (rotation >= 360) rotation -= 360;
-
-      // dönen saplanmış okları güncelle
       needles = needles.map(a => (a + 1.5) % 360);
 
-      // aktif ok hareketi
       if (activeNeedle) {
         activeNeedle.y += 6; // yukarıdan merkeze geliyor
         if (activeNeedle.y >= centerY - orbitRadius) {
@@ -223,6 +218,7 @@
   </script>
   </body>
 </html>
+
 
 
 
