@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AA Game 3 Levels</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    canvas {
+      background: #0f172a;
+    }
+
+    #gameOver, #gameWin, #levelMsg {
+      position: absolute;
+      font-size: 42px;
+      font-weight: bold;
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+
+    #gameOver { color: red; top: 40%; }
+    #gameWin { color: limegreen; top: 40%; }
+    #levelMsg { color: gold; top: 30%; text-shadow: 2px 2px 5px black; }
+
+    #info {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="500" height="500"></canvas>
+  <div id="gameOver">GAME OVER</div>
+  <div id="gameWin">YOU WIN 🎉</div>
+  <div id="levelMsg"></div>
+  <div id="info"></div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const circleRadius = 50;
+    const orbitRadius = 150;
+
+    let needles = [];
+    let rotation = 0;
+    let gameOver = false;
+    let activeNeedle = null;
+
+    const levels = [10, 15, 20];
+    let currentLevel = 0;
+    let arrowsLeft = levels[currentLevel];
+
+    // mesaj göstermek için
+    function showMessage(text, duration = 2000) {
+      const msg = document.getElementById("levelMsg");
+      msg.innerText = text;
+      msg.style.display = "block";
+      setTimeout(() => { msg.style.display = "none"; }, duration);
+    }
+
+    // Çember çizimi
+    function drawCenter() {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, circleRadius, 0, Math.PI * 2);
+      ctx.fillStyle = "#2d3748";
+      ctx.fill();
+      ctx.closePath();
+
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 20px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("AA", centerX, centerY);
+    }
+
+    // Saplanmış oklar
+    function drawNeedles() {
+      needles.forEach(angle => {
+        const rad = angle * Math.PI / 180;
+        const startX = centerX + Math.cos(rad) * circleRadius;
+        const startY = centerY + Math.sin(rad) * circleRadius;
+        const endX = centerX + Math.cos(rad) * orbitRadius;
+        const endY = centerY + Math.sin(rad) * orbitRadius;
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(endX, endY, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "#3b82f6";
+        ctx.fill();
+        ctx.closePath();
+      });
+    }
+
+    // Uçuşta olan ok
+    function drawActiveNeedle() {
+      if (!activeNeedle) return;
+      ctx.beginPath();
+      ctx.moveTo(activeNeedle.x, activeNeedle.y);
+      ctx.lineTo(activeNeedle.x, activeNeedle.y + 20);
+      ctx.strokeStyle = "yellow";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.closePath();
+
+      ctx.beginPath();
+      ctx.arc(activeNeedle.x, activeNeedle.y + 20, 6, 0, Math.PI * 2);
+      ctx.fillStyle = "orange";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    // Çizim döngüsü
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // kılavuz çember
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
+      ctx.setLineDash([5,5]);
+      ctx.strokeStyle = "#475569";
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.closePath();
+
+      drawCenter();
+      drawNeedles();
+      drawActiveNeedle();
+
+      document.getElementById("info").innerText =
+        `Level: ${currentLevel+1}/${levels.length} | Remaining Arrows: ${arrowsLeft}`;
+    }
+
+    // Çarpışma kontrolü (açı farkı)
+    function checkCollision(newAngle) {
+      for (let angle of needles) {
+        let diff = Math.abs(angle - newAngle);
+        if (diff > 180) diff = 360 - diff;
+        if (diff < 15) return true; // 15° hassasiyet
+      }
+      return false;
+    }
+
+    // Seviye geçişi
+    function nextLevel() {
+      if (currentLevel < levels.length-1) {
+        showMessage(`LEVEL ${currentLevel+1} COMPLETED!`, 2000);
+        setTimeout(() => {
+          currentLevel++;
+          arrowsLeft = levels[currentLevel];
+          needles = [];
+          showMessage(`LEVEL ${currentLevel+1} START`, 2000);
+        }, 2000);
+      } else {
+        document.getElementById("gameWin").style.display = "block";
+        gameOver = true;
+      }
+    }
+
+    // Döndürme ve hareket
+    function update() {
+      if (gameOver) return;
+
+      rotation += 1.5;
+      if (rotation >= 360) rotation -= 360;
+
+      // dönen saplanmış okları güncelle
+      needles = needles.map(a => (a + 1.5) % 360);
+
+      // aktif ok hareketi
+      if (activeNeedle) {
+        activeNeedle.y += 6; // yukarıdan merkeze geliyor
+        if (activeNeedle.y >= centerY - orbitRadius) {
+          // okun merkeze göre açısı
+          const dx = activeNeedle.x - centerX;
+          const dy = activeNeedle.y - centerY;
+          let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+          if (angle < 0) angle += 360;
+
+          if (checkCollision(angle)) {
+            document.getElementById("gameOver").style.display = "block";
+            gameOver = true;
+          } else {
+            needles.push(angle);
+            arrowsLeft--;
+            if (arrowsLeft <= 0) nextLevel();
+          }
+          activeNeedle = null;
+        }
+      }
+    }
+
+    // Ok fırlatma
+    function shootNeedle() {
+      if (gameOver || activeNeedle) return;
+      activeNeedle = { x: centerX, y: 0 };
+    }
+
+    function gameLoop() {
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener("click", shootNeedle);
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space") shootNeedle();
+    });
+
+    // oyuna başlarken mesaj
+    showMessage("LEVEL 1 START", 2000);
+
+    gameLoop();
+  </script>
+  </body>
+</html>
