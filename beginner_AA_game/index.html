@@ -66,7 +66,6 @@
     let currentLevel = 0;
     let arrowsLeft = levels[currentLevel];
 
-    // mesaj göstermek için
     function showMessage(text, duration = 2000) {
       const msg = document.getElementById("levelMsg");
       msg.innerText = text;
@@ -74,7 +73,6 @@
       setTimeout(() => { msg.style.display = "none"; }, duration);
     }
 
-    // Çember çizimi
     function drawCenter() {
       ctx.beginPath();
       ctx.arc(centerX, centerY, circleRadius, 0, Math.PI * 2);
@@ -236,4 +234,5 @@
   </script>
   </body>
 </html>
+
 
