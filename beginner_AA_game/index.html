@@ -141,7 +141,6 @@
       drawCenter();
       drawNeedles();
       drawActiveNeedle();
-
       document.getElementById("info").innerText =
         `Level: ${currentLevel+1}/${levels.length} | Remaining Arrows: ${arrowsLeft}`;
     }
@@ -177,9 +176,8 @@
       needles = needles.map(a => (a + 1.5) % 360);
 
       if (activeNeedle) {
-        activeNeedle.y += 6; // yukarıdan merkeze geliyor
+        activeNeedle.y += 6; 
         if (activeNeedle.y >= centerY - orbitRadius) {
-          // okun merkeze göre açısı
           const dx = activeNeedle.x - centerX;
           const dy = activeNeedle.y - centerY;
           let angle = Math.atan2(dy, dx) * 180 / Math.PI;
@@ -218,6 +216,7 @@
   </script>
   </body>
 </html>
+
 
 
 
