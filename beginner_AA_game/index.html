@@ -87,7 +87,6 @@
       ctx.fillText("AA", centerX, centerY);
     }
 
-    // Saplanmış oklar
     function drawNeedles() {
       needles.forEach(angle => {
         const rad = angle * Math.PI / 180;
@@ -112,7 +111,6 @@
       });
     }
 
-    // Uçuşta olan ok
     function drawActiveNeedle() {
       if (!activeNeedle) return;
       ctx.beginPath();
@@ -130,11 +128,8 @@
       ctx.closePath();
     }
 
-    // Çizim döngüsü
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // kılavuz çember
       ctx.beginPath();
       ctx.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
       ctx.setLineDash([5,5]);
@@ -234,5 +229,6 @@
   </script>
   </body>
 </html>
+
 
 
