@@ -204,8 +204,6 @@
         }
       }
     }
-
-    // Ok fırlatma
     function shootNeedle() {
       if (gameOver || activeNeedle) return;
       activeNeedle = { x: centerX, y: 0 };
@@ -222,13 +220,12 @@
       if (e.code === "Space") shootNeedle();
     });
 
-    // oyuna başlarken mesaj
     showMessage("LEVEL 1 START", 2000);
-
     gameLoop();
   </script>
   </body>
 </html>
+
 
 
 
