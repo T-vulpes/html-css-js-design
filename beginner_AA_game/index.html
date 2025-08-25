@@ -146,17 +146,15 @@
         `Level: ${currentLevel+1}/${levels.length} | Remaining Arrows: ${arrowsLeft}`;
     }
 
-    // Çarpışma kontrolü (açı farkı)
     function checkCollision(newAngle) {
       for (let angle of needles) {
         let diff = Math.abs(angle - newAngle);
         if (diff > 180) diff = 360 - diff;
-        if (diff < 15) return true; // 15° hassasiyet
+        if (diff < 15) return true; 
       }
       return false;
     }
 
-    // Seviye geçişi
     function nextLevel() {
       if (currentLevel < levels.length-1) {
         showMessage(`LEVEL ${currentLevel+1} COMPLETED!`, 2000);
@@ -225,6 +223,7 @@
   </script>
   </body>
 </html>
+
 
 
 
