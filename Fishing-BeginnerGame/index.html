@@ -87,7 +87,6 @@ let gameTime = 20;
 let gameOver = false;
 let catchSound = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
 
-// Balık oluştur
 function createFish() {
   if (gameOver) return;
   let side = Math.random() < 0.5 ? "right" : "left";
@@ -105,7 +104,6 @@ function createFish() {
   });
 }
 
-// Dalga efekti
 function drawWaves() {
   ctx.fillStyle="#004466";
   ctx.beginPath();
@@ -234,4 +232,5 @@ gameLoop();
 </script>
 </body>
 </html>
+
 
