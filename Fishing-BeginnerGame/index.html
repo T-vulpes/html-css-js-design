@@ -171,7 +171,6 @@ function moveFishes(){
   fishes = fishes.filter(fish=>(fish.side==="right" && fish.x+fish.width>0)||(fish.side==="left" && fish.x<canvas.width)||fish.caught);
 }
 
-// Çarpışma
 function detectCollision(){
   fishes.forEach(fish=>{
     if(!fish.caught && hook.x>fish.x && hook.x<fish.x+fish.width && hook.y>fish.y && hook.y<fish.y+fish.height){
@@ -183,13 +182,11 @@ function detectCollision(){
   });
 }
 
-// HUD
 function updateHUD(){
   hudScore.innerText="Score: "+score;
   hudTime.innerText="Time: "+gameTime;
 }
 
-// Oyun döngüsü
 function gameLoop(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   drawWaves();
@@ -223,3 +220,4 @@ gameLoop();
 </script>
 </body>
 </html>
+
