@@ -206,13 +206,11 @@ function gameLoop(){
   } else requestAnimationFrame(gameLoop);
 }
 
-// Mouse ile olta
 canvas.addEventListener("mousemove", e=>{
   hook.x = e.offsetX;
   hook.y = e.offsetY;
 });
 
-// Balık üret & süre
 setInterval(()=>{if(!gameOver) createFish();},2000);
 setInterval(()=>{
   if(!gameOver){
@@ -225,4 +223,3 @@ gameLoop();
 </script>
 </body>
 </html>
-
