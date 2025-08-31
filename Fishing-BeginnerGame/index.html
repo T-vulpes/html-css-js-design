@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced Fishing Game 🎣</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #87ceeb 30%, #1e3c72 70%);
+  }
+  #gameContainer {
+    position: relative;
+    width: 1000px;
+    margin: 20px auto;
+  }
+  canvas {
+    display: block;
+    background: #006699;
+    border-radius: 15px;
+  }
+  #hud {
+    position: absolute;
+    top: 10px;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 24px;
+    padding: 0 20px;
+    text-shadow: 1px 1px 3px #000;
+  }
+  #gameOverOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    color: yellow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div id="gameContainer">
+  <canvas id="gameCanvas" width="1000" height="600"></canvas>
+  <div id="hud">
+    <div id="scoreText">Score: 0</div>
+    <div id="timeText">Time: 20</div>
+  </div>
+  <div id="gameOverOverlay">
+    <div>GAME OVER</div>
+    <div id="finalScore" style="font-size:36px; margin-top:20px;"></div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const hudScore = document.getElementById("scoreText");
+const hudTime = document.getElementById("timeText");
+const overlay = document.getElementById("gameOverOverlay");
+const finalScoreText = document.getElementById("finalScore");
+
+const boatImg = new Image();
+boatImg.src = "boat.png";
+
+const fishRightImg = new Image();
+fishRightImg.src = "fish-right.png";
+
+const fishLeftImg = new Image();
+fishLeftImg.src = "fish-left.png";
+
+let boat = { x: canvas.width/2-80, y:60, width:160, height:80 };
+let hook = { x: boat.x + boat.width/2, y: boat.y + boat.height + 100, radius:8 };
+let fishes = [];
+let score = 0;
+let waveOffset = 0;
+let gameTime = 20;
+let gameOver = false;
+let catchSound = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
+
+// Balık oluştur
+function createFish() {
+  if (gameOver) return;
+  let side = Math.random() < 0.5 ? "right" : "left";
+  let baseSpeed = 2 + (60 - gameTime) * 0.05;
+  fishes.push({
+    side,
+    x: side==="right"?canvas.width+60:-60,
+    y: Math.random()*(canvas.height-250)+250,
+    width:60,
+    height:40,
+    speed:baseSpeed + Math.random()*2,
+    offset: Math.random()*100,
+    caught:false,
+    effectAlpha:0
+  });
+}
+
+// Dalga efekti
+function drawWaves() {
+  ctx.fillStyle="#004466";
+  ctx.beginPath();
+  ctx.moveTo(0, boat.y + boat.height - 20);
+  for(let x=0; x<=canvas.width; x+=20){
+    let y = Math.sin((x + waveOffset)*0.05)*10 + (boat.y+boat.height-20);
+    ctx.lineTo(x,y);
+  }
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.lineTo(0, canvas.height);
+  ctx.closePath();
+  ctx.fill();
+  waveOffset += 2;
+}
+
+// Tekne çiz
+function drawBoat() {
+  ctx.drawImage(boatImg, boat.x, boat.y, boat.width, boat.height);
+}
+
+// Modern olta
+function drawHook() {
+  ctx.strokeStyle="rgba(255,255,255,0.7)";
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(boat.x+boat.width/2, boat.y+boat.height);
+  ctx.lineTo(hook.x, hook.y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(hook.x, hook.y, hook.radius,0,Math.PI*2);
+  ctx.fillStyle="silver";
+  ctx.fill();
+  ctx.strokeStyle="#ccc";
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(hook.x-2, hook.y-2, hook.radius/3,0,Math.PI*2);
+  ctx.fillStyle="white";
+  ctx.fill();
+}
+
+// Balıkları çiz
+function drawFishes(){
+  fishes.forEach(fish=>{
+    let img = fish.side==="right"?fishRightImg:fishLeftImg;
+    if(!fish.caught){
+      ctx.drawImage(img, fish.x, fish.y + Math.sin(Date.now()/200 + fish.offset)*5, fish.width, fish.height);
+    } else {
+      ctx.globalAlpha=1;
+      ctx.drawImage(img, fish.x, fish.y, fish.width, fish.height);
+      ctx.globalAlpha=fish.effectAlpha;
+      ctx.fillStyle="yellow";
+      ctx.beginPath();
+      ctx.arc(fish.x+fish.width/2, fish.y+fish.height/2,30,0,Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha=1;
+    }
+  });
+}
+
+// Balık hareket
+function moveFishes(){
+  fishes.forEach(fish=>{
+    if(!fish.caught){
+      if(fish.side==="right") fish.x-=fish.speed;
+      else fish.x+=fish.speed;
+    } else {
+      fish.effectAlpha = Math.min(1, fish.effectAlpha+0.05);
+      fish.x = hook.x - fish.width/2;
+      fish.y = hook.y - fish.height/2;
+    }
+  });
+  fishes = fishes.filter(fish=>(fish.side==="right" && fish.x+fish.width>0)||(fish.side==="left" && fish.x<canvas.width)||fish.caught);
+}
+
+// Çarpışma
+function detectCollision(){
+  fishes.forEach(fish=>{
+    if(!fish.caught && hook.x>fish.x && hook.x<fish.x+fish.width && hook.y>fish.y && hook.y<fish.y+fish.height){
+      fish.caught=true;
+      score+=10;
+      catchSound.play();
+      setTimeout(()=>{fishes=fishes.filter(f=>f!==fish);},1200);
+    }
+  });
+}
+
+// HUD
+function updateHUD(){
+  hudScore.innerText="Score: "+score;
+  hudTime.innerText="Time: "+gameTime;
+}
+
+// Oyun döngüsü
+function gameLoop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawWaves();
+  drawBoat();
+  drawHook();
+  drawFishes();
+  moveFishes();
+  detectCollision();
+  updateHUD();
+
+  if(gameOver){
+    overlay.style.display="flex";
+    finalScoreText.innerText="Final Score: "+score;
+  } else requestAnimationFrame(gameLoop);
+}
+
+// Mouse ile olta
+canvas.addEventListener("mousemove", e=>{
+  hook.x = e.offsetX;
+  hook.y = e.offsetY;
+});
+
+// Balık üret & süre
+setInterval(()=>{if(!gameOver) createFish();},2000);
+setInterval(()=>{
+  if(!gameOver){
+    gameTime--;
+    if(gameTime<=0) gameOver=true;
+  }
+},1000);
+
+gameLoop();
+</script>
+</body>
+</html>
