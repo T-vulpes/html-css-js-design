@@ -60,7 +60,6 @@
     <div id="finalScore" style="font-size:36px; margin-top:20px;"></div>
   </div>
 </div>
-
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -119,12 +118,9 @@ function drawWaves() {
   waveOffset += 2;
 }
 
-// Tekne çiz
 function drawBoat() {
   ctx.drawImage(boatImg, boat.x, boat.y, boat.width, boat.height);
 }
-
-// Modern olta
 function drawHook() {
   ctx.strokeStyle="rgba(255,255,255,0.7)";
   ctx.lineWidth=1.5;
@@ -232,5 +228,6 @@ gameLoop();
 </script>
 </body>
 </html>
+
 
 
