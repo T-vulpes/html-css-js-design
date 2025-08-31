@@ -140,7 +140,6 @@ function drawHook() {
   ctx.fill();
 }
 
-// Balıkları çiz
 function drawFishes(){
   fishes.forEach(fish=>{
     let img = fish.side==="right"?fishRightImg:fishLeftImg;
@@ -158,8 +157,6 @@ function drawFishes(){
     }
   });
 }
-
-// Balık hareket
 function moveFishes(){
   fishes.forEach(fish=>{
     if(!fish.caught){
@@ -228,3 +225,4 @@ gameLoop();
 </script>
 </body>
 </html>
+
