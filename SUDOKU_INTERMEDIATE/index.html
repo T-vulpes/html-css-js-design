@@ -213,7 +213,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             }
         }
 
-        // --- Yardımcılar ---
         function peers(i){
             const [r,c] = rc(i); const list = new Set();
             for(let k=0;k<9;k++){ list.add(pos(r,k)); list.add(pos(k,c)); }
@@ -229,18 +228,16 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             return true;
         }
 
-        // --- Çözücü (Backtracking) & Çözüm sayacı ---
         function solveArr(arr){
             arr = arr.slice();
             function dfs(){
-                let m = 10, mi=-1; // en az adaylı hücreyi seç
+                let m = 10, mi=-1;
                 for(let i=0;i<81;i++) if(arr[i]===0){
                     let cnt=0; for(let d=1; d<=9; d++) if(isSafe(i,d,arr)) cnt++;
                     if(cnt<m){ m=cnt; mi=i; if(cnt===1) break; }
                 }
                 if(mi===-1) return true;
                 const options=[]; for(let d=1; d<=9; d++) if(isSafe(mi,d,arr)) options.push(d);
-                // rastgele sırala (çeşitlilik için)
                 options.sort(()=>Math.random()-.5);
                 for(const d of options){ arr[mi]=d; if(dfs()) return true; arr[mi]=0; }
                 return false;
@@ -251,18 +248,15 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function countSolutions(arr, limit=2){
             let count=0; arr = arr.slice();
             function dfs(){
-                if(count>=limit) return; // erken bitir
+                if(count>=limit) return; 
                 let i = arr.indexOf(0); if(i===-1){ count++; return; }
                 for(let d=1; d<=9; d++) if(isSafe(i,d,arr)) { arr[i]=d; dfs(); arr[i]=0; if(count>=limit) return; }
             }
             dfs(); return count;
         }
 
-        // --- Üreteç ---
         function generate(difficulty='medium'){
-            // 1) Tam dolu bir tablo üret
             let grid = Array(81).fill(0);
-            // diyagonal 3x3 kutuları doldur, sonra çöz
             for(let b=0; b<9; b+=3){
                 const nums=[1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-.5);
                 let k=0;
@@ -270,7 +264,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             }
             grid = solveArr(grid);
 
-            // 2) Hücreleri silerek bulmaca oluştur, tekil çözüm garanti et
             let puzzle = grid.slice();
             const removals = { easy: 40, medium: 50, hard: 58, evil: 62 }[difficulty] || 50;
             const order=[...Array(81).keys()].sort(()=>Math.random()-.5);
@@ -284,7 +277,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             return { puzzle, solution:grid };
         }
 
-        // --- UI durum güncelleme ---
         function paint(){
             $$('.cell', gridEl).forEach((el,i)=>{
                 el.classList.toggle('given', givenMask[i]);
@@ -295,18 +287,15 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
                 numEl.textContent = board[i]!==0 ? board[i] : '';
                 const noteEl = el.querySelector('.note');
                 noteEl.style.display = (board[i]===0 && notes[i].size>0) ? 'grid' : (board[i]===0 ? 'grid' : 'none');
-                // Show notes (dim non-present)
                 for(let k=1;k<=9;k++){
                     const s = noteEl.children[k-1];
                     s.style.opacity = notes[i].has(k) ? 1 : .15;
                 }
-                // canlı doğrulama hatası
                 el.classList.toggle('invalid', liveValidateEl.checked && board[i]!==0 && !isSafe(i, board[i], board));
             });
         }
 
         function select(i){ selected=i; paint(); }
-
         function pushHistory(){ history.push({board:board.slice(), notes:notes.map(s=>new Set([...s])), sel:selected}); if(history.length>200) history.shift(); future.length=0; }
 
         function setNumber(n){
@@ -414,5 +403,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
     </script>
 </body>
 </html>
+
 
 
