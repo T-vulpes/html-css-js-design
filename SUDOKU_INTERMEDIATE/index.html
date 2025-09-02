@@ -396,10 +396,7 @@
         $('#redo').addEventListener('click', redo);
         $('#clear').addEventListener('click', clearCell);
 
-        // Num pad
         $$('.num-pad button').forEach(b=> b.addEventListener('click', ()=> setNumber(+b.dataset.num)));
-
-        // Klavye
         document.addEventListener('keydown', (e)=>{
             if(e.key>='1' && e.key<='9'){ setNumber(+e.key); return }
             const arr = {
@@ -421,17 +418,14 @@
             if(e.key==='c' || e.key==='C'){ check(); return }
             if(e.key==='r' || e.key==='R'){ newGame(); return }
         });
-
-        // Canlı doğrulama kapatıldığında mevcut invalid vurgularını temizle
         liveValidateEl.addEventListener('change', paint);
-
-        // Sayfa yüklenince
         buildGrid();
         newGame();
     </script>
 </body>
 
 </html>
+
 
 
 
