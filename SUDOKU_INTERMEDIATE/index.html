@@ -337,12 +337,12 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function check(){
             let ok=true, wrong=0;
             for(let i=0;i<81;i++) if(board[i]!==0 && board[i]!==solution[i]){ ok=false; wrong++; const el=$$('.cell')[i]; el.classList.add('invalid'); setTimeout(()=>el.classList.remove('invalid'),300)}
-            if(!ok) { mistakes+=wrong; updateStats(); alert('Bazı hücreler yanlış. Devam!'); }
+            if(!ok) { mistakes+=wrong; updateStats(); alert('Some cells are incorrect. Continue!'); }
             else alert('Great! All the numbers entered so far are correct.');
         }
 
         function hint(){
-            if(hints<=0) { alert('İpucu kalmadı.'); return }
+            if(hints<=0) { alert('No clue left.'); return }
             const empties = board.map((v,i)=> v===0? i : -1).filter(i=>i!==-1);
             if(empties.length===0) return;
             const i = empties[Math.floor(Math.random()*empties.length)];
@@ -354,7 +354,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function checkWin(){
             if(board.every((v,i)=> v!==0 && v===solution[i])){
                 clearInterval(tHandle); tHandle=null;
-                setTimeout(()=> alert(`Tebrikler! Süre: ${formatTime(timer)} • Mistakes: ${mistakes}`), 50);
+                setTimeout(()=> alert(`Congratulations! Duration: ${formatTime(timer)} • Mistakes: ${mistakes}`), 50);
             }
         }
 
@@ -400,7 +400,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             };
             if(e.key in arr){
                 let n = selected + arr[e.key];
-                if(e.key==='ArrowLeft' && selected%9===0) n=selected; // kenar
+                if(e.key==='ArrowLeft' && selected%9===0) n=selected; 
                 if(e.key==='ArrowRight' && selected%9===8) n=selected;
                 if(e.key==='ArrowUp' && Math.floor(selected/9)===0) n=selected;
                 if(e.key==='ArrowDown' && Math.floor(selected/9)===8) n=selected;
@@ -420,3 +420,4 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
     </script>
 </body>
 </html>
+
