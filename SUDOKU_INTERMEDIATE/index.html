@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -61,16 +61,18 @@
 
         .grid .cell{border:1px solid #1f2758}
         .grid{box-shadow: inset 0 0 0 3px rgba(91,140,255,0.06);}
+        
         .grid .cell:nth-child(3n+1) { border-left-color: #FF0000; border-left-width: 3px; }
         .grid .cell:nth-child(3n) { border-right-color: #0000FF; border-right-width: 3px; }
-        .grid .cell:nth-child(-n+9), 
-        .grid .cell:nth-child(n+19):nth-child(-n+27), 
-        .grid .cell:nth-child(n+46):nth-child(-n+54) 
+
+        .grid .cell:nth-child(-n+9),
+        .grid .cell:nth-child(n+19):nth-child(-n+27),
+        .grid .cell:nth-child(n+46):nth-child(-n+54)
         { border-top-color: #FF0000; border-top-width: 3px; }
         
-        .grid .cell:nth-child(n+73):nth-child(-n+81), 
+        .grid .cell:nth-child(n+73):nth-child(-n+81),
         .grid .cell:nth-child(n+46):nth-child(-n+54),
-        .grid .cell:nth-child(n+19):nth-child(-n+27) 
+        .grid .cell:nth-child(n+19):nth-child(-n+27)
         { border-bottom-color: #0000FF; border-bottom-width: 3px; }
 
         .side{display:grid; gap:14px}
@@ -99,7 +101,7 @@
                 <div class="logo">🧩</div>
                 <div>
                     <b>Sudoku Pro</b>
-                    <div style="font-size:12px; color:var(--muted)">Gelişmiş HTML/CSS/JS Sudoku</div>
+                    <div style="font-size:12px; color:var(--muted)">Advanced HTML/CSS/JS Sudoku</div>
                 </div>
             </div>
             <div class="spacer"></div>
@@ -108,33 +110,33 @@
                     <option value="easy">Easy</option>
                     <option value="medium" selected>Medium</option>
                     <option value="hard">Hard</option>
-                    <option value="evil">EVIL</option>
+                    <option value="evil">Evil</option>
                 </select>
             </label>
             <button id="newGame" class="btn-accent">New Game</button>
-            <button id="solve" title="Solve">Solve</button>
-            <button id="Check</button>
+            <button id="solve" title="Automatically solve the puzzle">Solve</button>
+            <button id="check">Check</button>
         </div>
 
         <div class="main">
             <div class="board">
-                <div id="grid" class="grid" aria-label="SudokuGrid" role="grid"></div>
+                <div id="grid" class="grid" aria-label="Sudoku board" role="grid"></div>
             </div>
             <div class="side">
                 <div class="panel stats">
                     <div class="chip">⏱️ <span id="timer">00:00</span></div>
-                    <div class="chip">❌ Mistake: <span id="mistakes">0</span></div>
-                    <div class="chip">⭐ Hint: <span id="hintsLeft">3</span></div>
+                    <div class="chip">❌ Mistakes: <span id="mistakes">0</span></div>
+                    <div class="chip">⭐ Hints: <span id="hintsLeft">3</span></div>
                 </div>
                 <div class="panel">
                     <div class="toggle" style="justify-content:space-between; margin-bottom:10px">
-                        <label class="toggle">Note Mode
+                        <label class="toggle">Notes Mode
                             <div class="switch" style="margin-left:8px">
                                 <input id="notesToggle" type="checkbox" />
                                 <div class="knob"></div>
                             </div>
                         </label>
-                        <label class="toggle">Instant Verification
+                        <label class="toggle">Live Validate
                             <div class="switch" style="margin-left:8px">
                                 <input id="liveValidate" type="checkbox" checked />
                                 <div class="knob"></div>
@@ -143,10 +145,10 @@
                     </div>
                     <div class="actions" style="margin-bottom:10px">
                         <button id="undo">Undo</button>
-                        <button id="redo">Redol</button>
+                        <button id="redo">Redo</button>
                         <button id="clear">Clear</button>
                     </div>
-                    <div class="num-pad" aria-label="Number keys">
+                    <div class="num-pad" aria-label="Number pad">
                         <button data-num="1">1</button>
                         <button data-num="2">2</button>
                         <button data-num="3">3</button>
@@ -159,12 +161,13 @@
                     </div>
                     <div class="actions" style="margin-top:10px">
                         <button id="hint" class="btn-accent">Hint</button>
-                        <button id="erase" class="btn-warn">Delete</button>
+                        <button id="erase" class="btn-warn">Erase</button>
                         <button id="center">Focus</button>
                     </div>
                 </div>
                 <div class="panel footer">
-Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace • N = Note mode • H = Hint • Z/Y = Back/Forward • C = Control • R = New Game                </div>
+                    Keyboard: Use arrow keys to navigate • 1–9 to enter a number • Backspace to erase • N = Notes mode • H = Hint • Z/Y = Undo/Redo • C = Check • R = New Game
+                </div>
             </div>
         </div>
     </div>
@@ -172,6 +175,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
     <script>
         const $ = (s, r = document) => r.querySelector(s);
         const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
         const gridEl = $('#grid');
         const timerEl = $('#timer');
         const mistakesEl = $('#mistakes');
@@ -185,7 +189,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         let solution = Array(SIZE * SIZE).fill(0);
         let givenMask = Array(SIZE * SIZE).fill(false);
         let notes = Array(SIZE * SIZE).fill(0).map(() => new Set());
-        let selected = 0; 
+        let selected = 0;
         let mistakes = 0; let hints = 3;
         let timer = 0; let tHandle = null;
         let history = []; let future = [];
@@ -248,7 +252,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function countSolutions(arr, limit=2){
             let count=0; arr = arr.slice();
             function dfs(){
-                if(count>=limit) return; 
+                if(count>=limit) return;
                 let i = arr.indexOf(0); if(i===-1){ count++; return; }
                 for(let d=1; d<=9; d++) if(isSafe(i,d,arr)) { arr[i]=d; dfs(); arr[i]=0; if(count>=limit) return; }
             }
@@ -296,6 +300,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         }
 
         function select(i){ selected=i; paint(); }
+
         function pushHistory(){ history.push({board:board.slice(), notes:notes.map(s=>new Set([...s])), sel:selected}); if(history.length>200) history.shift(); future.length=0; }
 
         function setNumber(n){
@@ -319,12 +324,12 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function check(){
             let ok=true, wrong=0;
             for(let i=0;i<81;i++) if(board[i]!==0 && board[i]!==solution[i]){ ok=false; wrong++; const el=$$('.cell')[i]; el.classList.add('invalid'); setTimeout(()=>el.classList.remove('invalid'),300)}
-            if(!ok) { mistakes+=wrong; updateStats(); alert('Some cells are incorrect. Continue!'); }
-            else alert('Great! All the numbers entered so far are correct.');
+            if(!ok) { mistakes+=wrong; updateStats(); alert('Some cells are wrong. Keep going!'); }
+            else alert('Great! All numbers entered so far are correct.');
         }
 
         function hint(){
-            if(hints<=0) { alert('No clue left.'); return }
+            if(hints<=0) { alert('No hints left.'); return }
             const empties = board.map((v,i)=> v===0? i : -1).filter(i=>i!==-1);
             if(empties.length===0) return;
             const i = empties[Math.floor(Math.random()*empties.length)];
@@ -336,7 +341,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function checkWin(){
             if(board.every((v,i)=> v!==0 && v===solution[i])){
                 clearInterval(tHandle); tHandle=null;
-                setTimeout(()=> alert(`Congratulations! Duration: ${formatTime(timer)} • Mistakes: ${mistakes}`), 50);
+                setTimeout(()=> alert(`Congratulations! Time: ${formatTime(timer)} • Mistakes: ${mistakes}`), 50);
             }
         }
 
@@ -365,7 +370,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         }
 
         $('#newGame').addEventListener('click', newGame);
-        $('#solve').addEventListener('click', ()=>{ const sol = solveArr(board); if(sol){ board=sol; paint(); checkWin(); } else alert('Çözülemiyor (girdi çelişkili olabilir).') });
+        $('#solve').addEventListener('click', ()=>{ const sol = solveArr(board); if(sol){ board=sol; paint(); checkWin(); } else alert('Cannot be solved (input may be contradictory).') });
         $('#check').addEventListener('click', check);
         $('#hint').addEventListener('click', hint);
         $('#erase').addEventListener('click', erase);
@@ -375,6 +380,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         $('#clear').addEventListener('click', clearCell);
 
         $$('.num-pad button').forEach(b=> b.addEventListener('click', ()=> setNumber(+b.dataset.num)));
+
         document.addEventListener('keydown', (e)=>{
             if(e.key>='1' && e.key<='9'){ setNumber(+e.key); return }
             const arr = {
@@ -382,7 +388,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             };
             if(e.key in arr){
                 let n = selected + arr[e.key];
-                if(e.key==='ArrowLeft' && selected%9===0) n=selected; 
+                if(e.key==='ArrowLeft' && selected%9===0) n=selected;
                 if(e.key==='ArrowRight' && selected%9===8) n=selected;
                 if(e.key==='ArrowUp' && Math.floor(selected/9)===0) n=selected;
                 if(e.key==='ArrowDown' && Math.floor(selected/9)===8) n=selected;
@@ -396,13 +402,11 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             if(e.key==='c' || e.key==='C'){ check(); return }
             if(e.key==='r' || e.key==='R'){ newGame(); return }
         });
+
         liveValidateEl.addEventListener('change', paint);
+
         buildGrid();
         newGame();
     </script>
 </body>
 </html>
-
-
-
-
