@@ -170,13 +170,8 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
     </div>
 
     <script>
-        // --- Sudoku Pro — Tamamen Tarayıcıda ---
-        // Özellikler: Üreteç, çözücü, tekil çözüm kontrolü, zorluklar,
-        // not (pencil mark), geri/ileri, ipucu, anlık doğrulama, klavye desteği.
-
         const $ = (s, r = document) => r.querySelector(s);
         const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
         const gridEl = $('#grid');
         const timerEl = $('#timer');
         const mistakesEl = $('#mistakes');
@@ -198,7 +193,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         const pos = (r,c)=> r*9+c;
         const rc = (i)=> [Math.floor(i/9), i%9];
 
-        // --- Grid UI oluştur ---
         function buildGrid(){
             gridEl.innerHTML = '';
             for(let i=0;i<81;i++){
@@ -420,4 +414,5 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
     </script>
 </body>
 </html>
+
 
