@@ -63,15 +63,14 @@
         .grid{box-shadow: inset 0 0 0 3px rgba(91,140,255,0.06);}
         .grid .cell:nth-child(3n+1) { border-left-color: #FF0000; border-left-width: 3px; }
         .grid .cell:nth-child(3n) { border-right-color: #0000FF; border-right-width: 3px; }
-        .grid .cell:nth-child(-n+9), /* İlk sıra */
-        .grid .cell:nth-child(n+19):nth-child(-n+27), /* Dördüncü sıra */
-        .grid .cell:nth-child(n+46):nth-child(-n+54) /* Yedinci sıra */
+        .grid .cell:nth-child(-n+9), 
+        .grid .cell:nth-child(n+19):nth-child(-n+27), 
+        .grid .cell:nth-child(n+46):nth-child(-n+54) 
         { border-top-color: #FF0000; border-top-width: 3px; }
         
-        /* Tüm 3x3 karelerin alt kenarları (mavi) */
-        .grid .cell:nth-child(n+73):nth-child(-n+81), /* Son sıra */
-        .grid .cell:nth-child(n+46):nth-child(-n+54), /* Altıncı sıra */
-        .grid .cell:nth-child(n+19):nth-child(-n+27) /* Üçüncü sıra */
+        .grid .cell:nth-child(n+73):nth-child(-n+81), 
+        .grid .cell:nth-child(n+46):nth-child(-n+54),
+        .grid .cell:nth-child(n+19):nth-child(-n+27) 
         { border-bottom-color: #0000FF; border-bottom-width: 3px; }
 
         .side{display:grid; gap:14px}
@@ -433,3 +432,4 @@
 </body>
 
 </html>
+
