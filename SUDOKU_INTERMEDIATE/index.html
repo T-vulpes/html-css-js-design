@@ -338,12 +338,11 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             let ok=true, wrong=0;
             for(let i=0;i<81;i++) if(board[i]!==0 && board[i]!==solution[i]){ ok=false; wrong++; const el=$$('.cell')[i]; el.classList.add('invalid'); setTimeout(()=>el.classList.remove('invalid'),300)}
             if(!ok) { mistakes+=wrong; updateStats(); alert('Bazı hücreler yanlış. Devam!'); }
-            else alert('Harika! Şu ana kadar girilen tüm sayılar doğru.');
+            else alert('Great! All the numbers entered so far are correct.');
         }
 
         function hint(){
             if(hints<=0) { alert('İpucu kalmadı.'); return }
-            // boşlardan rastgele birini doldur
             const empties = board.map((v,i)=> v===0? i : -1).filter(i=>i!==-1);
             if(empties.length===0) return;
             const i = empties[Math.floor(Math.random()*empties.length)];
@@ -355,7 +354,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         function checkWin(){
             if(board.every((v,i)=> v!==0 && v===solution[i])){
                 clearInterval(tHandle); tHandle=null;
-                setTimeout(()=> alert(`Tebrikler! Süre: ${formatTime(timer)} • Hata: ${mistakes}`), 50);
+                setTimeout(()=> alert(`Tebrikler! Süre: ${formatTime(timer)} • Mistakes: ${mistakes}`), 50);
             }
         }
 
@@ -373,7 +372,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
 
         function startTimer(){ clearInterval(tHandle); timer=0; timerEl.textContent='00:00'; tHandle=setInterval(()=>{ timer++; timerEl.textContent = formatTime(timer) }, 1000) }
 
-        // --- Yeni oyun ---
         function newGame(){
             const {puzzle, solution:sol} = generate(diffEl.value);
             board = puzzle.slice(); solution = sol.slice();
@@ -384,7 +382,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
             buildGrid(); paint(); startTimer();
         }
 
-        // --- Etkinlikler ---
         $('#newGame').addEventListener('click', newGame);
         $('#solve').addEventListener('click', ()=>{ const sol = solveArr(board); if(sol){ board=sol; paint(); checkWin(); } else alert('Çözülemiyor (girdi çelişkili olabilir).') });
         $('#check').addEventListener('click', check);
@@ -422,11 +419,4 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         newGame();
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
