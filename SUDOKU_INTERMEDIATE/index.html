@@ -185,7 +185,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
         let solution = Array(SIZE * SIZE).fill(0);
         let givenMask = Array(SIZE * SIZE).fill(false);
         let notes = Array(SIZE * SIZE).fill(0).map(() => new Set());
-        let selected = 0; // 0..80
+        let selected = 0; 
         let mistakes = 0; let hints = 3;
         let timer = 0; let tHandle = null;
         let history = []; let future = [];
@@ -306,7 +306,6 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
                 if(notes[selected].has(n)) notes[selected].delete(n); else notes[selected].add(n);
             } else {
                 board[selected]=n; notes[selected].clear();
-                // peer notlarını temizle (kullanışlı)
                 for(const p of peers(selected)) notes[p].delete(n);
             }
             if(liveValidateEl.checked && board[selected]!==0 && !isSafe(selected, board[selected], board)) mistakes++;
@@ -403,6 +402,7 @@ Keyboard: Navigate with arrow keys • Enter 1–9 • Delete with Backspace •
     </script>
 </body>
 </html>
+
 
 
 
