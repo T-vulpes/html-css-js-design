@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sudoku Pro</title>
+    <style>
+        :root{
+            --bg:#0b1020;
+            --panel:#111633;
+            --ink:#e6eaff;
+            --muted:#9aa3c7;
+            --accent:#5b8cff;
+            --accent-2:#8e77ff;
+            --warn:#ff6b6b;
+            --ok:#3ddc97;
+            --grid:#1b234d;
+            --cell:#0f1430;
+            --cell-hover:#151c41;
+            --given:#1a2150;
+            --note:#7f8ab7;
+            --shadow: 0 10px 30px rgba(0,0,0,.35);
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0; display:grid; place-items:center; gap:24px; background:radial-gradient(1200px 800px at 80% -10%, rgba(91,140,255,.25), transparent 60%),radial-gradient(1200px 800px at 10% 110%, rgba(142,119,255,.18), transparent 60%), var(--bg); color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", "Bitstream Vera Sans", Verdana, sans-serif;
+        }
+
+        .wrap{display:grid; grid-template-columns: 1fr; gap:18px; width:min(1050px, 96vw); padding:18px}
+
+        .topbar{
+            display:flex; flex-wrap:wrap; align-items:center; gap:12px; background:var(--panel); border:1px solid #20295e; border-radius:18px; padding:10px 12px; box-shadow:var(--shadow)
+        }
+        .brand{display:flex; align-items:center; gap:10px; padding:6px 10px; background:linear-gradient(135deg, rgba(91,140,255,.15), rgba(142,119,255,.15)); border-radius:12px}
+        .brand .logo{width:28px; height:28px; display:grid; place-items:center; border-radius:8px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:0 6px 14px rgba(99,121,255,.5)}
+        .brand b{letter-spacing:.3px}
+
+        .spacer{flex:1}
+
+        select, button{background:#161d44; color:var(--ink); border:1px solid #2a3472; padding:9px 12px; border-radius:12px; font-weight:600}
+        select:focus, button:focus{outline:2px solid rgba(91,140,255,.5)}
+        button:hover{background:#1a2250}
+        .btn-accent{background:linear-gradient(135deg, rgba(91,140,255,.2), rgba(142,119,255,.2)); border-color:#3a4691}
+        .btn-warn{border-color:#5a2a3a; background:linear-gradient(135deg, rgba(255,107,107,.15), rgba(255,139,139,.08))}
+
+        .main{display:grid; grid-template-columns: 1fr 360px; gap:18px}
+        @media (max-width: 980px){.main{grid-template-columns:1fr}}
+
+        .board{aspect-ratio:1/1; background:var(--panel); padding:14px; border-radius:22px; border:1px solid #20295e; box-shadow:var(--shadow)}
+        .grid{display:grid; grid-template-columns: repeat(9,1fr); grid-template-rows: repeat(9,1fr); gap:1px; background:var(--grid); height:100%; border-radius:14px; overflow:hidden}
+        .cell{position:relative; background:var(--cell); display:grid; place-items:center; font-weight:800; font-size:clamp(16px, 2.6vw, 28px); cursor:pointer; user-select:none}
+        .cell:hover{background:var(--cell-hover)}
+        .cell.given{background:var(--given); color:#d9e0ff}
+        .cell.invalid{animation:shake .24s linear 1; box-shadow:inset 0 0 0 2px var(--warn)}
+        .cell.selected{box-shadow:inset 0 0 0 2px var(--accent)}
+        .cell.same, .cell.peer{background:linear-gradient( to bottom, rgba(91,140,255,.10), transparent 40%)}
+        .cell .note{position:absolute; inset:6px; font-weight:700; color:var(--note); font-size: clamp(8px, 1.2vw, 13px); display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:1fr; gap:2px; place-items:center; pointer-events:none}
+        .cell .note span{opacity:.9}
+        @keyframes shake{0%{transform:translateX(0)} 25%{transform:translateX(-2px)} 50%{transform:translateX(2px)} 75%{transform:translateX(-1px)} 100%{transform:translateX(0)}}
+
+        /* thick subgrid borders */
+        .grid .cell{border:1px solid #1f2758}
+        /* outer inset glow to separate the whole board */
+        .grid{box-shadow: inset 0 0 0 3px rgba(91,140,255,0.06);}
+        
+        /* 3x3 kutuların kenarlarını vurgula */
+        /* Tüm 3x3 karelerin sol kenarları (kırmızı) */
+        .grid .cell:nth-child(3n+1) { border-left-color: #FF0000; border-left-width: 3px; }
+        /* Tüm 3x3 karelerin sağ kenarları (mavi) */
+        .grid .cell:nth-child(3n) { border-right-color: #0000FF; border-right-width: 3px; }
+
+        /* Tüm 3x3 karelerin üst kenarları (kırmızı) */
+        .grid .cell:nth-child(-n+9), /* İlk sıra */
+        .grid .cell:nth-child(n+19):nth-child(-n+27), /* Dördüncü sıra */
+        .grid .cell:nth-child(n+46):nth-child(-n+54) /* Yedinci sıra */
+        { border-top-color: #FF0000; border-top-width: 3px; }
+        
+        /* Tüm 3x3 karelerin alt kenarları (mavi) */
+        .grid .cell:nth-child(n+73):nth-child(-n+81), /* Son sıra */
+        .grid .cell:nth-child(n+46):nth-child(-n+54), /* Altıncı sıra */
+        .grid .cell:nth-child(n+19):nth-child(-n+27) /* Üçüncü sıra */
+        { border-bottom-color: #0000FF; border-bottom-width: 3px; }
+
+        .side{display:grid; gap:14px}
+
+        .panel{background:var(--panel); border:1px solid #20295e; border-radius:18px; padding:14px; box-shadow:var(--shadow)}
+        .stats{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+        .chip{background:#12183a; border:1px solid #2a3472; border-radius:999px; padding:6px 10px; font-weight:700}
+
+        .num-pad{display:grid; grid-template-columns: repeat(9,1fr); gap:8px}
+        .num-pad button{aspect-ratio:1/1; font-size:18px; font-weight:900}
+
+        .actions{display:grid; grid-template-columns: repeat(3, 1fr); gap:8px}
+
+        .footer{opacity:.8; font-size:12px; text-align:center}
+        .toggle{display:flex; gap:8px; align-items:center}
+        .switch{position:relative; width:46px; height:26px; background:#1a2150; border:1px solid #2a3472; border-radius:999px}
+        .switch input{opacity:0; width:0; height:0}
+        .knob{position:absolute; top:2px; left:2px; width:22px; height:22px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); border-radius:50%; transition:transform .2s}
+        .switch input:checked + .knob{transform:translateX(20px)}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="topbar">
+            <div class="brand">
+                <div class="logo">🧩</div>
+                <div>
+                    <b>Sudoku Pro</b>
+                    <div style="font-size:12px; color:var(--muted)">Gelişmiş HTML/CSS/JS Sudoku</div>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <label> Zorluk:
+                <select id="difficulty">
+                    <option value="easy">Kolay</option>
+                    <option value="medium" selected>Orta</option>
+                    <option value="hard">Zor</option>
+                    <option value="evil">Çoooook Zor</option>
+                </select>
+            </label>
+            <button id="newGame" class="btn-accent">Yeni Oyun</button>
+            <button id="solve" title="Bulmacayı otomatik çöz">Çöz</button>
+            <button id="check">Kontrol Et</button>
+        </div>
+
+        <div class="main">
+            <div class="board">
+                <div id="grid" class="grid" aria-label="Sudoku tahtası" role="grid"></div>
+            </div>
+            <div class="side">
+                <div class="panel stats">
+                    <div class="chip">⏱️ <span id="timer">00:00</span></div>
+                    <div class="chip">❌ Hata: <span id="mistakes">0</span></div>
+                    <div class="chip">⭐ İpuçları: <span id="hintsLeft">3</span></div>
+                </div>
+                <div class="panel">
+                    <div class="toggle" style="justify-content:space-between; margin-bottom:10px">
+                        <label class="toggle">Not Modu
+                            <div class="switch" style="margin-left:8px">
+                                <input id="notesToggle" type="checkbox" />
+                                <div class="knob"></div>
+                            </div>
+                        </label>
+                        <label class="toggle">Anlık Doğrulama
+                            <div class="switch" style="margin-left:8px">
+                                <input id="liveValidate" type="checkbox" checked />
+                                <div class="knob"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="actions" style="margin-bottom:10px">
+                        <button id="undo">Geri Al</button>
+                        <button id="redo">İleri Al</button>
+                        <button id="clear">Temizle</button>
+                    </div>
+                    <div class="num-pad" aria-label="Sayı tuşları">
+                        <button data-num="1">1</button>
+                        <button data-num="2">2</button>
+                        <button data-num="3">3</button>
+                        <button data-num="4">4</button>
+                        <button data-num="5">5</button>
+                        <button data-num="6">6</button>
+                        <button data-num="7">7</button>
+                        <button data-num="8">8</button>
+                        <button data-num="9">9</button>
+                    </div>
+                    <div class="actions" style="margin-top:10px">
+                        <button id="hint" class="btn-accent">İpucu</button>
+                        <button id="erase" class="btn-warn">Sil</button>
+                        <button id="center">Odak</button>
+                    </div>
+                </div>
+                <div class="panel footer">
+                    Klavye: Ok tuşları ile gezin • 1–9 gir • Backspace ile sil • N = Not modu • H = İpucu • Z/Y = Geri/İleri • C = Kontrol • R = Yeni Oyun
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Sudoku Pro — Tamamen Tarayıcıda ---
+        // Özellikler: Üreteç, çözücü, tekil çözüm kontrolü, zorluklar,
+        // not (pencil mark), geri/ileri, ipucu, anlık doğrulama, klavye desteği.
+
+        const $ = (s, r = document) => r.querySelector(s);
+        const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+        const gridEl = $('#grid');
+        const timerEl = $('#timer');
+        const mistakesEl = $('#mistakes');
+        const hintsEl = $('#hintsLeft');
+        const diffEl = $('#difficulty');
+        const liveValidateEl = $('#liveValidate');
+        const notesToggleEl = $('#notesToggle');
+
+        const SIZE = 9;
+        let board = Array(SIZE * SIZE).fill(0);
+        let solution = Array(SIZE * SIZE).fill(0);
+        let givenMask = Array(SIZE * SIZE).fill(false);
+        let notes = Array(SIZE * SIZE).fill(0).map(() => new Set());
+        let selected = 0; // 0..80
+        let mistakes = 0; let hints = 3;
+        let timer = 0; let tHandle = null;
+        let history = []; let future = [];
+
+        const pos = (r,c)=> r*9+c;
+        const rc = (i)=> [Math.floor(i/9), i%9];
+
+        // --- Grid UI oluştur ---
+        function buildGrid(){
+            gridEl.innerHTML = '';
+            for(let i=0;i<81;i++){
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.setAttribute('role','gridcell');
+                cell.setAttribute('tabindex','0');
+                cell.dataset.idx = i;
+                const n = document.createElement('div');
+                n.className='num';
+                cell.append(n);
+                const note = document.createElement('div');
+                note.className='note';
+                for(let k=1;k<=9;k++){ note.append(Object.assign(document.createElement('span'),{textContent:k})) }
+                cell.append(note);
+                cell.addEventListener('click', ()=> select(i));
+                gridEl.append(cell);
+            }
+        }
+
+        // --- Yardımcılar ---
+        function peers(i){
+            const [r,c] = rc(i); const list = new Set();
+            for(let k=0;k<9;k++){ list.add(pos(r,k)); list.add(pos(k,c)); }
+            const br=Math.floor(r/3)*3, bc=Math.floor(c/3)*3;
+            for(let rr=br; rr<br+3; rr++) for(let cc=bc; cc<bc+3; cc++) list.add(pos(rr,cc));
+            list.delete(i); return [...list];
+        }
+        function isSafe(i, val, arr){
+            const [r,c] = rc(i);
+            for(let k=0;k<9;k++) if(arr[pos(r,k)]===val || arr[pos(k,c)]===val) return false;
+            const br=Math.floor(r/3)*3, bc=Math.floor(c/3)*3;
+            for(let rr=br; rr<br+3; rr++) for(let cc=bc; cc<bc+3; cc++) if(arr[pos(rr,cc)]===val) return false;
+            return true;
+        }
+
+        // --- Çözücü (Backtracking) & Çözüm sayacı ---
+        function solveArr(arr){
+            arr = arr.slice();
+            function dfs(){
+                let m = 10, mi=-1; // en az adaylı hücreyi seç
+                for(let i=0;i<81;i++) if(arr[i]===0){
+                    let cnt=0; for(let d=1; d<=9; d++) if(isSafe(i,d,arr)) cnt++;
+                    if(cnt<m){ m=cnt; mi=i; if(cnt===1) break; }
+                }
+                if(mi===-1) return true;
+                const options=[]; for(let d=1; d<=9; d++) if(isSafe(mi,d,arr)) options.push(d);
+                // rastgele sırala (çeşitlilik için)
+                options.sort(()=>Math.random()-.5);
+                for(const d of options){ arr[mi]=d; if(dfs()) return true; arr[mi]=0; }
+                return false;
+            }
+            return dfs() ? arr : null;
+        }
+
+        function countSolutions(arr, limit=2){
+            let count=0; arr = arr.slice();
+            function dfs(){
+                if(count>=limit) return; // erken bitir
+                let i = arr.indexOf(0); if(i===-1){ count++; return; }
+                for(let d=1; d<=9; d++) if(isSafe(i,d,arr)) { arr[i]=d; dfs(); arr[i]=0; if(count>=limit) return; }
+            }
+            dfs(); return count;
+        }
+
+        // --- Üreteç ---
+        function generate(difficulty='medium'){
+            // 1) Tam dolu bir tablo üret
+            let grid = Array(81).fill(0);
+            // diyagonal 3x3 kutuları doldur, sonra çöz
+            for(let b=0; b<9; b+=3){
+                const nums=[1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-.5);
+                let k=0;
+                for(let r=b; r<b+3; r++) for(let c=b; c<b+3; c++) grid[pos(r,c)] = nums[k++];
+            }
+            grid = solveArr(grid);
+
+            // 2) Hücreleri silerek bulmaca oluştur, tekil çözüm garanti et
+            let puzzle = grid.slice();
+            const removals = { easy: 40, medium: 50, hard: 58, evil: 62 }[difficulty] || 50;
+            const order=[...Array(81).keys()].sort(()=>Math.random()-.5);
+            let removed=0;
+            for(const i of order){
+                const backup = puzzle[i];
+                puzzle[i]=0;
+                if(countSolutions(puzzle,2)!==1){ puzzle[i]=backup; }
+                else { removed++; if(removed>=removals) break; }
+            }
+            return { puzzle, solution:grid };
+        }
+
+        // --- UI durum güncelleme ---
+        function paint(){
+            $$('.cell', gridEl).forEach((el,i)=>{
+                el.classList.toggle('given', givenMask[i]);
+                el.classList.toggle('selected', i===selected);
+                el.classList.toggle('same', board[i]!==0 && board[i]===board[selected] && i!==selected);
+                el.classList.toggle('peer', peers(selected).includes(i));
+                const numEl = el.querySelector('.num');
+                numEl.textContent = board[i]!==0 ? board[i] : '';
+                const noteEl = el.querySelector('.note');
+                noteEl.style.display = (board[i]===0 && notes[i].size>0) ? 'grid' : (board[i]===0 ? 'grid' : 'none');
+                // Show notes (dim non-present)
+                for(let k=1;k<=9;k++){
+                    const s = noteEl.children[k-1];
+                    s.style.opacity = notes[i].has(k) ? 1 : .15;
+                }
+                // canlı doğrulama hatası
+                el.classList.toggle('invalid', liveValidateEl.checked && board[i]!==0 && !isSafe(i, board[i], board));
+            });
+        }
+
+        function select(i){ selected=i; paint(); }
+
+        function pushHistory(){ history.push({board:board.slice(), notes:notes.map(s=>new Set([...s])), sel:selected}); if(history.length>200) history.shift(); future.length=0; }
+
+        function setNumber(n){
+            if(givenMask[selected]) return;
+            pushHistory();
+            if(notesToggleEl.checked){
+                if(board[selected]!==0){ board[selected]=0; }
+                if(notes[selected].has(n)) notes[selected].delete(n); else notes[selected].add(n);
+            } else {
+                board[selected]=n; notes[selected].clear();
+                // peer notlarını temizle (kullanışlı)
+                for(const p of peers(selected)) notes[p].delete(n);
+            }
+            if(liveValidateEl.checked && board[selected]!==0 && !isSafe(selected, board[selected], board)) mistakes++;
+            updateStats();
+            paint();
+            checkWin();
+        }
+
+        function erase(){ if(givenMask[selected]) return; pushHistory(); board[selected]=0; paint(); }
+
+        function check(){
+            let ok=true, wrong=0;
+            for(let i=0;i<81;i++) if(board[i]!==0 && board[i]!==solution[i]){ ok=false; wrong++; const el=$$('.cell')[i]; el.classList.add('invalid'); setTimeout(()=>el.classList.remove('invalid'),300)}
+            if(!ok) { mistakes+=wrong; updateStats(); alert('Bazı hücreler yanlış. Devam!'); }
+            else alert('Harika! Şu ana kadar girilen tüm sayılar doğru.');
+        }
+
+        function hint(){
+            if(hints<=0) { alert('İpucu kalmadı.'); return }
+            // boşlardan rastgele birini doldur
+            const empties = board.map((v,i)=> v===0? i : -1).filter(i=>i!==-1);
+            if(empties.length===0) return;
+            const i = empties[Math.floor(Math.random()*empties.length)];
+            pushHistory();
+            board[i] = solution[i]; notes[i].clear();
+            hints--; updateStats(); paint(); checkWin();
+        }
+
+        function checkWin(){
+            if(board.every((v,i)=> v!==0 && v===solution[i])){
+                clearInterval(tHandle); tHandle=null;
+                setTimeout(()=> alert(`Tebrikler! Süre: ${formatTime(timer)} • Hata: ${mistakes}`), 50);
+            }
+        }
+
+        function undo(){ if(history.length){ const s=history.pop(); future.push(snapshot()); restore(s); }}
+        function redo(){ if(future.length){ const s=future.pop(); history.push(snapshot()); restore(s); }}
+        function snapshot(){ return {board:board.slice(), notes:notes.map(s=>new Set([...s])), sel:selected} }
+        function restore(s){ board = s.board.slice(); notes = s.notes.map(t=>new Set([...t])); selected=s.sel; paint(); }
+
+        function clearCell(){ if(givenMask[selected]) return; pushHistory(); board[selected]=0; notes[selected].clear(); paint(); }
+
+        function focusCenter(){ const centers=[40, 30, 39, 41, 50]; select(centers[Math.floor(Math.random()*centers.length)]); $$('.cell')[selected].focus(); }
+
+        function updateStats(){ mistakesEl.textContent=mistakes; hintsEl.textContent=hints; }
+        function formatTime(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const ss=(s%60).toString().padStart(2,'0'); return `${m}:${ss}` }
+
+        function startTimer(){ clearInterval(tHandle); timer=0; timerEl.textContent='00:00'; tHandle=setInterval(()=>{ timer++; timerEl.textContent = formatTime(timer) }, 1000) }
+
+        // --- Yeni oyun ---
+        function newGame(){
+            const {puzzle, solution:sol} = generate(diffEl.value);
+            board = puzzle.slice(); solution = sol.slice();
+            givenMask = board.map(v=>v!==0);
+            notes = Array(81).fill(0).map(()=>new Set());
+            mistakes=0; hints=3; updateStats();
+            history.length=0; future.length=0; selected = board.findIndex(v=>v===0); if(selected===-1) selected=0;
+            buildGrid(); paint(); startTimer();
+        }
+
+        // --- Etkinlikler ---
+        $('#newGame').addEventListener('click', newGame);
+        $('#solve').addEventListener('click', ()=>{ const sol = solveArr(board); if(sol){ board=sol; paint(); checkWin(); } else alert('Çözülemiyor (girdi çelişkili olabilir).') });
+        $('#check').addEventListener('click', check);
+        $('#hint').addEventListener('click', hint);
+        $('#erase').addEventListener('click', erase);
+        $('#center').addEventListener('click', focusCenter);
+        $('#undo').addEventListener('click', undo);
+        $('#redo').addEventListener('click', redo);
+        $('#clear').addEventListener('click', clearCell);
+
+        // Num pad
+        $$('.num-pad button').forEach(b=> b.addEventListener('click', ()=> setNumber(+b.dataset.num)));
+
+        // Klavye
+        document.addEventListener('keydown', (e)=>{
+            if(e.key>='1' && e.key<='9'){ setNumber(+e.key); return }
+            const arr = {
+                ArrowLeft:-1, ArrowRight:1, ArrowUp:-9, ArrowDown:9
+            };
+            if(e.key in arr){
+                let n = selected + arr[e.key];
+                if(e.key==='ArrowLeft' && selected%9===0) n=selected; // kenar
+                if(e.key==='ArrowRight' && selected%9===8) n=selected;
+                if(e.key==='ArrowUp' && Math.floor(selected/9)===0) n=selected;
+                if(e.key==='ArrowDown' && Math.floor(selected/9)===8) n=selected;
+                select(Math.max(0, Math.min(80, n))); $$('.cell')[selected].focus(); return;
+            }
+            if(e.key==='Backspace' || e.key==='Delete'){ erase(); return }
+            if(e.key==='n' || e.key==='N'){ notesToggleEl.checked = !notesToggleEl.checked; return }
+            if(e.key==='h' || e.key==='H'){ hint(); return }
+            if((e.ctrlKey||e.metaKey) && (e.key==='z' || e.key==='Z')){ e.preventDefault(); undo(); return }
+            if((e.ctrlKey||e.metaKey) && (e.key==='y' || e.key==='Y')){ e.preventDefault(); redo(); return }
+            if(e.key==='c' || e.key==='C'){ check(); return }
+            if(e.key==='r' || e.key==='R'){ newGame(); return }
+        });
+
+        // Canlı doğrulama kapatıldığında mevcut invalid vurgularını temizle
+        liveValidateEl.addEventListener('change', paint);
+
+        // Sayfa yüklenince
+        buildGrid();
+        newGame();
+    </script>
+</body>
+</html>
