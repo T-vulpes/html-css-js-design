@@ -95,12 +95,9 @@
             
             ctx.globalAlpha = flower.opacity;
             drawDaisy(flower.x, flower.y, flower.size, flower.rotation);
-            
-            // Fade and shrink the flowers over time
             flower.size *= 0.98; // Increased longevity
             flower.opacity *= 0.98; // Increased longevity
             
-            // Remove flowers that are no longer visible
             if (flower.opacity < 0.05) {
                 flowers.splice(i, 1);
             }
@@ -114,8 +111,8 @@
     };
 
 </script>
-
 </body>
 </html>
+
 
 
