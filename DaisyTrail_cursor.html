@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawing Flowers Cursor</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             height: 100vh;
@@ -35,11 +34,10 @@
     const flowers = [];
 
     window.addEventListener('mousemove', (e) => {
-        // Add a new flower at the mouse position
         flowers.push({
             x: e.clientX,
             y: e.clientY,
-            size: 3 + Math.random() * 2, // Made the flowers much smaller
+            size: 3 + Math.random() * 2, 
             opacity: 1,
             rotation: Math.random() * Math.PI * 2
         });
@@ -119,4 +117,5 @@
 
 </body>
 </html>
+
 
