@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Flowers Cursor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: #1a1a2e;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+    const flowers = [];
+
+    window.addEventListener('mousemove', (e) => {
+        // Add a new flower at the mouse position
+        flowers.push({
+            x: e.clientX,
+            y: e.clientY,
+            size: 3 + Math.random() * 2, // Made the flowers much smaller
+            opacity: 1,
+            rotation: Math.random() * Math.PI * 2
+        });
+    });
+
+    // Function to draw a single daisy
+    function drawDaisy(x, y, size, rotation) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        
+        // Draw 6 large petals with rounded ends
+        ctx.fillStyle = '#FFFFFF';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 0.5;
+        
+        for (let j = 0; j < 6; j++) {
+            ctx.beginPath();
+            ctx.moveTo(0, size * 2);
+            ctx.bezierCurveTo(size * 1.5, size * 2, size * 2, size * 1.5, size * 2.5, 0);
+            ctx.bezierCurveTo(size * 2, -size * 1.5, size * 1.5, -size * 2, 0, -size * 2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.rotate(Math.PI / 3);
+        }
+
+        // Draw the center of the daisy
+        ctx.fillStyle = '#ffd700'; // Yellow
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Draw the little dots on the petals
+        ctx.fillStyle = '#000000';
+        for (let j = 0; j < 6; j++) {
+            ctx.beginPath();
+            ctx.arc(size * 1.5, size * 0.5, size * 0.1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.rotate(Math.PI / 3);
+        }
+
+        ctx.restore();
+    }
+
+    // Main animation loop
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = flowers.length - 1; i >= 0; i--) {
+            const flower = flowers[i];
+            
+            ctx.globalAlpha = flower.opacity;
+            drawDaisy(flower.x, flower.y, flower.size, flower.rotation);
+            
+            // Fade and shrink the flowers over time
+            flower.size *= 0.98; // Increased longevity
+            flower.opacity *= 0.98; // Increased longevity
+            
+            // Remove flowers that are no longer visible
+            if (flower.opacity < 0.05) {
+                flowers.splice(i, 1);
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
+
+    window.onload = function () {
+        animate();
+    };
+
+</script>
+
+</body>
+</html>
