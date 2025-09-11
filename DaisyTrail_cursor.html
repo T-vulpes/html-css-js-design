@@ -62,16 +62,13 @@
             ctx.rotate(Math.PI / 3);
         }
 
-        // Draw the center of the daisy
-        ctx.fillStyle = '#ffd700'; // Yellow
+        ctx.fillStyle = '#ffd700';
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 0.5;
         ctx.beginPath();
         ctx.arc(0, 0, size, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
-        
-        // Draw the little dots on the petals
         ctx.fillStyle = '#000000';
         for (let j = 0; j < 6; j++) {
             ctx.beginPath();
@@ -83,7 +80,6 @@
         ctx.restore();
     }
 
-    // Main animation loop
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
@@ -92,8 +88,8 @@
             
             ctx.globalAlpha = flower.opacity;
             drawDaisy(flower.x, flower.y, flower.size, flower.rotation);
-            flower.size *= 0.98; // Increased longevity
-            flower.opacity *= 0.98; // Increased longevity
+            flower.size *= 0.98; 
+            flower.opacity *= 0.98;
             
             if (flower.opacity < 0.05) {
                 flowers.splice(i, 1);
@@ -110,6 +106,7 @@
 </script>
 </body>
 </html>
+
 
 
 
