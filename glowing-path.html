@@ -63,12 +63,10 @@
         }
 
         update() {
-            // Move towards mouse
             const dx = mouse.x - this.x;
             const dy = mouse.y - this.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
 
-            // Add a little randomness (wandering)
             this.vx += (dx / dist) * this.speed + (Math.random() - 0.5) * this.wander;
             this.vy += (dy / dist) * this.speed + (Math.random() - 0.5) * this.wander;
 
@@ -120,6 +118,7 @@
 </script>
 </body>
 </html>
+
 
 
 
