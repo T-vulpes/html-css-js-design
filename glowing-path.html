@@ -70,14 +70,11 @@
             this.vx += (dx / dist) * this.speed + (Math.random() - 0.5) * this.wander;
             this.vy += (dy / dist) * this.speed + (Math.random() - 0.5) * this.wander;
 
-            // Apply friction
             this.vx *= 0.95;
             this.vy *= 0.95;
 
             this.x += this.vx;
             this.y += this.vy;
-
-            // Bounce off walls
             if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
             if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
@@ -118,6 +115,7 @@
 </script>
 </body>
 </html>
+
 
 
 
