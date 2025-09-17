@@ -14,7 +14,6 @@ body {
   overflow: hidden;
 }
 
-/* Form Kutusu */
 .form-box {
   position: relative;
   width: 380px;
@@ -35,7 +34,6 @@ body {
   text-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
 
-/* Inputlar */
 .input-group {
   margin-bottom: 15px;
 }
@@ -110,3 +108,4 @@ body {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-12px) rotate(6deg); }
 }
+
