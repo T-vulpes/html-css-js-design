@@ -106,5 +106,3 @@ body {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-12px) rotate(6deg); }
 }
-
-
