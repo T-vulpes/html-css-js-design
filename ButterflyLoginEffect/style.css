@@ -53,7 +53,6 @@ body {
   color: rgba(255,255,255,0.8);
 }
 
-/* Buton */
 .btn {
   width: 100%;
   padding: 12px;
@@ -84,7 +83,6 @@ body {
   text-shadow: 0 0 5px #ff77a9;
 }
 
-/* Kelebekler */
 .butterfly {
   position: absolute;
   opacity: 0.9;
@@ -108,4 +106,5 @@ body {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-12px) rotate(6deg); }
 }
+
 
