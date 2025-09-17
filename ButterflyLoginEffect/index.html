@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Butterfly Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <!-- Kelebekler kutunun köşelerine -->
+      <img src="images/butterfly1.gif" class="butterfly top-left">
+      <img src="images/butterfly2.gif" class="butterfly bottom-right">
+
+      <h2 id="formTitle">Login</h2>
+      <form id="authForm">
+        <div class="input-group">
+          <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <input type="password" placeholder="Password" required>
+        </div>
+        <div class="extra" id="signupExtra" style="display:none;">
+          <div class="input-group">
+            <input type="text" placeholder="Username" required>
+          </div>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+      <p id="toggleText">Don’t have an account? <span onclick="toggleForm()">Sign up</span></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

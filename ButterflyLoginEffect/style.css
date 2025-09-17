@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  overflow: hidden;
+}
+
+/* Form Kutusu */
+.form-box {
+  position: relative;
+  width: 380px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  z-index: 2;
+}
+
+.form-box h2 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 28px;
+  text-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+/* Inputlar */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-size: 14px;
+}
+
+.input-group input::placeholder {
+  color: rgba(255,255,255,0.8);
+}
+
+/* Buton */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ff77a9, #ffb347);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff77a9;
+}
+
+#toggleText {
+  margin-top: 15px;
+  color: white;
+}
+
+#toggleText span {
+  color: #ffeb3b;
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 0 0 5px #ff77a9;
+}
+
+/* Kelebekler */
+.butterfly {
+  position: absolute;
+  opacity: 0.9;
+  pointer-events: none;
+  animation: flutter 6s infinite ease-in-out;
+}
+
+.top-left {
+  top: -25px;
+  left: -25px;
+  width: 70px;
+}
+
+.bottom-right {
+  bottom: -35px;
+  right: -35px;
+  width: 150px; /* daha büyük */
+}
+
+@keyframes flutter {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(6deg); }
+}
