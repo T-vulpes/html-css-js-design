@@ -99,10 +99,11 @@ body {
 .bottom-right {
   bottom: -35px;
   right: -35px;
-  width: 150px; /* daha büyük */
+  width: 150px; 
 }
 
 @keyframes flutter {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-12px) rotate(6deg); }
 }
+
