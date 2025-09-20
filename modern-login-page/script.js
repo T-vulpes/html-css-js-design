@@ -1,12 +1,10 @@
-// Videonun oynatma hızını ayarlar
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('background-video');
     if (video) {
-        video.playbackRate = 5; // 1.2 kat daha hızlı oynat
+        video.playbackRate = 5; 
     }
 });
 
-// Şifrenin görünürlüğünü değiştiren fonksiyon
 function togglePasswordVisibility() {
     const passwordInput = document.getElementById('password');
     const toggleIcon = document.getElementById('toggle-icon');
@@ -21,4 +19,5 @@ function togglePasswordVisibility() {
         toggleIcon.classList.remove('fa-eye-slash');
         toggleIcon.classList.add('fa-eye'); // Gözü açık ikonuna dönüştür
     }
+
 }
