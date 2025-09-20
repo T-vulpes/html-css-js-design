@@ -14,10 +14,11 @@ function togglePasswordVisibility() {
         toggleIcon.classList.remove('fa-eye');
         toggleIcon.classList.add('fa-eye-slash'); 
     } else {
-        passwordInput.type = 'password'; // Tipi 'password' yaparak şifreyi gizle
+        passwordInput.type = 'password'; 
         toggleIcon.classList.remove('fa-eye-slash');
-        toggleIcon.classList.add('fa-eye'); // Gözü açık ikonuna dönüştür
+        toggleIcon.classList.add('fa-eye');
     }
 
 }
+
 
