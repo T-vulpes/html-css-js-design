@@ -26,7 +26,6 @@ body {
     height: 100vh;
 }
 
-/* Sol Panel Stilleri */
 .left-panel {
     flex: 1;
     display: flex;
@@ -62,12 +61,10 @@ body {
     transition: color 0.3s ease;
 }
 
-/* Turuncu renk yerine mavi tonu */
 .social-icons a:hover {
     color: #03a9f4;
 }
 
-/* Sağ Panel Stilleri */
 .right-panel {
     flex: 1;
     display: flex;
@@ -195,3 +192,4 @@ body {
     color: #03a9f4;
 
 }
+
