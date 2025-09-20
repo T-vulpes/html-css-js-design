@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <video autoplay muted loop id="background-video">
+        <source src="video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="login-container">
+        <div class="left-panel">
+            <h1 class="welcome-text">Welcome!</h1>
+            <p class="description-text">
+                Log in to your account for the best experience. If you don't have an account yet, you can sign up in just a few simple steps.
+            </p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="form-wrapper">
+                <h2 class="form-title">Sign In</h2>
+                <form>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="input-group password-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility()">
+                            <i class="fas fa-eye" id="toggle-icon"></i>
+                        </span>
+                    </div>
+
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember Me</label>
+                    </div>
+
+                    <button type="submit" class="sign-in-button">Sign In</button>
+
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </form>
+
+                <p class="terms-text">
+                    By clicking on 'Sign In' you agree to our<br>
+                    <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
