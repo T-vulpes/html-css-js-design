@@ -166,7 +166,6 @@ body {
     transition: color 0.3s ease;
 }
 
-/* Turuncu yerine mavi */
 .forgot-password:hover {
     color: #03a9f4;
 }
@@ -185,10 +184,8 @@ body {
     transition: color 0.3s ease;
 }
 
-/* Turuncu yerine mavi */
 .terms-text a:hover {
     color: #03a9f4;
-
 }
 
 
