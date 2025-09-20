@@ -89,7 +89,7 @@ body {
 
 .input-group {
     margin-bottom: 25px;
-    position: relative; /* Göz ikonunu konumlandırmak için */
+    position: relative; 
 }
 
 .input-group label {
@@ -114,7 +114,6 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Göz ikonu için stil */
 .toggle-password {
     position: absolute;
     right: 15px;
@@ -140,7 +139,6 @@ body {
     margin-right: 10px;
 }
 
-/* Turuncu yerine mavi */
 .sign-in-button {
     width: 100%;
     padding: 15px;
@@ -192,4 +190,5 @@ body {
     color: #03a9f4;
 
 }
+
 
