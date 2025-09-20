@@ -1,4 +1,3 @@
-/* Genel Ayarlar ve Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 body {
@@ -8,7 +7,6 @@ body {
     overflow: hidden;
 }
 
-/* Video arka planı stilleri */
 #background-video {
     position: fixed;
     right: 0;
@@ -195,4 +193,5 @@ body {
 /* Turuncu yerine mavi */
 .terms-text a:hover {
     color: #03a9f4;
+
 }
