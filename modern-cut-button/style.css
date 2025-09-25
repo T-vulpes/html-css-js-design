@@ -1,0 +1,180 @@
+/* Genel Ayarlar */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap');
+
+:root {
+    --bg-color: #f5f5f5;
+    --main-color: #111111;
+    --hover-color: #ffffff;
+    --cut-color: #ffffff; /* Beyaz kesme çizgisi */
+}
+
+body {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Video Arka Plan */
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    filter: grayscale(100%) contrast(1.1) brightness(55%);
+    opacity: 0.85;
+}
+
+/* Buton Konteyneri */
+.button-showcase-container {
+    perspective: 1000px;
+}
+
+/* Kuaför Butonu */
+.purchase-button {
+    width: 300px;
+    height: 80px;
+    background: transparent;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    font-size: 1.3rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    outline: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><line x1="20" y1="4" x2="9" y2="15"/><line x1="13" y1="13" x2="20" y2="20"/></svg>') 16 16, pointer;
+}
+
+/* Hover Efekti */
+.purchase-button:hover {
+    background: var(--main-color);
+    color: var(--hover-color);
+    border-color: var(--main-color);
+    box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    transform: scale(1.05); /* Hover zoom */
+}
+
+/* Parıltı Hover Efekti */
+.purchase-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-25deg);
+}
+
+.purchase-button:hover::before {
+    animation: shine 1.5s ease forwards;
+}
+
+@keyframes shine {
+    0% { left: -75%; }
+    100% { left: 125%; }
+}
+
+/* Alt parıltı */
+.purchase-button::after {
+    content: "";
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(255,255,255,0.3), transparent);
+    transition: bottom 0.6s ease;
+    border-radius: 50px;
+}
+
+.purchase-button:hover::after {
+    bottom: 0;
+}
+
+/* Metinler */
+.text-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.original-text,
+.confirm-text {
+    position: absolute;
+    white-space: nowrap;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    font-size: 1.3rem;
+}
+
+.original-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.confirm-text {
+    opacity: 0;
+    transform: translateY(120%);
+    color: var(--main-color);
+}
+
+/* Kesme Çizgisi */
+.cut-line {
+    position: absolute;
+    height: 2px;
+    width: 0;
+    background: var(--cut-color);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+/* Click Efektleri */
+.purchase-button.clicked .original-text {
+    transform: translateY(-120%);
+    opacity: 0;
+}
+
+.purchase-button.clicked .confirm-text {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.purchase-button.clicked .cut-line {
+    opacity: 1;
+    animation: cutEffect 0.8s ease forwards;
+}
+
+/* Kesme Animasyonu */
+@keyframes cutEffect {
+    0% {
+        width: 0;
+        opacity: 1;
+    }
+    50% {
+        width: 100%;
+        opacity: 1;
+    }
+    100% {
+        width: 0;
+        opacity: 0;
+    }
+}
