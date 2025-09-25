@@ -10,11 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     purchaseButton.addEventListener('click', function() {
         if (!purchaseButton.classList.contains('clicked')) {
             purchaseButton.classList.add('clicked');
-            
-            // Animasyon bittikten sonra butonu resetlemek için (isteğe bağlı)
-            setTimeout(() => {
+                setTimeout(() => {
                 purchaseButton.classList.remove('clicked');
             }, 2500); 
         }
     });
+
 });
