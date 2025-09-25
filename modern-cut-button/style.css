@@ -128,7 +128,6 @@ body {
     opacity: 0;
 }
 
-/* Click Efektleri */
 .purchase-button.clicked .original-text {
     transform: translateY(-120%);
     opacity: 0;
@@ -158,3 +157,4 @@ body {
         opacity: 0;
     }
 }
+
