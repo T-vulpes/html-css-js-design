@@ -71,7 +71,6 @@ body {
     100% { left: 125%; }
 }
 
-/* Alt parıltı */
 .purchase-button::after {
     content: "";
     position: absolute;
@@ -88,7 +87,6 @@ body {
     bottom: 0;
 }
 
-/* Metinler */
 .text-wrapper {
     position: relative;
     width: 100%;
@@ -161,6 +159,7 @@ body {
         opacity: 0;
     }
 }
+
 
 
 
