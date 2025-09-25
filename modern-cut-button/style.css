@@ -144,7 +144,6 @@ body {
     animation: cutEffect 0.8s ease forwards;
 }
 
-/* Kesme Animasyonu */
 @keyframes cutEffect {
     0% {
         width: 0;
@@ -159,7 +158,3 @@ body {
         opacity: 0;
     }
 }
-
-
-
-
