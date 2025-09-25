@@ -116,7 +116,6 @@ body {
     color: var(--main-color);
 }
 
-/* Kesme Çizgisi */
 .cut-line {
     position: absolute;
     height: 2px;
@@ -157,4 +156,5 @@ body {
         opacity: 0;
     }
 }
+
 
