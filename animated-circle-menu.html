@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Süper Dairesel Menü</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f1724;
+            --bg-light: #1e293b;
+            --accent-color: #7dd3fc;
+            --btn-size: 120px;
+            --item-size: 100px;
+            --radius: 210px;
+            --duration: 0.5s;
+            --easing: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #060a14, #0f1724);
+            font-family: 'Inter', sans-serif, system-ui, -apple-system;
+            color: #e6eef8;
+            overflow: hidden;
+        }
+
+        .menu-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-button {
+            width: var(--btn-size);
+            height: var(--btn-size);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-dark));
+            border: 2px solid var(--accent-color);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            cursor: pointer;
+            transition: transform var(--duration) var(--easing);
+            z-index: 10;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-button.active {
+            transform: rotate(45deg);
+        }
+
+        .menu-button .bar {
+            width: 50%;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 99px;
+            transition: all var(--duration) var(--easing);
+        }
+        .menu-button .bar:nth-child(2) { margin: 8px 0; }
+        .menu-button.active .bar:nth-child(1) { transform: translateY(12px) rotate(90deg); opacity: 0; }
+        .menu-button.active .bar:nth-child(2) { transform: rotate(135deg); }
+        .menu-button.active .bar:nth-child(3) { transform: translateY(-12px) rotate(-135deg); }
+
+        .menu-items {
+            list-style: none;
+            position: absolute;
+            width: var(--btn-size);
+            height: var(--btn-size);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-item {
+            position: absolute;
+            width: var(--item-size);
+            height: var(--item-size);
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+            border: 2px solid rgba(125, 211, 252, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px) saturate(140%);
+            transition: transform var(--duration) var(--easing), opacity var(--duration) var(--easing);
+            transform: scale(0.6);
+            opacity: 0;
+            cursor: pointer;
+            z-index: 1;
+            font-size: 26px;
+        }
+        
+        .menu-item:hover {
+            border-color: var(--accent-color);
+            transform: translate(var(--x), var(--y)) scale(1.1);
+            box-shadow: 0 8px 25px rgba(125, 211, 252, 0.4);
+        }
+
+        .menu-button.active + .menu-items .menu-item {
+            opacity: 1;
+            transform: translate(var(--x), var(--y)) scale(1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-container">
+    <div id="menu-button" class="menu-button">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <ul class="menu-items">
+        <li class="menu-item" aria-label="Ara">🔎</li>
+        <li class="menu-item" aria-label="Favoriler">⭐</li>
+        <li class="menu-item" aria-label="Ayarlar">⚙️</li>
+        <li class="menu-item" aria-label="Profil">👤</li>
+        <li class="menu-item" aria-label="Paylaş">⤴️</li>
+    </ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuButton = document.getElementById('menu-button');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const numItems = menuItems.length;
+        const radius = 210;
+        let isActive = false;
+
+        function positionMenuItems() {
+            const angleStep = 360 / numItems;
+            menuItems.forEach((item, index) => {
+                const angle = (index * angleStep - 90) * Math.PI / 180;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                item.style.setProperty('--x', `${x}px`);
+                item.style.setProperty('--y', `${y}px`);
+            });
+        }
+
+        positionMenuItems();
+
+        menuButton.addEventListener('click', () => {
+            isActive = !isActive;
+            menuButton.classList.toggle('active');
+        });
+    });
+</script>
+
+</body>
+</html>
