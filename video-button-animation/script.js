@@ -17,8 +17,5 @@ videoPlayer.addEventListener("ended", () => {
 
 zooButton.addEventListener("click", () => {
     alert("Welcome to the Jungle Zoo! 🐘🐅🦜");
-
 });
-
-
 
