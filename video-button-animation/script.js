@@ -6,11 +6,7 @@ const videoFiles = ["zoo.mp4", "zoo1.mp4"];
 let currentVideoIndex = 0;
 
 videoPlayer.addEventListener("ended", () => {
-    // Sonraki videonun dizinini hesapla (döngü için modulo operatörü kullanıldı)
-    // Eğer 0 ise 1'e, 1 ise 0'a geçer.
     currentVideoIndex = (currentVideoIndex + 1) % videoFiles.length;
-    
-    // Yeni video kaynağını al
     const nextVideoSrc = videoFiles[currentVideoIndex];
     
     // Video kaynağını değiştir
@@ -33,3 +29,4 @@ zooButton.addEventListener("click", () => {
     alert("Welcome to the Jungle Zoo! 🐘🐅🦜");
 
 });
+
