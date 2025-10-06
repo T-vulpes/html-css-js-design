@@ -63,7 +63,6 @@ body {
   filter: brightness(95%) contrast(120%);
 }
 
-/* Glowing border animation */
 #zooButton::after {
   content: "";
   position: absolute;
@@ -83,4 +82,5 @@ body {
 #zooButton:hover::after {
   opacity: 1;
 }
+
 
