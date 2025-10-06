@@ -1,14 +1,10 @@
-// Video elementini ve source elementini seç
 const videoPlayer = document.getElementById("videoPlayer");
 const videoSource = videoPlayer.querySelector("source");
 const zooButton = document.getElementById("zooButton");
-
-// Oynatılacak video dosyalarının listesi
 const videoFiles = ["zoo.mp4", "zoo1.mp4"];
-// Şu anda oynatılan videonun dizini
+
 let currentVideoIndex = 0;
 
-// Video bitince çalışacak fonksiyon
 videoPlayer.addEventListener("ended", () => {
     // Sonraki videonun dizinini hesapla (döngü için modulo operatörü kullanıldı)
     // Eğer 0 ise 1'e, 1 ise 0'a geçer.
@@ -35,4 +31,5 @@ videoPlayer.addEventListener("ended", () => {
 // Orijinal click olayı (buton işlevi)
 zooButton.addEventListener("click", () => {
     alert("Welcome to the Jungle Zoo! 🐘🐅🦜");
+
 });
