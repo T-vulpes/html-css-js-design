@@ -10,17 +10,15 @@ videoPlayer.addEventListener("ended", () => {
     const nextVideoSrc = videoFiles[currentVideoIndex];
     videoPlayer.src = nextVideoSrc;
     videoPlayer.load();
-    // play() metodu videoyu oynatır.
     videoPlayer.play().catch(error => {
-        // Otomatik oynatma hatasını yakala (genellikle tarayıcı kısıtlamaları nedeniyle olur)
         console.log("Video oynatma hatası:", error);
     });
 });
 
-// Orijinal click olayı (buton işlevi)
 zooButton.addEventListener("click", () => {
     alert("Welcome to the Jungle Zoo! 🐘🐅🦜");
 
 });
+
 
 
