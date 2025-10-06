@@ -18,7 +18,6 @@ body {
   text-align: center;
 }
 
-/* Main button */
 #zooButton {
   position: relative;
   width: 320px;
@@ -32,7 +31,6 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Background video inside button */
 #zooButton video {
   position: absolute;
   top: 0;
@@ -45,7 +43,6 @@ body {
   transition: filter 0.3s ease;
 }
 
-/* Text */
 #zooButton span {
   position: relative;
   z-index: 2;
@@ -86,3 +83,4 @@ body {
 #zooButton:hover::after {
   opacity: 1;
 }
+
