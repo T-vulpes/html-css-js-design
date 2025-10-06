@@ -1,0 +1,38 @@
+// Video elementini ve source elementini seç
+const videoPlayer = document.getElementById("videoPlayer");
+const videoSource = videoPlayer.querySelector("source");
+const zooButton = document.getElementById("zooButton");
+
+// Oynatılacak video dosyalarının listesi
+const videoFiles = ["zoo.mp4", "zoo1.mp4"];
+// Şu anda oynatılan videonun dizini
+let currentVideoIndex = 0;
+
+// Video bitince çalışacak fonksiyon
+videoPlayer.addEventListener("ended", () => {
+    // Sonraki videonun dizinini hesapla (döngü için modulo operatörü kullanıldı)
+    // Eğer 0 ise 1'e, 1 ise 0'a geçer.
+    currentVideoIndex = (currentVideoIndex + 1) % videoFiles.length;
+    
+    // Yeni video kaynağını al
+    const nextVideoSrc = videoFiles[currentVideoIndex];
+    
+    // Video kaynağını değiştir
+    // Sadece 'src' niteliği yerine 'videoSource' elementini kullanmak daha doğru bir yaklaşımdır
+    // Ancak daha basit olması ve tarayıcı uyumluluğu için bu şekilde de yapabiliriz:
+    videoPlayer.src = nextVideoSrc;
+
+    // Yeni kaynak yüklendikten sonra videoyu tekrar başlat
+    // load() metodu tarayıcıya yeni kaynağı yüklemesini söyler.
+    videoPlayer.load();
+    // play() metodu videoyu oynatır.
+    videoPlayer.play().catch(error => {
+        // Otomatik oynatma hatasını yakala (genellikle tarayıcı kısıtlamaları nedeniyle olur)
+        console.log("Video oynatma hatası:", error);
+    });
+});
+
+// Orijinal click olayı (buton işlevi)
+zooButton.addEventListener("click", () => {
+    alert("Welcome to the Jungle Zoo! 🐘🐅🦜");
+});

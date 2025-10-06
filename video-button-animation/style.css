@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top left, #0a0a0a, #1a1a1a);
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+.wrapper {
+  text-align: center;
+}
+
+/* Main button */
+#zooButton {
+  position: relative;
+  width: 320px;
+  height: 120px;
+  border: none;
+  border-radius: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  background: transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Background video inside button */
+#zooButton video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 40px;
+  filter: brightness(75%) contrast(110%);
+  transition: filter 0.3s ease;
+}
+
+/* Text */
+#zooButton span {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  font-size: 1.4em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Hover effects */
+#zooButton:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.3);
+}
+
+#zooButton:hover video {
+  filter: brightness(95%) contrast(120%);
+}
+
+/* Glowing border animation */
+#zooButton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 40px;
+  padding: 2px;
+  background: linear-gradient(90deg, #ffdd55, #ff7f00, #ffdd55);
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#zooButton:hover::after {
+  opacity: 1;
+}
