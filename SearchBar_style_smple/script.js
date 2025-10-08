@@ -6,13 +6,11 @@ const searchInput = document.getElementById("searchInput");
 const voiceBtn = document.getElementById("voiceBtn");
 const sendBtn = document.getElementById("sendBtn");
 
-// Toggle menu
 plusBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   extraMenu.classList.toggle("active");
 });
 
-// Close menu when clicking outside
 document.addEventListener("click", (e) => {
   if (!extraMenu.contains(e.target) && e.target !== plusBtn) {
     extraMenu.classList.remove("active");
@@ -76,3 +74,4 @@ sendBtn.addEventListener("click", () => {
     alert("Please enter something before sending!");
   }
 });
+
