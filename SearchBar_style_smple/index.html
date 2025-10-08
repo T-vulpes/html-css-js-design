@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Search Bar</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="search-container">
+    <div class="search-wrapper">
+      <input type="text" id="searchInput" placeholder="Type or say something..." />
+      <button id="voiceBtn" class="icon-btn">🎤</button>
+      <button id="plusBtn" class="icon-btn">➕</button>
+      <button id="sendBtn" class="icon-btn">📤</button>
+    </div>
+
+    <div class="extra-menu" id="extraMenu">
+      <button id="uploadImageBtn">📷 Upload Image</button>
+      <button id="shareLocationBtn">📍 Share Location</button>
+      <button id="openCameraBtn">📸 Open Camera</button>
+      <input type="file" id="fileInput" accept="image/*" style="display: none" />
+      <div class="upload-preview" id="preview"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
