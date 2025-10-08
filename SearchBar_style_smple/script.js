@@ -32,7 +32,6 @@ fileInput.addEventListener("change", (event) => {
   }
 });
 
-// Share location
 document.getElementById("shareLocationBtn").addEventListener("click", () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -43,7 +42,6 @@ document.getElementById("shareLocationBtn").addEventListener("click", () => {
   }
 });
 
-// Open camera (simulated)
 document.getElementById("openCameraBtn").addEventListener("click", () => {
   alert("Opening camera (simulated) 📸");
 });
@@ -71,5 +69,6 @@ sendBtn.addEventListener("click", () => {
     alert("Please enter something before sending!");
   }
 });
+
 
 
