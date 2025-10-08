@@ -17,7 +17,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Upload image
 document.getElementById("uploadImageBtn").addEventListener("click", () => {
   fileInput.click();
 });
@@ -49,7 +48,6 @@ document.getElementById("openCameraBtn").addEventListener("click", () => {
   alert("Opening camera (simulated) 📸");
 });
 
-// Voice recognition (Speech API)
 voiceBtn.addEventListener("click", () => {
   if (!("webkitSpeechRecognition" in window)) {
     alert("Speech recognition not supported in this browser!");
@@ -63,7 +61,6 @@ voiceBtn.addEventListener("click", () => {
   };
 });
 
-// Send text
 sendBtn.addEventListener("click", () => {
   const text = searchInput.value.trim();
   if (text) {
@@ -74,4 +71,5 @@ sendBtn.addEventListener("click", () => {
     alert("Please enter something before sending!");
   }
 });
+
 
