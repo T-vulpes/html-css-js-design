@@ -59,9 +59,9 @@ function getBotReply(userMsg) {
   }
 }
 
-// Konuşmayı sıfırlayan fonksiyon
 function resetChat() {
-  chatBox.innerHTML = ""; // tüm mesajları temizle
+  chatBox.innerHTML = ""; 
   addMessage("Hello 👋, how can I help you today?", "bot");
 }
+
 
