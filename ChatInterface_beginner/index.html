@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Chat Interface</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/4712/4712100.png" alt="Bot" class="bot-avatar">
+      <h2>NeonChat Assistant</h2>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+      <div class="message bot">Hello 👋, how can I help you today?</div>
+    </div>
+
+    <div class="typing-indicator" id="typingIndicator">Assistant is typing...</div>
+
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type a message..." />
+      <button id="emojiBtn">😊</button>
+      <button id="micBtn"><i class="fas fa-microphone"></i></button>
+      <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+</html>
