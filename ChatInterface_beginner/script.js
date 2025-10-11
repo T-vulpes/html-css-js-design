@@ -22,9 +22,8 @@ function sendMessage() {
     const botReply = getBotReply(message);
     addMessage(botReply, "bot");
 
-    // Eğer kullanıcı "bye" dediyse konuşmayı sıfırla
     if (message.toLowerCase().includes("bye")) {
-      setTimeout(resetChat, 2000); // 2 saniye bekle, sonra temizle
+      setTimeout(resetChat, 2000);
     }
   }, 1000);
 }
@@ -65,3 +64,4 @@ function resetChat() {
   chatBox.innerHTML = ""; // tüm mesajları temizle
   addMessage("Hello 👋, how can I help you today?", "bot");
 }
+
