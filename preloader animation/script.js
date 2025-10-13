@@ -20,14 +20,10 @@
                 }
             }, counterInterval);
 
-            // Animasyonun tamamen bitmesini bekle ve sonra loader'ı gizle
             setTimeout(() => {
                 loaderWrapper.classList.add('loader-hidden');
                 body.style.overflow = 'auto';
                 pageContent.classList.add('visible');
-            }, ANIMATION_DURATION + 500); // Animasyon bittikten 0.5 saniye sonra
+            }, ANIMATION_DURATION + 500); 
         });
-
-
-        /* ===== JAVASCRIPT KODLARI BİTİŞİ ===== */
 
