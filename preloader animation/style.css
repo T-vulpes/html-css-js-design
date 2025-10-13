@@ -31,8 +31,6 @@
             color: transparent;
             -webkit-text-stroke: 1px #444;
             position: relative;
-            
-            /* KİLİT NOKTA 1: JavaScript'ten gelen yüzde değerini burada kullanacağız */
             --fill-percentage: 0%;
         }
 
@@ -47,11 +45,7 @@
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.5), 
                          0 0 20px rgba(255, 0, 0, 0.3);
             overflow: hidden;
-
-            /* KİLİT NOKTA 2: Artık CSS animasyonu yok. Yükseklik doğrudan değişkenden geliyor. */
             height: var(--fill-percentage);
-            
-            /* Değişken her değiştiğinde yüksekliğin akıcı şekilde artması için transition ekliyoruz. */
             transition: height 0.1s linear;
         }
 
@@ -81,3 +75,4 @@
 
 
         /* ===== STİLLER (CSS) BİTİŞİ ===== */
+
