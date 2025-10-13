@@ -1,13 +1,11 @@
-        /* ===== JAVASCRIPT KODLARI BAŞLANGICI ===== */
-
-        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function() {
             const loaderWrapper = document.querySelector('.loader-wrapper');
             const percentageCounter = document.querySelector('.percentage-counter');
-            const loaderLogo = document.querySelector('.loader-logo'); // Yazıyı seçiyoruz
+            const loaderLogo = document.querySelector('.loader-logo'); 
             const body = document.querySelector('body');
             const pageContent = document.querySelector('.page-content');
             
-            const ANIMATION_DURATION = 4000; // Animasyon 4 saniye sürecek
+            const ANIMATION_DURATION = 4000; 
             const counterInterval = ANIMATION_DURATION / 100;
             
             let currentPercentage = 0;
@@ -35,5 +33,6 @@
                 pageContent.classList.add('visible');
             }, ANIMATION_DURATION + 500); // Animasyon bittikten 0.5 saniye sonra
         });
+
 
         /* ===== JAVASCRIPT KODLARI BİTİŞİ ===== */
