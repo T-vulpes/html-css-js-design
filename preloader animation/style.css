@@ -1,6 +1,4 @@
-        /* ===== STİLLER (CSS) BAŞLANGICI ===== */
-
-        body {
+      body {
             overflow: hidden;
             background-color: #f4f4f4;
         }
@@ -80,5 +78,6 @@
         .page-content.visible {
             opacity: 1;
         }
+
 
         /* ===== STİLLER (CSS) BİTİŞİ ===== */
