@@ -7,14 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         cyberButton.classList.add('is-clicked');
     });
-
-    // Butona bir 'transitionend' dinleyicisi ekle
-    // Bu, CSS transition animasyonu bittiğinde otomatik olarak çalışır
     cyberButton.addEventListener('transitionend', () => {
-        // Animasyon bittiğinde, .is-clicked sınıfını kaldır
         cyberButton.classList.remove('is-clicked');
     });
-
-
 });
-
