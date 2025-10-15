@@ -1,0 +1,84 @@
+/* ===== Cyberpunk Buton Stilleri ===== */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    background-color: #0a0a0a;
+    display: grid;
+    place-items: center;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.cyber-button {
+    position: relative;
+    padding: 15px 45px;
+    border: 2px solid #00aeff;
+    color: #00aeff;
+    font-size: 28px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00aeff, inset 0 0 10px #00aeff;
+    background-color: transparent;
+    background-image: radial-gradient(circle, #00aeff 30%, transparent 31%);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: 0% 0%;
+    transition: background-size 1.2s ease, 
+                color 1.2s ease, 
+                background-color 1.2s ease,
+                box-shadow 1.2s ease;
+    overflow: hidden;
+}
+
+/* --- Hover Glitch Efekti --- */
+.cyber-button:hover::before,
+.cyber-button:hover::after {
+    display: block;
+}
+
+.cyber-button::before,
+.cyber-button::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: #0a0a0a;
+    padding: 15px 45px;
+    box-sizing: border-box;
+}
+
+.cyber-button::before {
+    color: #ff003c;
+    animation: glitch-anim-1 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+}
+
+.cyber-button::after {
+    color: #00aeff;
+    animation: glitch-anim-2 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+}
+
+/* --- JavaScript ile Kontrol Edilen Tıklama Efekti --- */
+.cyber-button.is-clicked {
+    background-size: 300% 300%;
+    background-color: #00aeff;
+    color: #0a0a0a;
+    box-shadow: none;
+}
+
+.cyber-button.is-clicked::before,
+.cyber-button.is-clicked::after {
+    display: none;
+}
+
+/* --- Hover Glitch Animasyonları --- */
+@keyframes glitch-anim-1 {
+    0%{transform:translate(0);clip-path:inset(0 0 0 0)}20%{transform:translate(-5px,3px);clip-path:inset(50% 0 30% 0)}40%{transform:translate(3px,-2px);clip-path:inset(80% 0 5% 0)}60%{transform:translate(-4px,2px);clip-path:inset(20% 0 65% 0)}80%{transform:translate(5px,-3px);clip-path:inset(40% 0 45% 0)}100%{transform:translate(0);clip-path:inset(0 0 0 0)}
+}
+@keyframes glitch-anim-2 {
+    0%{transform:translate(0);clip-path:inset(0 0 0 0)}20%{transform:translate(5px,-3px);clip-path:inset(0 0 80% 0)}40%{transform:translate(-3px,2px);clip-path:inset(30% 0 50% 0)}60%{transform:translate(4px,-2px);clip-path:inset(60% 0 15% 0)}80%{transform:translate(-5px,3px);clip-path:inset(25% 0 55% 0)}100%{transform:translate(0);clip-path:inset(0 0 0 0)}
+}
