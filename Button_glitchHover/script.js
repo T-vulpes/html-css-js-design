@@ -2,13 +2,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const cyberButton = document.querySelector('.cyber-button');
     cyberButton.addEventListener('click', (e) => {
         e.preventDefault();
-
-        // Eğer animasyon zaten çalışıyorsa, tekrar tetiklenmesini engelle
         if (cyberButton.classList.contains('is-clicked')) {
             return;
         }
-
-        // Animasyonu başlatmak için .is-clicked sınıfını ekle
         cyberButton.classList.add('is-clicked');
     });
 
@@ -21,3 +17,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 });
+
