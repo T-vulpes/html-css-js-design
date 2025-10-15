@@ -59,7 +59,6 @@ html, body {
     animation: glitch-anim-2 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
 }
 
-/* --- JavaScript ile Kontrol Edilen Tıklama Efekti --- */
 .cyber-button.is-clicked {
     background-size: 300% 300%;
     background-color: #00aeff;
@@ -72,7 +71,6 @@ html, body {
     display: none;
 }
 
-/* --- Hover Glitch Animasyonları --- */
 @keyframes glitch-anim-1 {
     0%{transform:translate(0);clip-path:inset(0 0 0 0)}20%{transform:translate(-5px,3px);clip-path:inset(50% 0 30% 0)}40%{transform:translate(3px,-2px);clip-path:inset(80% 0 5% 0)}60%{transform:translate(-4px,2px);clip-path:inset(20% 0 65% 0)}80%{transform:translate(5px,-3px);clip-path:inset(40% 0 45% 0)}100%{transform:translate(0);clip-path:inset(0 0 0 0)}
 }
@@ -80,3 +78,4 @@ html, body {
     0%{transform:translate(0);clip-path:inset(0 0 0 0)}20%{transform:translate(5px,-3px);clip-path:inset(0 0 80% 0)}40%{transform:translate(-3px,2px);clip-path:inset(30% 0 50% 0)}60%{transform:translate(4px,-2px);clip-path:inset(60% 0 15% 0)}80%{transform:translate(-5px,3px);clip-path:inset(25% 0 55% 0)}100%{transform:translate(0);clip-path:inset(0 0 0 0)}
 
 }
+
