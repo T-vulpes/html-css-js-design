@@ -1,11 +1,6 @@
-// Sayfa içeriği tamamen yüklendiğinde bu kodun çalışmasını bekle
 document.addEventListener("DOMContentLoaded", function() {
-
     const cyberButton = document.querySelector('.cyber-button');
-
-    // Butona bir 'click' dinleyicisi ekle
     cyberButton.addEventListener('click', (e) => {
-        // Buton bir link olduğu için sayfanın yenilenmesini engelle
         e.preventDefault();
 
         // Eğer animasyon zaten çalışıyorsa, tekrar tetiklenmesini engelle
@@ -23,5 +18,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // Animasyon bittiğinde, .is-clicked sınıfını kaldır
         cyberButton.classList.remove('is-clicked');
     });
+
 
 });
