@@ -87,7 +87,6 @@ body {
     animation: sway 2.2s infinite ease-in-out;
 }
 
-/* Askı kancası */
 .clothing-item::before {
     content: '';
     position: absolute;
@@ -103,7 +102,6 @@ body {
     background-color: transparent;
 }
 
-/* Kıyafet şekilleri */
 .shirt-shape {
     width: 100%;
     height: 100%;
@@ -169,4 +167,5 @@ body {
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+
 
