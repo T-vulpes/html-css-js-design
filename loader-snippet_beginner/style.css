@@ -25,7 +25,6 @@ body {
     visibility: hidden;
 }
 
-/* Askılık */
 .clothing-rack-defined {
     width: 260px;
     height: 140px;
@@ -69,7 +68,6 @@ body {
     transform: translateX(-50%);
 }
 
-/* Kıyafetler */
 .rack-items-container {
     display: flex;
     justify-content: space-around;
@@ -171,3 +169,4 @@ body {
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+
