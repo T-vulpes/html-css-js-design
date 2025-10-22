@@ -58,16 +58,13 @@ body {
     }
 }
 
-
-/* Dalga halkaları */
 .ripple {
     position: absolute;
     width: 200px;  
     height: 200px; 
-    border: 2px solid #333; /* Halka rengi */
-    border-radius: 50%; /* Daire şekli */
+    border: 2px solid #333; 
+    border-radius: 50%; 
     
-    /* Animasyon için başlangıç değerleri */
     transform: scale(0); /* Başlangıçta boyutu 0 */
     opacity: 1; /* Başlangıçta görünür */
 
@@ -107,5 +104,6 @@ body {
     text-transform: uppercase;
 
 }
+
 
 
