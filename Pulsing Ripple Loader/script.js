@@ -1,7 +1,4 @@
-// Sayfanın tüm içeriği (resimler dahil) yüklendiğinde bu fonksiyonu çalıştır
 window.addEventListener('load', function() {
-    
-    // Gerekli elementleri seç
     const loaderContainer = document.getElementById('loader-container');
     const body = document.body;
 
@@ -10,4 +7,5 @@ window.addEventListener('load', function() {
     
     // Loader gizlendikten sonra sayfanın tekrar kaydırılabilmesini sağla
     body.style.overflow = 'auto'; 
+
 });
