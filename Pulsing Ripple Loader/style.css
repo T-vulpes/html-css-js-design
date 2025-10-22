@@ -87,15 +87,14 @@ body {
 }
 
 
-/* Dalga animasyon Keyframes */
 @keyframes ripple-effect {
     from {
-        transform: scale(0); /* 0'dan başla */
+        transform: scale(0); 
         opacity: 1;
     }
     to {
-        transform: scale(1); /* 1'e kadar büyü (yani 200px'e) */
-        opacity: 0; /* Büyüdükçe kaybolur */
+        transform: scale(1); 
+        opacity: 0; 
     }
 }
 
@@ -108,4 +107,5 @@ body {
     text-transform: uppercase;
 
 }
+
 
