@@ -3,7 +3,6 @@ const passwordInput = document.getElementById('password-input');
 const highlighter = document.getElementById('highlighter');
 const hoverTrigger = document.getElementById('hover-trigger');
 
-// Fare görünmez alanın üzerine geldiğinde
 hoverTrigger.addEventListener('mouseover', function() {
     passwordInput.setAttribute('type', 'text');
     passwordInput.classList.add('visible');
@@ -18,3 +17,4 @@ hoverTrigger.addEventListener('mouseout', function() {
     highlighter.classList.remove('expanded');
     inputContainer.classList.remove('container-active');
 });
+
