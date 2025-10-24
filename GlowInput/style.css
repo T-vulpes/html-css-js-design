@@ -1,0 +1,103 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #111;
+    font-family: 'Arial', sans-serif;
+}
+
+.input-container {
+    position: relative;
+    width: 320px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #444;
+    transition: border-color 0.4s ease;
+}
+
+/* JS ile eklenecek aktif sınıfı */
+.input-container.container-active {
+    border-color: #00c6ff;
+}
+
+/* Katman 1: Arka plan */
+.input-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    z-index: 1;
+}
+
+/* Katman 2: Sihirli Daire */
+.highlighter-effect {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%) scale(1);
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border-radius: 50%;
+    z-index: 2;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    animation: pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 4px 0px rgba(0, 198, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 8px 6px rgba(0, 198, 255, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 4px 0px rgba(0, 198, 255, 0.3);
+    }
+}
+
+/* Genişleyen daire */
+.highlighter-effect.expanded {
+    transform: translateY(-50%) scale(40);
+}
+
+/* Katman 3: Input alanı */
+#password-input {
+    width: 100%;
+    padding: 20px 50px 20px 20px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    background-color: transparent;
+    position: relative;
+    z-index: 3;
+    text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    color: #777;
+    letter-spacing: 3px;
+    transition: letter-spacing 0.4s ease, color 0.4s ease;
+}
+
+#password-input.visible {
+    color: #fff;
+    letter-spacing: normal;
+}
+
+#password-input::placeholder {
+    color: #555;
+    letter-spacing: normal;
+}
+
+/* Katman 4: Görünmez tetikleyici */
+.hover-area {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 100%;
+    cursor: pointer;
+    z-index: 4;
+}
