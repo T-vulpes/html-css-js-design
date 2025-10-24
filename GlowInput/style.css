@@ -86,7 +86,6 @@ body {
     letter-spacing: normal;
 }
 
-/* Katman 4: Görünmez tetikleyici */
 .hover-area {
     position: absolute;
     top: 0;
@@ -96,5 +95,3 @@ body {
     cursor: pointer;
     z-index: 4;
 }
-
-
