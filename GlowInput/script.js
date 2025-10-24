@@ -10,11 +10,9 @@ hoverTrigger.addEventListener('mouseover', function() {
     inputContainer.classList.add('container-active');
 });
 
-// Fare görünmez alandan ayrıldığında
 hoverTrigger.addEventListener('mouseout', function() {
     passwordInput.setAttribute('type', 'password');
     passwordInput.classList.remove('visible');
     highlighter.classList.remove('expanded');
     inputContainer.classList.remove('container-active');
 });
-
