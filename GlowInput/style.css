@@ -30,7 +30,6 @@ body {
     z-index: 1;
 }
 
-/* Katman 2: Sihirli Daire */
 .highlighter-effect {
     position: absolute;
     top: 50%;
@@ -57,12 +56,10 @@ body {
     }
 }
 
-/* Genişleyen daire */
 .highlighter-effect.expanded {
     transform: translateY(-50%) scale(40);
 }
 
-/* Katman 3: Input alanı */
 #password-input {
     width: 100%;
     padding: 20px 50px 20px 20px;
@@ -99,4 +96,5 @@ body {
     cursor: pointer;
     z-index: 4;
 }
+
 
