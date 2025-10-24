@@ -16,12 +16,10 @@ body {
     transition: border-color 0.4s ease;
 }
 
-/* JS ile eklenecek aktif sınıfı */
 .input-container.container-active {
     border-color: #00c6ff;
 }
 
-/* Katman 1: Arka plan */
 .input-bg {
     position: absolute;
     top: 0;
@@ -101,3 +99,4 @@ body {
     cursor: pointer;
     z-index: 4;
 }
+
