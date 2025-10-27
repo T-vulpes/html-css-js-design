@@ -118,8 +118,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 4px 0 #7b241c;
-    
+    box-shadow: 0 4px 0 #7b241c;    
     transition: all 0.1s ease-out;
 }
 
@@ -128,9 +127,9 @@ body {
     box-shadow: 0 2px 0 #7b241c;
     background-color: #e74c3c;
     box-shadow: 0 2px 0 #7b241c, 
-                inset 0 0 5px rgba(255,255,255,0.4);
-
+    inset 0 0 5px rgba(255,255,255,0.4);
 }
+
 
 
 
