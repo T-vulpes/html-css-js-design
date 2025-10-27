@@ -1,29 +1,23 @@
-// DOM elementlerini seç
 const realInput = document.getElementById('real-input');
 const displayArea = document.getElementById('display-area');
-const toggle = document.getElementById('visibility-toggle'); // ID hala aynı
+const toggle = document.getElementById('visibility-toggle'); 
 
-// Kullanıcı tıkladığında gizli input'a odaklan
 displayArea.addEventListener('click', () => {
     realInput.focus();
 });
 
-// Kullanıcı yazdıkça "harf plakalarını" oluştur
 realInput.addEventListener('input', (e) => {
     const existingChars = displayArea.querySelectorAll('.char');
     existingChars.forEach(char => char.remove());
     
     const value = e.target.value;
-    // YENİ: Butonun durumunu .toggled sınıfı üzerinden kontrol et
     const isVisible = toggle.classList.contains('toggled'); 
-
     for (let i = 0; i < value.length; i++) {
         const char = value[i];
-        
+
         const charElement = document.createElement('div');
         charElement.classList.add('char');
         charElement.style.transitionDelay = `${i * 40}ms`;
-
         if (isVisible) {
             charElement.classList.add('visible');
         }
@@ -38,7 +32,6 @@ realInput.addEventListener('input', (e) => {
 
         charElement.appendChild(frontFace);
         charElement.appendChild(backFace);
-        
         displayArea.insertBefore(charElement, realInput);
     }
     
@@ -62,4 +55,5 @@ toggle.addEventListener('click', () => {
             char.classList.remove('visible');
         }
     });
+
 });
