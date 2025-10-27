@@ -95,26 +95,24 @@ body {
     transform: rotateX(180deg);
 }
 
-/* YENİ: Nostaljik Basmalı Buton */
 .latching-button {
-    width: 44px; /* Biraz büyüttük */
+    width: 44px;
     height: 44px;
-    background-color: #333; /* Dış çerçeve */
+    background-color: #333;
     border-radius: 50%;
     border: 2px solid #111;
     padding: 0;
     cursor: pointer;
     position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4); /* Dış gölge */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4); 
     outline: none;
 }
 
-/* Butonun 3D görünen üst kısmı */
 .button-top {
     display: block;
     width: 32px;
     height: 32px;
-    background-color: #c0392b; /* Koyu Kırmızı (Kapalı) */
+    background-color: #c0392b; 
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -140,4 +138,5 @@ body {
                 inset 0 0 5px rgba(255,255,255,0.4);
 
 }
+
 
