@@ -10,10 +10,9 @@ body {
 .input-container {
     display: flex;
     align-items: center;
-    gap: 25px; /* Buton için biraz daha yer açtık */
+    gap: 25px; 
 }
 
-/* Input'un göründüğü alan (Ağır Metal Plaka) */
 .fake-input-display {
     position: relative;
     width: 380px;
@@ -30,7 +29,6 @@ body {
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* Gerçek ama görünmez olan input */
 .real-input {
     position: absolute;
     top: 0;
@@ -143,4 +141,5 @@ body {
     /* İçine hafif bir parlama ekle */
     box-shadow: 0 2px 0 #7b241c, 
                 inset 0 0 5px rgba(255,255,255,0.4);
+
 }
