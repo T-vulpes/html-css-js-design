@@ -50,7 +50,6 @@ body {
     color: rgba(255, 255, 255, 0.2);
 }
 
-/* Her bir harf/karakter için stil */
 .char {
     display: inline-block;
     position: relative;
@@ -80,14 +79,12 @@ body {
     box-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-/* Ön yüz (Paslı Metal) */
 .char-front {
     background: linear-gradient(135deg, #7a3b1e 0%, #a9552b 50%, #5a2a14 100%);
     color: #222;
     transform: rotateX(0deg);
 }
 
-/* Arka yüz (Temiz Sarı Metal) */
 .char-back {
     background: #fdd835;
     color: #111;
@@ -143,3 +140,4 @@ body {
                 inset 0 0 5px rgba(255,255,255,0.4);
 
 }
+
