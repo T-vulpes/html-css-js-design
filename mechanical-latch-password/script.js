@@ -38,16 +38,11 @@ realInput.addEventListener('input', (e) => {
     realInput.focus();
 });
 
-// YENİ: Butona tıklandığında ('change' yerine 'click')
 toggle.addEventListener('click', () => {
-    // Butonun 'toggled' sınıfını değiştir
     toggle.classList.toggle('toggled');
-
-    // Yeni durumu kontrol et
     const isVisible = toggle.classList.contains('toggled');
     const allChars = displayArea.querySelectorAll('.char');
 
-    // Mevcut tüm harfleri çevir
     allChars.forEach(char => {
         if (isVisible) {
             char.classList.add('visible');
@@ -55,5 +50,5 @@ toggle.addEventListener('click', () => {
             char.classList.remove('visible');
         }
     });
-
 });
+
