@@ -117,26 +117,20 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    
-    /* Başlangıç (kalkık) durumu */
     transform: translate(-50%, -50%);
-    box-shadow: 0 4px 0 #7b241c; /* Kalınlık/Gölge */
+    box-shadow: 0 4px 0 #7b241c;
     
     transition: all 0.1s ease-out;
 }
 
-/* BUTONUN "BASILI KALMA" (AÇIK) DURUMU */
 .latching-button.toggled .button-top {
-    /* Butonu 2px aşağı indir */
     transform: translate(-50%, -40%);
-    /* Kalınlık/Gölgeyi azalt */
     box-shadow: 0 2px 0 #7b241c;
-    /* Rengi parlat */
     background-color: #e74c3c;
-    /* İçine hafif bir parlama ekle */
     box-shadow: 0 2px 0 #7b241c, 
                 inset 0 0 5px rgba(255,255,255,0.4);
 
 }
+
 
 
