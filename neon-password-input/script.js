@@ -11,12 +11,10 @@ toggleEye.addEventListener('click', () => {
         passwordInput.classList.remove('visible');
         pupil.style.transform = 'translate(-50%, -50%)';
     } else {
-        // Göster
         passwordInput.setAttribute('type', 'text');
         passwordInput.classList.add('visible');
     }
 });
-
 
 function movePupil(event) {
     if (toggleEye.classList.contains('closed')) {
@@ -30,15 +28,14 @@ function movePupil(event) {
     const mouseY = event.clientY;
 
     const angle = Math.atan2(mouseY - eyeCenterY, mouseX - eyeCenterX);
-    
     const maxPupilMoveX = (eyeRect.width / 2) - (pupil.offsetWidth / 2) - 2; 
     const maxPupilMoveY = (eyeRect.height / 2) - (pupil.offsetHeight / 2) - 2;
 
     let pupilX = Math.cos(angle) * maxPupilMoveX;
     let pupilY = Math.sin(angle) * maxPupilMoveY;
-    
     pupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
 }
 
 window.addEventListener('mousemove', movePupil);
+
 
