@@ -78,17 +78,13 @@ body {
     transition: transform 0.05s linear; 
 }
 
-/* 1. DÜZELTME: Göz kapağı pembe oldu */
 .eyelid {
     position: absolute;
     top: -2px;
     left: -2px;
     width: calc(100% + 4px);
-    height: 0%;
-    
-    /* Arka plan gradyanından pembe bir renk aldı */
+    height: 0%; 
     background: #f5576c; 
-    
     border-radius: 50% 50% 0 0;
     z-index: 10;
     transition: height 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -96,4 +92,5 @@ body {
 
 .tracking-eye.closed .eyelid {
     height: 100%;
+
 }
