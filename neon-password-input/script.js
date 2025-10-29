@@ -1,19 +1,14 @@
-// --- Elementleri Seç ---
 const passwordInput = document.getElementById('password-input');
 const toggleEye = document.getElementById('toggle-eye');
 const pupil = document.getElementById('pupil');
 
-// --- 1. Göz Kırpma (Blink) Mekanizması (Tıklama) ---
 toggleEye.addEventListener('click', () => {
     toggleEye.classList.toggle('closed');
     const isClosed = toggleEye.classList.contains('closed');
     
     if (isClosed) {
-        // Gizle
         passwordInput.setAttribute('type', 'password');
         passwordInput.classList.remove('visible');
-        
-        // GÖZ KAPANIRKEN: Göz bebeğini aniden merkeze al
         pupil.style.transform = 'translate(-50%, -50%)';
     } else {
         // Göster
@@ -47,5 +42,6 @@ function movePupil(event) {
     
     pupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
 }
+
 
 window.addEventListener('mousemove', movePupil);
