@@ -17,13 +17,10 @@ toggleEye.addEventListener('click', () => {
     }
 });
 
-// --- 2. Göz Bebeği Takip (Mouse Move) Mekanizması ---
 
 function movePupil(event) {
-    
-    // 2. DÜZELTME: Göz kapalıysa, göz bebeğini HAREKET ETTİRME.
     if (toggleEye.classList.contains('closed')) {
-        return; // Fonksiyondan hemen çık
+        return; 
     }
     
     const eyeRect = toggleEye.getBoundingClientRect();
@@ -43,5 +40,5 @@ function movePupil(event) {
     pupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
 }
 
-
 window.addEventListener('mousemove', movePupil);
+
