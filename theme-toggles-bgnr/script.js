@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleModeChange(clickedToggleId) {
-        
         toggles.forEach(toggle => {
             if (!toggle.label) return;
             if (toggle.id === clickedToggleId) {
@@ -82,4 +81,5 @@ document.addEventListener("DOMContentLoaded", () => {
         handleModeChange(null);
     }
 });
+
 
