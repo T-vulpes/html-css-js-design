@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Tüm anahtarlara 'change' olay dinleyicisi ekle
     toggles.forEach(toggle => {
         if (toggle.element) {
             toggle.element.addEventListener('change', () => {
@@ -71,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 5. Sayfa Yüklendiğinde Başlangıç Durumunu Ayarla
     let activeToggleFound = false;
     toggles.forEach(toggle => {
         if (toggle.element && toggle.element.checked && !activeToggleFound) {
@@ -85,7 +83,4 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!activeToggleFound) {
         handleModeChange(null);
     }
-
 });
-
-
