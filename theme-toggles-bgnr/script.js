@@ -1,10 +1,5 @@
-// script.js
-
-document.addEventListener("DOMContentLoaded", () => {
-    
+document.addEventListener("DOMContentLoaded", () => {    
     const body = document.body;
-
-    // 1. Dört mod anahtarının tümünü tanımla
     const toggles = [
         {
             id: 'theme-toggle', // Dark Mode
@@ -99,4 +94,5 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!activeToggleFound) {
         handleModeChange(null);
     }
+
 });
