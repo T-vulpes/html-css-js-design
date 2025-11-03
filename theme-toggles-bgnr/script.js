@@ -37,22 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 3. Ana Mod Değiştirme Fonksiyonu
     function handleModeChange(clickedToggleId) {
         
         toggles.forEach(toggle => {
-            // Label'ın null olup olmadığını kontrol et
             if (!toggle.label) return;
-
             if (toggle.id === clickedToggleId) {
-                // Bu, tıklanan anahtar.
                 if (!toggle.element.checked) {
-                    // "Kapatmak" için tıklandıysa
                     body.classList.remove(toggle.bodyClass);
                     toggle.label.classList.remove('is-active');
                     updateToggleText(toggle, false);
                 } else {
-                    // "Açmak" için tıklandıysa
                     body.classList.add(toggle.bodyClass);
                     toggle.label.classList.add('is-active');
                     updateToggleText(toggle, true);
@@ -93,4 +87,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
 
