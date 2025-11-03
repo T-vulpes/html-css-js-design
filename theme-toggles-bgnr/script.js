@@ -31,13 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // 2. Metinleri güncelleyen yardımcı fonksiyon
     function updateToggleText(toggle, isActive) {
-        // Sadece 'Dark Mode' anahtarının metnini değiştiriyoruz
         if (toggle.id === 'theme-toggle' && toggle.textElement) {
             toggle.textElement.textContent = isActive ? "Light Mode" : "Dark Mode";
         }
-        // Diğer metinler statiktir
     }
 
     // 3. Ana Mod Değiştirme Fonksiyonu
@@ -96,3 +93,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
