@@ -1,6 +1,3 @@
-/* style.css */
-
-/* === TEMEL RENK DEĞİŞKENLERİ === */
 :root {
     --bg-color: #f1f5f9;
     --text-color: #0f172a;
@@ -10,21 +7,18 @@
     --color-slider: #ffffff;
     --theme-transition: all 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 
-    /* Ana Tema (Mor) */
     --color-on-primary: #6D28D9;
     --color-on-secondary: #C4B5FD;
     --gradient-on: linear-gradient(90deg, var(--color-on-primary) 0%, var(--color-on-secondary) 100%);
     --glow-on: rgba(109, 40, 217, 0.4);
     --toggle-text-active: var(--color-on-primary);
 
-    /* Başarı Teması (Yeşil) */
     --color-success-primary: #10B981;
     --color-success-secondary: #6EE7B7;
     --gradient-success: linear-gradient(90deg, var(--color-success-primary) 0%, var(--color-success-secondary) 100%);
     --glow-success: rgba(16, 185, 129, 0.4);
     --toggle-text-success: var(--color-success-primary);
     
-    /* Uyarı Teması (Turuncu) */
     --color-warning-primary: #F59E0B;
     --color-warning-secondary: #FCD34D;
     --gradient-warning: linear-gradient(90deg, var(--color-warning-primary) 0%, var(--color-warning-secondary) 100%);
@@ -32,7 +26,6 @@
     --toggle-text-warning: var(--color-warning-primary);
 }
 
-/* === MODLAR === */
 body.dark-mode {
     --bg-color: #1e293b;
     --text-color: #f1f5f9;
@@ -210,4 +203,5 @@ body {
 .warning-toggle-label .icon-on { color: var(--color-warning-primary); } /* Ünlem: Turuncu */
 .warning-toggle-label .toggle-input:checked + .toggle-switch .slider {
     background-color: #fffbeb; /* Çok açık sarı top */
+
 }
