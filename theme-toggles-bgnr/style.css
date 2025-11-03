@@ -179,23 +179,22 @@ body {
     background-color: #1e293b; /* Koyu top */
 }
 
-/* 3. Success Mode */
 .success-toggle-label.is-active { color: var(--toggle-text-success); }
 .success-toggle-label .toggle-input:checked + .toggle-switch {
     background-image: var(--gradient-success); box-shadow: 0 0 20px var(--glow-success);
 }
 .success-toggle-label .icon-off { color: #ef4444; } /* X: Kırmızı */
-.success-toggle-label .icon-on { color: var(--color-success-primary); } /* Tik: Yeşil */
+.success-toggle-label .icon-on { color: var(--color-success-primary); } 
 
-/* 4. Warning Mode */
 .warning-toggle-label.is-active { color: var(--toggle-text-warning); }
 .warning-toggle-label .toggle-input:checked + .toggle-switch {
     background-image: var(--gradient-warning); box-shadow: 0 0 20px var(--glow-warning);
 }
-.warning-toggle-label .icon-off { color: #4b5563; } /* Kalkan: Gri */
-.warning-toggle-label .icon-on { color: var(--color-warning-primary); } /* Ünlem: Turuncu */
+.warning-toggle-label .icon-off { color: #4b5563; } 
+.warning-toggle-label .icon-on { color: var(--color-warning-primary); } 
 .warning-toggle-label .toggle-input:checked + .toggle-switch .slider {
-    background-color: #fffbeb; /* Çok açık sarı top */
+    background-color: #fffbeb;
 
 }
+
 
