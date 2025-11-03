@@ -149,7 +149,6 @@ body {
     transform: scale(1) rotate(0deg);
     opacity: 1;
 }
-/* Anahtar AÇIK (checked) olduğunda topu (slider) kaydır */
 .toggle-input:checked + .toggle-switch .slider {
     transform: translateX(36px);
 }
@@ -175,7 +174,7 @@ body {
 .success-toggle-label .toggle-input:checked + .toggle-switch {
     background-image: var(--gradient-success); box-shadow: 0 0 20px var(--glow-success);
 }
-.success-toggle-label .icon-off { color: #ef4444; } /* X: Kırmızı */
+.success-toggle-label .icon-off { color: #ef4444; } 
 .success-toggle-label .icon-on { color: var(--color-success-primary); } 
 
 .warning-toggle-label.is-active { color: var(--toggle-text-warning); }
@@ -188,6 +187,7 @@ body {
     background-color: #fffbeb;
 
 }
+
 
 
 
