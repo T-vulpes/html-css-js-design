@@ -121,30 +121,26 @@ body {
     left: 4px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    
-    /* İkonları ortalamak için */
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 }
 
-/* === GENEL İKON STİLLERİ === */
 .icon {
     position: absolute;
     width: 24px;
     height: 24px;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Zıplama efekti */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .icon-off {
     transform: scale(1) rotate(0deg);
     opacity: 1;
 }
 .icon-on {
-    transform: scale(0) rotate(-90deg); /* Başlangıçta gizli, küçük ve dönük */
+    transform: scale(0) rotate(-90deg); 
     opacity: 0;
 }
-/* Anahtar AÇIK (checked) olduğunda ikonları değiştir */
 .toggle-input:checked + .toggle-switch .icon-off {
     transform: scale(0) rotate(90deg);
     opacity: 0;
@@ -196,5 +192,6 @@ body {
     background-color: #fffbeb;
 
 }
+
 
 
