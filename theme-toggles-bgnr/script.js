@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateToggleText(toggle, true);
                 }
             } else {
-                // Bu, tıklanmayan diğer anahtar.
-                // Zorla kapat.
                 toggle.element.checked = false;
                 body.classList.remove(toggle.bodyClass);
                 toggle.label.classList.remove('is-active');
@@ -84,3 +82,4 @@ document.addEventListener("DOMContentLoaded", () => {
         handleModeChange(null);
     }
 });
+
