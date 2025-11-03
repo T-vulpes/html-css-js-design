@@ -154,25 +154,21 @@ body {
     transform: translateX(36px);
 }
 
-/* === ANAHTAR ÖZEL STİLLERİ (Renkler ve Aktif Durumlar) === */
-
-/* 1. Dark Mode */
 .giant-toggle-label.is-active { color: var(--toggle-text-active); }
 .giant-toggle-label .toggle-input:checked + .toggle-switch {
     background-image: var(--gradient-on); box-shadow: 0 0 20px var(--glow-on);
 }
-.giant-toggle-label .icon-off { color: #f59e0b; } /* Güneş: Sarı */
-.giant-toggle-label .icon-on { color: #a5b4fc; } /* Ay: Açık İndigo */
+.giant-toggle-label .icon-off { color: #f59e0b; } 
+.giant-toggle-label .icon-on { color: #a5b4fc; } 
 
-/* 2. High Contrast */
 .icon-toggle-label.is-active { color: var(--toggle-text-active); }
 .icon-toggle-label .toggle-input:checked + .toggle-switch {
     background-color: #312e81;
 }
-.icon-toggle-label .icon-off { color: #94a3b8; } /* Göz (Kapalı): Gri */
-.icon-toggle-label .icon-on { color: #38bdf8; } /* Göz (Açık): Parlak Mavi */
+.icon-toggle-label .icon-off { color: #94a3b8; } 
+.icon-toggle-label .icon-on { color: #38bdf8; } 
 .icon-toggle-label .toggle-input:checked + .toggle-switch .slider {
-    background-color: #1e293b; /* Koyu top */
+    background-color: #1e293b; 
 }
 
 .success-toggle-label.is-active { color: var(--toggle-text-success); }
@@ -192,6 +188,7 @@ body {
     background-color: #fffbeb;
 
 }
+
 
 
 
