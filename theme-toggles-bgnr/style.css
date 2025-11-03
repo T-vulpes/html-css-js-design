@@ -67,7 +67,6 @@ body.warning-mode {
     --toggle-text-warning: var(--color-warning-primary);
 }
 
-/* === GENEL SAYFA STİLLERİ === */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -88,10 +87,6 @@ body {
     align-items: flex-start;
 }
 .toggle-input { display: none; }
-
-
-/* === GENEL ANAHTAR STİLLERİ === */
-/* Tüm label'lar için temel stil */
 .giant-toggle-label,
 .icon-toggle-label,
 .success-toggle-label,
@@ -106,7 +101,6 @@ body {
     transition: color 0.3s ease;
 }
 
-/* Tüm 'ray' (switch) stilleri */
 .toggle-switch {
     width: 80px;
     height: 44px;
@@ -117,7 +111,6 @@ body {
     transition: all 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
 
-/* Tüm 'top' (slider) stilleri */
 .slider {
     position: absolute;
     width: 36px;
@@ -205,3 +198,4 @@ body {
     background-color: #fffbeb; /* Çok açık sarı top */
 
 }
+
