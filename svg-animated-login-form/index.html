@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Login Page (Vibrant Modern Flower Theme)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base Page Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+            background-color: #fce4ec; /* Açık morumsu pembe */
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; 
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            width: 950px; /* Konteynerı daha da genişlettik */
+            height: 600px; /* Konteynerı daha da yükselttik */
+            background-color: #ffffff;
+            border-radius: 25px; /* Daha yumuşak, modern köşeler */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18); /* Daha belirgin ve yaygın gölge */
+            overflow: hidden; 
+        }
+
+        /* Left Panel (Flowers) */
+        .left-panel {
+            flex: 1.5; /* Çiçek paneline daha fazla genişlik */
+            /* Daha canlı ve yumuşak degrade */
+            background: linear-gradient(to bottom, #bbdefb, #e3f2fd, #c8e6c9); 
+            border-right: 1px solid #e0e0e0; /* Daha ince kenarlık */
+            position: relative; 
+            display: flex;
+            flex-wrap: nowrap; 
+            justify-content: center; 
+            align-items: flex-end; 
+            padding-bottom: 10px; /* Çiçeklerin biraz daha yukarıda durması için */
+            overflow: hidden; 
+        }
+
+        /* Right Panel (Form) */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px; /* Daha fazla padding */
+            background-color: #fce4ec; /* Login paneli için arka planla uyumlu pembe */
+        }
+
+        /* SVG Flowers */
+        .flower-svg {
+            position: relative;
+            margin: 0 -35px; /* Çiçekler daha da üst üste binsin */
+            height: 100%; 
+            width: 110px; /* Çiçeklerin temel alanı büyütüldü */
+            overflow: visible; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; 
+            align-items: center;
+            z-index: 1; 
+            animation: sway 5s ease-in-out infinite alternate; /* Hafif sallanma animasyonu */
+        }
+
+        /* Her çiçeğe farklı animasyon başlangıç gecikmesi */
+        #flower1 { z-index: 10; animation-delay: 0s; } 
+        #flower2 { z-index: 9; animation-delay: 0.5s; }
+        #flower3 { z-index: 8; animation-delay: 1s; }
+        #flower4 { z-index: 7; animation-delay: 1.5s; }
+        #flower5 { z-index: 6; animation-delay: 2s; }
+        #flower6 { z-index: 5; animation-delay: 2.5s; }
+        #flower7 { z-index: 4; animation-delay: 3s; }
+        #flower8 { z-index: 3; animation-delay: 3.5s; }
+        #flower9 { z-index: 2; animation-delay: 4s; }
+        #flower10 { z-index: 1; animation-delay: 4.5s; }
+
+        @keyframes sway {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(2deg); }
+        }
+
+        .flower-svg svg {
+            display: block;
+            width: 100%; 
+            height: auto;
+            position: relative;
+            bottom: 0; 
+            overflow: visible;
+        }
+
+        /* Flower Colors and Outlines (Daha ince hatlar için stroke-width düşürüldü) */
+        .flower-petal {
+            fill: #ffadad; 
+            stroke: #333; 
+            stroke-width: 0.5; /* Daha modern ve minimal */
+            transition: transform 0.3s ease;
+        }
+        .stem-line {
+            fill: #a2d2a8; /* Açık yeşil sap */
+            stroke: #333;
+            stroke-width: 0.5; /* Daha modern ve minimal */
+            stroke-linecap: round;
+        }
+        .leaf-line {
+            fill: #a2d2a8; /* Açık yeşil yaprak */
+            stroke: #333;
+            stroke-width: 0.5; /* Daha modern ve minimal */
+        }
+
+        /* Eyes and Mouth (Daha büyük ve belirgin) */
+        .eye-svg {
+            fill: white;
+            stroke: black;
+            stroke-width: 0.8; /* Göz kenarlıkları da inceltildi */
+        }
+        .pupil-svg {
+            fill: black;
+            transition: transform 0.2s linear; 
+            transform-origin: center; 
+        }
+        .mouth-svg {
+            fill: none;
+            stroke: black;
+            stroke-width: 0.8; /* Ağız çizgisi de inceltildi */
+            stroke-linecap: round;
+        }
+        .face-bg {
+             fill: #ffffff; 
+             opacity: 0.9; /* Yüz arka planı daha az şeffaf */
+        }
+
+        /* Specific Flower Colors (Daha fazla renk çeşitliliği) */
+        #flower1 .flower-petal { fill: #ffadad; } /* Pembe */
+        #flower2 .flower-petal { fill: #ffd6a5; } /* Turuncu */
+        #flower3 .flower-petal { fill: #a0c4ff; } /* Mavi */
+        #flower4 .flower-petal { fill: #bdb2ff; } /* Mor */
+        #flower5 .flower-petal { fill: #fff1a0; } /* Sarı */
+        #flower6 .flower-petal { fill: #ffc6ff; } /* Açık Mor */
+        #flower7 .flower-petal { fill: #caffbf; } /* Açık Yeşil */
+        #flower8 .flower-petal { fill: #ffb3d9; } /* Daha koyu pembe */
+        #flower9 .flower-petal { fill: #ffdfba; } /* Açık şeftali */
+        #flower10 .flower-petal { fill: #bae1ff; } /* Daha açık mavi */
+
+
+        /* Form Styles */
+        .form-container { width: 100%; max-width: 350px; } /* Form alanı biraz genişletildi */
+        .form-container h2 { 
+            text-align: center; 
+            color: #d9534f; 
+            margin-bottom: 30px; /* Başlık alt boşluğu artırıldı */
+            font-size: 2.2em; /* Başlık boyutu büyütüldü */
+            font-weight: 600; /* Daha belirgin font */
+        }
+        .input-group { margin-bottom: 25px; position: relative; } /* Input grupları arası boşluk artırıldı */
+        .input-group label { display: block; margin-bottom: 8px; color: #555; font-size: 0.95em; } /* Label font boyutu */
+        .input-group input { 
+            width: 100%; 
+            padding: 12px 15px; /* Input padding'i artırıldı */
+            border: 1px solid #ffcdd2; 
+            border-radius: 8px; /* Daha yumuşak input köşeleri */
+            box-sizing: border-box; 
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1.05em; /* Input font boyutu */
+        }
+        .input-group input:focus {
+            border-color: #ff8a80; 
+            box-shadow: 0 0 8px rgba(255, 138, 128, 0.3); /* Fokuslandığında hafif gölge */
+            outline: none;
+        }
+
+        #togglePassword { 
+            position: absolute; 
+            right: 15px; /* İkon pozisyonu ayarlandı */
+            top: 45px; /* İkon pozisyonu ayarlandı */
+            cursor: pointer; 
+            color: #888; 
+            font-size: 1.1em; /* İkon boyutu */
+        }
+        
+        .login-button { 
+            width: 100%; 
+            padding: 14px; /* Buton padding'i artırıldı */
+            border: none; 
+            border-radius: 8px; /* Buton köşeleri yumuşatıldı */
+            background-color: #e84e40; 
+            color: white; 
+            font-size: 1.2em; /* Buton font boyutu büyütüldü */
+            font-weight: 600;
+            cursor: pointer; 
+            transition: background-color 0.3s ease, transform 0.2s ease; 
+        }
+        .login-button:hover { 
+            background-color: #c0392b; 
+            transform: translateY(-2px); /* Hover'da hafif yukarı hareket */
+        }
+        
+        .signup-link { 
+            text-align: center; 
+            margin-top: 30px; /* Signup linki üst boşluğu artırıldı */
+            font-size: 0.95em;
+        }
+        .signup-link a { 
+            color: #e84e40; 
+            text-decoration: none; 
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .signup-link a:hover {
+            color: #c0392b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="left-panel">
+            
+            <div class="flower-svg" id="flower1">
+                <svg viewBox="0 0 100 280" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 280 C 45 230, 60 180, 50 90 C 45 70, 60 60, 50 50" class="stem-line"/> 
+                    <path d="M 50 220 Q 30 210, 30 190 Q 50 180, 50 200" class="leaf-line"/> 
+                    <path d="M 50 160 Q 70 150, 70 130 Q 50 120, 50 140" class="leaf-line"/> 
+                    <path d="M 50 100 Q 30 90, 30 70 Q 50 60, 50 80" class="leaf-line"/> 
+                    <path d="M 48 240 Q 40 235, 40 225 Q 48 220, 48 230" class="leaf-line"/>
+                    <path d="M 52 170 Q 60 165, 60 155 Q 52 150, 52 160" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 40)"> 
+                        <path d="M 0 0 C -10 -20, -30 -20, -20 -35 C -30 -50, -10 -50, 0 -40 C 10 -50, 30 -50, 20 -35 C 30 -20, 10 -20, 0 0" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 35)"> 
+                        <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower2">
+                <svg viewBox="0 0 100 230" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 230 C 55 190, 40 140, 50 80" class="stem-line"/> 
+                    <path d="M 50 180 Q 30 170, 30 150 Q 50 140, 50 160" class="leaf-line"/> 
+                    <path d="M 50 130 Q 70 120, 70 100 Q 50 90, 50 110" class="leaf-line"/> 
+                    <path d="M 50 90 Q 30 80, 30 60 Q 50 50, 50 70" class="leaf-line"/> 
+                    <path d="M 52 200 Q 60 195, 60 185 Q 52 180, 52 190" class="leaf-line"/>
+                    <path d="M 48 110 Q 40 105, 40 95 Q 48 90, 48 100" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 35)"> 
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(60)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(120)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(180)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(240)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(300)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 30)"> 
+                         <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <div class="flower-svg" id="flower3">
+                <svg viewBox="0 0 100 180" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 180 C 40 150, 60 120, 50 90" class="stem-line"/> 
+                    <path d="M 50 140 Q 70 130, 70 110 Q 50 100, 50 120" class="leaf-line"/> 
+                    <path d="M 48 160 Q 40 155, 40 145 Q 48 140, 48 150" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 60)"> 
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 55)"> 
+                         <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower4">
+                <svg viewBox="0 0 100 260" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 260 C 55 210, 40 160, 50 80 C 45 60, 60 50, 50 40" class="stem-line"/> 
+                    <path d="M 50 200 Q 30 190, 30 170 Q 50 160, 50 180" class="leaf-line"/> 
+                    <path d="M 50 140 Q 70 130, 70 110 Q 50 100, 50 120" class="leaf-line"/> 
+                    <path d="M 48 220 Q 40 215, 40 205 Q 48 200, 48 210" class="leaf-line"/>
+                    <path d="M 52 100 Q 60 95, 60 85 Q 52 80, 52 90" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 30)"> 
+                        <path d="M 0 0 C -10 -20, -30 -20, -20 -35 C -30 -50, -10 -50, 0 -40 C 10 -50, 30 -50, 20 -35 C 30 -20, 10 -20, 0 0" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 25)"> 
+                        <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower5">
+                <svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 200 C 40 170, 60 140, 50 80" class="stem-line"/> 
+                    <path d="M 50 160 Q 30 150, 30 130 Q 50 120, 50 140" class="leaf-line"/> 
+                    <path d="M 50 120 Q 70 110, 70 90 Q 50 80, 50 100" class="leaf-line"/> 
+                    <path d="M 52 180 Q 60 175, 60 165 Q 52 160, 52 170" class="leaf-line"/>
+                    <path d="M 48 100 Q 40 95, 40 85 Q 48 80, 48 90" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 50)"> 
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(60)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(120)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(180)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(240)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(300)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 45)"> 
+                         <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <div class="flower-svg" id="flower6">
+                <svg viewBox="0 0 100 150" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 150 C 55 120, 40 90, 50 70" class="stem-line"/> 
+                    <path d="M 50 110 Q 70 100, 70 80 Q 50 70, 50 90" class="leaf-line"/> 
+                    <path d="M 48 130 Q 40 125, 40 115 Q 48 110, 48 120" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 50)"> 
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 45)"> 
+                         <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower7">
+                <svg viewBox="0 0 100 210" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 210 C 45 180, 55 130, 50 70" class="stem-line"/> 
+                    <path d="M 50 170 Q 35 160, 35 145 Q 50 135, 50 155" class="leaf-line"/> 
+                    <path d="M 50 110 Q 65 100, 65 85 Q 50 75, 50 95" class="leaf-line"/>
+                    <g class="flower-head" transform="translate(50, 45)"> 
+                        <path d="M 0 0 C -10 -20, -30 -20, -20 -35 C -30 -50, -10 -50, 0 -40 C 10 -50, 30 -50, 20 -35 C 30 -20, 10 -20, 0 0" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 40)"> 
+                        <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower8">
+                <svg viewBox="0 0 100 240" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 240 C 55 200, 40 150, 50 80 C 45 60, 60 50, 50 40" class="stem-line"/> 
+                    <path d="M 50 190 Q 30 180, 30 160 Q 50 150, 50 170" class="leaf-line"/> 
+                    <path d="M 50 130 Q 70 120, 70 100 Q 50 90, 50 110" class="leaf-line"/> 
+                    <g class="flower-head" transform="translate(50, 35)"> 
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(60)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(120)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(180)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(240)"/>
+                        <path d="M 0 -35 C -10 -30, -20 -20, -15 -10 C -10 0, 10 0, 15 -10 C 20 -20, 10 -30, 0 -35 Z" class="flower-petal" transform="scale(1.2) rotate(300)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 30)"> 
+                         <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower9">
+                <svg viewBox="0 0 100 190" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 190 C 40 160, 60 130, 50 80" class="stem-line"/> 
+                    <path d="M 50 150 Q 30 140, 30 125 Q 50 115, 50 135" class="leaf-line"/> 
+                    <g class="flower-head" transform="translate(50, 60)"> 
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 -10 C -20 -20, -30 -35, 0 -40 C 30 -35, 20 -20, 0 -10 Z" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 55)"> 
+                         <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="flower-svg" id="flower10">
+                <svg viewBox="0 0 100 220" preserveAspectRatio="xMidYMax slice">
+                    <path d="M 50 220 C 55 180, 40 130, 50 70 C 45 50, 60 40, 50 30" class="stem-line"/> 
+                    <path d="M 50 180 Q 30 170, 30 150 Q 50 140, 50 160" class="leaf-line"/> 
+                    <path d="M 50 120 Q 70 110, 70 90 Q 50 80, 50 100" class="leaf-line"/> 
+                    <g class="flower-head" transform="translate(50, 25)"> 
+                        <path d="M 0 0 C -10 -20, -30 -20, -20 -35 C -30 -50, -10 -50, 0 -40 C 10 -50, 30 -50, 20 -35 C 30 -20, 10 -20, 0 0" class="flower-petal" transform="scale(1.2)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(72)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(144)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(216)"/>
+                        <path d="M 0 0 C -20 0, -35 -15, -40 -30 C -45 -45, -25 -45, -15 -30 C -10 -20, -10 -10, 0 0" class="flower-petal" transform="scale(1.2) rotate(288)"/>
+                    </g>
+                    <g class="face-group" transform="translate(50, 20)"> 
+                        <circle cx="0" cy="0" r="20" class="face-bg"/> 
+                        <circle cx="-9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="9" cy="-2" r="5" class="eye-svg"/>
+                        <circle cx="-9" cy="-2" r="3" class="pupil-svg"/>
+                        <circle cx="9" cy="-2" r="3" class="pupil-svg"/>
+                        <path d="M -7 9 Q 0 14 7 9" class="mouth-svg"/>
+                    </g>
+                </svg>
+            </div>
+            
+        </div>
+
+        <div class="right-panel">
+            <div class="form-container">
+                <h2>Login</h2> 
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="username">Username</label> 
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label> 
+                        <input type="password" id="password" name="password" required>
+                        <i class="fa-solid fa-eye" id="togglePassword"></i>
+                    </div>
+                    <button type="submit" class="login-button">Login</button> 
+                    <div class="signup-link">
+                        Don't have an account? <a href="#">Sign Up</a> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- EYE TRACKING ---
+        const pupils = document.querySelectorAll('.pupil-svg');
+        let isLookingAway = false; 
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isLookingAway) {
+                pupils.forEach(pupil => {
+                    const faceGroup = pupil.closest('.face-group');
+                    if (!faceGroup) return;
+
+                    const rect = faceGroup.getBoundingClientRect();
+                    const eyeX = rect.left + rect.width / 2;
+                    const eyeY = rect.top + rect.height / 2;
+
+                    const deltaX = e.clientX - eyeX;
+                    const deltaY = e.clientY - eyeY;
+                    const angle = Math.atan2(deltaY, deltaX);
+
+                    const maxRadius = 3; /* Pupils can move a bit more */
+                    const x = Math.cos(angle) * maxRadius;
+                    const y = Math.sin(angle) * maxRadius;
+                    
+                    pupil.setAttribute('transform', `translate(${x}, ${y})`);
+                });
+            }
+        });
+
+        // --- PASSWORD TOGGLE (LOOK AWAY EFFECT) ---
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            togglePassword.classList.toggle('fa-eye-slash');
+            togglePassword.classList.toggle('fa-eye');
+
+            if (type === 'text') {
+                isLookingAway = true;
+                pupils.forEach(pupil => {
+                    pupil.setAttribute('transform', `translate(-3, 0)`); /* Look hard left */
+                });
+            } else {
+                isLookingAway = false;
+                pupils.forEach(pupil => {
+                    pupil.setAttribute('transform', `translate(0, 0)`); /* Look straight */
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
