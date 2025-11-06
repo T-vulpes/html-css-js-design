@@ -502,7 +502,7 @@
                     const deltaY = e.clientY - eyeY;
                     const angle = Math.atan2(deltaY, deltaX);
 
-                    const maxRadius = 3; /* Pupils can move a bit more */
+                    const maxRadius = 3; 
                     const x = Math.cos(angle) * maxRadius;
                     const y = Math.sin(angle) * maxRadius;
                     
@@ -511,7 +511,6 @@
             }
         });
 
-        // --- PASSWORD TOGGLE (LOOK AWAY EFFECT) ---
         const passwordInput = document.getElementById('password');
         const togglePassword = document.getElementById('togglePassword');
 
@@ -525,20 +524,20 @@
             if (type === 'text') {
                 isLookingAway = true;
                 pupils.forEach(pupil => {
-                    pupil.setAttribute('transform', `translate(-3, 0)`); /* Look hard left */
+                    pupil.setAttribute('transform', `translate(-3, 0)`); 
                 });
             } else {
                 isLookingAway = false;
                 pupils.forEach(pupil => {
-                    pupil.setAttribute('transform', `translate(0, 0)`); /* Look straight */
+                    pupil.setAttribute('transform', `translate(0, 0)`);
                 });
             }
         });
     </script>
 
 </body>
-
 </html>
+
 
 
 
