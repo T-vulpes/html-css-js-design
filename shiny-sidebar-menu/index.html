@@ -121,7 +121,6 @@
             color: #ffffff;
         }
 
-        /* Işıltı Efekti (Aynı kaldı) */
         .off-canvas-menu a::before {
             content: '';
             position: absolute;
@@ -138,10 +137,6 @@
         .off-canvas-menu a:hover::before {
             left: 100%;
         }
-
-        /* ==================================== */
-        /* 3. İÇERİK BLUR KATMANI             */
-        /* ==================================== */
         .backdrop {
             position: fixed;
             top: 0;
@@ -150,7 +145,7 @@
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(5px);
-            z-index: 1001; /* Menünün altında, içeriğin üstünde */
+            z-index: 1001; 
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -187,34 +182,28 @@
     </nav>
 
     <div class="backdrop" id="backdrop"></div>
-    
+
     <div style="height: 150vh;">
     </div>
 
     <script>
-        // DEĞİŞİKLİK: Ayrı açma/kapama butonları için JS güncellendi
         const menuOpenToggle = document.getElementById('menuOpenToggle');
         const menuCloseToggle = document.getElementById('menuCloseToggle');
         const offCanvasMenu = document.getElementById('offCanvasMenu');
         const backdrop = document.getElementById('backdrop');
         const body = document.body;
 
-        // Menüyü açan fonksiyon
         function openMenu() {
             body.classList.add('menu-open');
         }
 
-        // Menüyü kapatan fonksiyon
         function closeMenu() {
             body.classList.remove('menu-open');
         }
-
-        // Butonlara görev atama
         menuOpenToggle.addEventListener('click', openMenu);
         menuCloseToggle.addEventListener('click', closeMenu);
         backdrop.addEventListener('click', closeMenu);
 
-        // Menü linklerine tıklayınca menüyü kapat
         offCanvasMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', closeMenu);
         });
@@ -222,10 +211,5 @@
     </script>
 
 </body>
-
 </html>
-
-
-
-
 
