@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibrant Split Menu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #111;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 999; /* Overlay'in altında */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-toggle .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #6a11cb; 
+            border-radius: 2px;
+        }
+
+        body.menu-open .menu-toggle {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s 0.5s; 
+        }
+        
+        .panel {
+            width: 50%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+
+        .panel-left {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #ffffff;
+            transform: translateX(-100%); 
+        }
+
+        .panel-right {
+            background-color: #ffffff;
+            color: #6a11cb; 
+            transform: translateX(100%);
+        }
+
+        body.menu-open .menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0s 0s; 
+        }
+
+        body.menu-open .panel {
+            transform: translateX(0); 
+        }
+
+
+
+        
+        .menu-close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1002; /* Her şeyin üstünde */
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s 0.6s; 
+        }
+        
+        .menu-close-btn::before,
+        .menu-close-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 3px;
+
+            background-color: #6a11cb;
+            border-radius: 2px;
+        }
+        .menu-close-btn::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .menu-close-btn::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        body.menu-open .menu-close-btn {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .panel-left nav {
+            padding: 2rem;
+            text-align: right;
+        }
+        .panel-right nav {
+            padding: 2rem;
+            text-align: left;
+        }
+
+        .panel ul {
+            list-style: none;
+        }
+        
+        .panel li {
+            padding: 0.5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .panel a {
+            text-decoration: none;
+            color: inherit; 
+            font-size: 2.5rem;            font-weight: 700;
+            transition: opacity 0.3s ease;
+        }
+        .panel a:hover {
+            opacity: 0.7;
+        }
+        
+        body.menu-open .panel-left li:nth-child(1) { transition-delay: 0.6s; }
+        body.menu-open .panel-left li:nth-child(2) { transition-delay: 0.7s; }
+        body.menu-open .panel-right li:nth-child(1) { transition-delay: 0.8s; }
+        body.menu-open .panel-right li:nth-child(2) { transition-delay: 0.9s; }
+
+        body.menu-open .panel li {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="menu-toggle" id="menuOpenBtn" aria-label="Open Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+
+    <button class="menu-close-btn" id="menuCloseBtn" aria-label="Close Menu"></button>
+
+    <div class="menu-overlay" id="menuOverlay">
+        
+        <div class="panel panel-left">
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="panel panel-right">
+            <nav>
+                <ul>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+    
+    <script>
+        const body = document.body;
+        const menuOpenBtn = document.getElementById('menuOpenBtn');
+        const menuCloseBtn = document.getElementById('menuCloseBtn');
+
+        function toggleMenu() {
+            body.classList.toggle('menu-open');
+        }
+
+        menuOpenBtn.addEventListener('click', toggleMenu);
+        menuCloseBtn.addEventListener('click', toggleMenu);
+    </script>
+
+</body>
+</html>
