@@ -156,7 +156,8 @@
         .panel a {
             text-decoration: none;
             color: inherit; 
-            font-size: 2.5rem;            font-weight: 700;
+            font-size: 2.5rem;            
+            font-weight: 700;
             transition: opacity 0.3s ease;
         }
         .panel a:hover {
@@ -185,8 +186,7 @@
 
     <button class="menu-close-btn" id="menuCloseBtn" aria-label="Close Menu"></button>
 
-    <div class="menu-overlay" id="menuOverlay">
-        
+    <div class="menu-overlay" id="menuOverlay">        
         <div class="panel panel-left">
             <nav>
                 <ul>
@@ -211,7 +211,6 @@
         const body = document.body;
         const menuOpenBtn = document.getElementById('menuOpenBtn');
         const menuCloseBtn = document.getElementById('menuCloseBtn');
-
         function toggleMenu() {
             body.classList.toggle('menu-open');
         }
@@ -221,7 +220,4 @@
     </script>
 
 </body>
-
 </html>
-
-
