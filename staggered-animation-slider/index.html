@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staggered Animation Slider</title>
+    <style>
+        /* ==================================== */
+        /* TEMEL SIFIRLAMA VE GENEL STİLLER    */
+        /* ==================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: grid;
+            place-items: center; /* Sayfanın tam ortasına yerleştir */
+            min-height: 100vh;
+        }
+
+        /* ==================================== */
+        /* 1. SLIDER ANA KONTEYNERİ           */
+        /* ==================================== */
+        .slider-container {
+            width: 90%;
+            max-width: 1000px;
+            height: 600px; /* Sabit bir yükseklik */
+            position: relative;
+            overflow: hidden; /* Taşmayı gizle */
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        /* ==================================== */
+        /* 2. TEKİL SLAYT                     */
+        /* ==================================== */
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 2rem 4rem;
+        }
+        
+        /* DEĞİŞİKLİK: Gradient güçlendirildi */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Gradient daha koyu ve belirgin hale getirildi */
+            background: linear-gradient(90deg, 
+                rgba(0, 0, 0, 0.85) 0%, 
+                rgba(0, 0, 0, 0.6) 40%, 
+                rgba(0, 0, 0, 0.1) 100%
+            );
+        }
+
+        /* ==================================== */
+        /* 3. SLAYT İÇERİĞİ (METİNLER)        */
+        /* ==================================== */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            color: #ffffff;
+            max-width: 60%;
+        }
+
+        /* --- Kademeli Metin Animasyonu --- */
+        .slide-content h2,
+        .slide-content p,
+        .slide-content .btn {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .slide.active .slide-content h2 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+        
+        .slide.active .slide-content p {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+        
+        .slide.active .slide-content .btn {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.8s;
+        }
+        /* ------------------------------------- */
+
+        .slide-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .slide-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .slide-content .btn {
+            background-color: #00aaff;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        /* ==================================== */
+        /* 4. NAVİGASYON (OKLAR VE NOKTALAR)   */
+        /* ==================================== */
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3;
+            display: flex;
+            gap: 10px;
+        }
+
+        .slider-nav button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #111;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .slider-nav button:hover {
+            background-color: #ffffff;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 10px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .slider-dot.active {
+            background-color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="slider-container" id="sliderContainer">
+        
+        <div class="slider-track" id="sliderTrack">
+
+            <div class="slide active" style="background-image: url('photo1.jpg')">
+                <div class="slide-content">
+                    <h2>Modern Design</h2>
+                    <p>This slider was built using modern CSS and JavaScript techniques.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('photo2.jpg')">
+                <div class="slide-content">
+                    <h2>Staggered Animation</h2>
+                    <p>Text appears element by element after the slide transition completes.</p>
+                    <a href="#" class="btn">Discover</a>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('photo3.jpg')">
+                <div class="slide-content">
+                    <h2>Fully Responsive</h2>
+                    <p>Looks great on all devices (though this demo is fixed-width).</p>
+                    <a href="#" class="btn">Get Started</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="slider-nav">
+            <button id="prevBtn">&lt;</button>
+            <button id="nextBtn">&gt;</button>
+        </div>
+
+        <div class="slider-dots" id="sliderDots">
+            </div>
+
+    </div>
+
+    <script>
+        const track = document.getElementById('sliderTrack');
+        const slides = Array.from(track.children);
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const dotsContainer = document.getElementById('sliderDots');
+
+        const slideWidth = slides[0].getBoundingClientRect().width;
+
+        let currentSlide = 0;
+
+        // --- Create Nav Dots ---
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('button');
+            dot.classList.add('slider-dot');
+            if (index === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                moveToSlide(index);
+            });
+            
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = Array.from(dotsContainer.children);
+
+        // --- Slide Movement Function ---
+        const moveToSlide = (targetIndex) => {
+            track.style.transform = 'translateX(-' + (slideWidth * targetIndex) + 'px)';
+            
+            // Update 'active' class for text animation
+            slides[currentSlide].classList.remove('active');
+            slides[targetIndex].classList.add('active');
+            
+            // Update dots
+            dots[currentSlide].classList.remove('active');
+            dots[targetIndex].classList.add('active');
+
+            currentSlide = targetIndex;
+        }
+
+        // --- Button Events ---
+        nextBtn.addEventListener('click', () => {
+            let nextSlide = currentSlide + 1;
+            if (nextSlide > slides.length - 1) {
+                nextSlide = 0; // Loop to start
+            }
+            moveToSlide(nextSlide);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            let prevSlide = currentSlide - 1;
+            if (prevSlide < 0) {
+                prevSlide = slides.length - 1; // Loop to end
+            }
+            moveToSlide(prevSlide);
+        });
+
+    </script>
+
+</body>
+</html>
