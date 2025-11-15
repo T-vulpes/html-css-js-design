@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"Sıvı Blob" Menü (Büyük Versiyon)</title>
+    <title></title>
     <style>
-        /* ==================================== */
-        /* TEMEL SIFIRLAMA VE GENEL STİLLER    */
-        /* ==================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -18,10 +15,7 @@
             justify-content: center;
             align-items: center;
         }
-
-        /* ==================================== */
-        /* 1. GİZLİ SVG FİLTRESİ (SİHİR)       */
-        /* ==================================== */
+        
         .svg-filters {
             display: none;
         }
@@ -33,26 +27,21 @@
             position: relative;
         }
 
-        /* ==================================== */
-        /* 3. METİN LİNKLERİ (ÜST KATMAN)       */
-        /* ==================================== */
         .nav-links {
             list-style: none;
             display: flex;
             position: relative;
-            z-index: 2; /* FİLTRELİ KATMANIN ÜSTÜNDE */
-            padding: 0 1.5rem; /* Kenar boşluğunu biraz artırdık */
+            z-index: 2; 
+            padding: 0 1.5rem; 
         }
 
         .nav-links a {
             text-decoration: none;
             color: #555;
             font-weight: 600;
-            
-            /* DEĞİŞİKLİK: Menüyü büyüttük */
-            font-size: 1.25rem; /* Yazı tipi büyüdü */
-            padding: 1.8rem 2rem; /* İç boşluk arttı (daha yüksek ve geniş) */
-            
+            font-size: 1.25rem; 
+            padding: 1.8rem 2rem; 
+
             display: block;
             position: relative;
             transition: color 0.4s ease;
@@ -62,8 +51,6 @@
             color: #ffffff;
         }
 
-        /* ==================================== */
-        /* 4. SIVI KATMANI (ALT KATMAN)        */
         /* ==================================== */
         .liquid-container {
             filter: url(#liquid-goo);
@@ -83,8 +70,7 @@
             height: 100%;
             background-color: #ffffff;
             
-            /* DEĞİŞİKLİK: Menü büyüdüğü için radius de arttı */
-            border-radius: 60px; /* Daha büyük yarıçap */
+            border-radius: 60px; 
             
             box-shadow: 10px 10px 20px #c1c5c9, -10px -10px 20px #ffffff;
         }
@@ -92,15 +78,14 @@
         .liquid-blob {
             position: absolute;
             
-            /* DEĞİŞİKLİK: Blob'u yeni boyuta uydur */
-            top: 8px; /* Üstten/alttan boşluk */
-            height: calc(100% - 16px); /* 8px * 2 */
+            top: 8px; 
+            height: calc(100% - 16px); 
             
             left: 0;
-            width: 100px; /* JS ile ayarlanacak */
+            width: 100px; 
             background-color: #4880ff;
             
-            /* DEĞİŞİKLİK: Yarıçap arttı */
+            
             border-radius: 50px;
             
             filter: drop-shadow(0 0 10px #4880ff);
@@ -176,4 +161,5 @@
     </script>
 
 </body>
+
 </html>
