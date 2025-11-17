@@ -45,11 +45,9 @@
             background-image: url('before.png');
         }
         
-
         .image-after {
             z-index: 2;
             background-image: url('after.png');
-
             clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
         }
 
@@ -98,20 +96,15 @@
 <body>
 
     <div class="comparison-container" id="comparisonContainer">
-        
         <div class="comparison-image image-before"></div>
-        
-        <div class="comparison-image image-after" id="imageAfter"></div>
-        
+        <div class="comparison-image image-after" id="imageAfter"></div>       
         <div class="slider-handle" id="sliderHandle"></div>
-
     </div>
 
     <script>
         const container = document.getElementById('comparisonContainer');
         const imageAfter = document.getElementById('imageAfter');
         const sliderHandle = document.getElementById('sliderHandle');
-
         let isDragging = false;
 
         function getCursorX(e) {
@@ -167,6 +160,6 @@
     </script>
 
 </body>
-
 </html>
+
 
