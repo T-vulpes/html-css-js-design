@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Glass Payment Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0f0c29;
+            background: radial-gradient(circle at center, #24243e 0%, #0f0c29 100%);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* ==================================== */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.8;
+            animation: float 10s infinite alternate;
+        }
+        .orb-1 { width: 500px; height: 500px; background: linear-gradient(#ff00cc, #333399); top: -10%; right: -10%; }
+        .orb-2 { width: 400px; height: 400px; background: linear-gradient(#00d4ff, #005bea); bottom: -10%; left: 10%; animation-delay: -5s; }
+        .orb-3 { width: 300px; height: 300px; background: #7928ca; bottom: 20%; right: 20%; opacity: 0.6; }
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+
+        /* ==================================== */
+        .main-container {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            width: 100%;
+            max-width: 1100px;
+            flex-wrap: wrap;
+        }
+
+        /* ======================= */
+        .input-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 400px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+        .input-group input {
+            width: 100%; padding: 14px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px; color: white; font-size: 1.1rem;
+            outline: none; transition: all 0.3s ease;
+        }
+        .input-group input:focus {
+            border-color: #00d4ff; background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .row { display: flex; gap: 15px; }
+
+        /* ==================================== */
+        .card-scene {
+            width: 450px;
+            height: 280px;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%; height: 100%;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+            transform-origin: center center;
+        }
+
+        .card-scene:hover .card:not(.is-flipped) {
+             transform: rotateY(180deg);
+        }
+
+
+        /* ==================================== */
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 20px; padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            backface-visibility: hidden;
+            display: flex; flex-direction: column; justify-content: space-between;
+            color: #fff; overflow: hidden;
+        }
+
+        .card-texture {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.4; z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+        }
+
+        .card-front::before {
+            content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-25deg); animation: shine 6s infinite; pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -150%; } 20% { left: 150%; } 100% { left: 150%; } }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(30px);
+            padding: 0; justify-content: center;
+        }
+
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .chip { width: 50px; height: 35px; background: linear-gradient(135deg, #ddd, #b0b0b0); border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); position:relative; overflow: hidden;}
+        .chip::after { content:''; position:absolute; top:50%; left:0; width:100%; height:1px; background:rgba(0,0,0,0.2); box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
+        .chip::before { content:''; position:absolute; left:50%; top:0; height:100%; width:1px; background:rgba(0,0,0,0.2); }
+        
+        .contactless { font-size: 1.5rem; transform: rotate(90deg); opacity: 0.8; }
+
+        .card-number {
+            font-family: 'Courier New', monospace; font-size: 1.6rem; letter-spacing: 3px;
+            margin-top: 15px; font-weight: bold; text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+
+        .card-details { display: flex; justify-content: space-between; align-items: flex-end; }
+        .detail-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; letter-spacing: 1px; }
+        .detail-value { font-family: 'Courier New', monospace; font-size: 1rem; text-transform: uppercase; font-weight: 600; }
+
+        .logo-mastercard { display: flex; }
+        .logo-circle { width: 40px; height: 40px; border-radius: 50%; opacity: 0.9; }
+        .red { background: #eb001b; margin-right: -15px; mix-blend-mode: screen; }
+        .orange { background: #f79e1b; mix-blend-mode: screen; }
+
+        .magnetic-strip { width: 100%; height: 50px; background: #222; margin-top: 30px; opacity: 0.8; }
+        .cvv-container { width: 90%; margin: 20px auto; text-align: right; }
+        .cvv-strip {
+            width: 100%; height: 45px; background: rgba(255,255,255,0.9);
+            border-radius: 5px; display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 15px; color: #222; font-weight: bold; font-size: 1.2rem;
+            font-family: 'Courier New', monospace;
+        }
+        .bank-name { position: absolute; bottom: 25px; width: 100%; text-align: center; font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; }
+        
+        @media (max-width: 850px) {
+            .main-container { flex-direction: column-reverse; gap: 40px; }
+            .input-panel { width: 100%; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="main-container">
+        
+        <div class="input-panel">
+            <div class="input-group">
+                <label for="inputNumber">Card Number</label>
+                <input type="text" id="inputNumber" maxlength="19" placeholder="xxxx xxxx xxxx xxxx">
+            </div>
+            <div class="input-group">
+                <label for="inputName">Card Holder</label>
+                <input type="text" id="inputName" maxlength="22" placeholder="Full Name">
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <label for="inputDate">Expires</label>
+                    <input type="text" id="inputDate" maxlength="5" placeholder="MM/YY">
+                </div>
+                <div class="input-group">
+                    <label for="inputCVV">CVV</label>
+                    <input type="text" id="inputCVV" maxlength="3" placeholder="123">
+                </div>
+            </div>
+        </div>
+
+        <div class="card-scene" id="cardScene">
+            <div class="card" id="card">
+                
+                <div class="card-face card-front">
+                    <div class="card-texture"></div>
+                    <div class="card-top">
+                        <div class="chip"></div>
+                        <div class="contactless">)))</div>
+                    </div>
+
+                    <div class="card-number" id="cardNumber">#### **** **** ####</div>
+
+                    <div class="card-details">
+                        <div>
+                            <div class="detail-label">Card Holder</div>
+                            <div class="detail-value" id="cardName">TVULPES *****</div>
+                        </div>
+                        <div>
+                            <div class="detail-label">Expires</div>
+                            <div class="detail-value" id="cardDate">MM/YY</div>
+                        </div>
+                        <div class="logo-mastercard">
+                            <div class="logo-circle red"></div>
+                            <div class="logo-circle orange"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-face card-back">
+                    <div class="card-texture"></div>
+                    <div class="magnetic-strip"></div>
+                    <div class="cvv-container">
+                        <div class="detail-label">CVV</div>
+                        <div class="cvv-strip" id="cardCVV">***</div>
+                    </div>
+                    <div class="bank-name">PREMIUM DIGITAL BANK</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const cardScene = document.getElementById('cardScene'); // Card scene'i hover için kullanacağız
+
+        const inputNumber = document.getElementById('inputNumber');
+        const inputName = document.getElementById('inputName');
+        const inputDate = document.getElementById('inputDate');
+        const inputCVV = document.getElementById('inputCVV');
+
+        const cardNumberDisplay = document.getElementById('cardNumber');
+        const cardNameDisplay = document.getElementById('cardName');
+        const cardDateDisplay = document.getElementById('cardDate');
+        const cardCVVDisplay = document.getElementById('cardCVV');
+
+        let isCVVFocused = false; // CVV inputunun odaklı olup olmadığını takip et
+
+        /* --- DATA BINDING --- */
+
+        // Card Number
+        inputNumber.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            let formatted = '';
+            for(let i=0; i<val.length; i++) {
+                if(i>0 && i%4===0) formatted += ' ';
+                formatted += val[i];
+            }
+            e.target.value = formatted;
+
+            let display = '';
+            if(val.length === 0) {
+                display = "#### **** **** ####";
+            } else {
+                for(let i=0; i<val.length; i++) {
+                    if(i>0 && i%4===0) display += ' ';
+                    if(i >= 4 && i < 12) display += '*'; 
+                    else display += val[i];
+                }
+            }
+            cardNumberDisplay.innerText = display;
+        });
+
+        inputName.addEventListener('input', (e) => {
+            let val = e.target.value.toUpperCase();
+            if(val.length === 0) {
+                cardNameDisplay.innerText = "TVULPES *****";
+            } else {
+                let parts = val.split(' ');
+                if(parts.length > 1) {
+                    cardNameDisplay.innerText = parts[0] + " " + "*".repeat(parts[1].length);
+                } else {
+                    cardNameDisplay.innerText = val;
+                }
+            }
+        });
+
+        inputDate.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            if(val.length >= 2) {
+                e.target.value = val.slice(0,2) + '/' + val.slice(2);
+            }
+            cardDateDisplay.innerText = e.target.value || "MM/YY";
+        });
+
+        inputCVV.addEventListener('focus', () => {
+            card.style.transform = "rotateY(180deg)";
+            isCVVFocused = true;
+        });
+
+        inputCVV.addEventListener('blur', () => {
+            card.style.transform = "rotateY(0deg)"; // Blurring CVV always flips it back to front
+            isCVVFocused = false;
+        });
+
+        inputCVV.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            cardCVVDisplay.innerText = "*".repeat(val.length); // Always masked
+        });
+
+        /* --- CARD HOVER FLIP LOGIC --- */
+        cardScene.addEventListener('mouseenter', () => {
+            if (!isCVVFocused) {
+                card.style.transform = "rotateY(180deg)";
+            }
+        });
+
+        cardScene.addEventListener('mouseleave', () => {
+            if (!isCVVFocused) {
+                card.style.transform = "rotateY(0deg)";
+            }
+        });
+        
+    </script>
+
+</body>
+</html>
