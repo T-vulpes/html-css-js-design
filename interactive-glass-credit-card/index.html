@@ -67,7 +67,8 @@
             outline: none; transition: all 0.3s ease;
         }
         .input-group input:focus {
-            border-color: #00d4ff; background: rgba(0, 0, 0, 0.4);
+            border-color: #00d4ff; 
+            background: rgba(0, 0, 0, 0.4);
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
         .row { display: flex; gap: 15px; }
@@ -79,7 +80,8 @@
         }
 
         .card {
-            width: 100%; height: 100%;
+            width: 100%; 
+            height: 100%;
             position: relative;
             transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             transform-style: preserve-3d;
@@ -90,22 +92,26 @@
              transform: rotateY(180deg);
         }
 
-
-        /* ==================================== */
         .card-face {
             position: absolute;
-            width: 100%; height: 100%;
-            border-radius: 20px; padding: 30px;
+            width: 100%; 
+            height: 100%;
+            border-radius: 20px; 
+            padding: 30px;
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
             border-top: 1px solid rgba(255, 255, 255, 0.5);
             border-left: 1px solid rgba(255, 255, 255, 0.5);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
             backface-visibility: hidden;
-            display: flex; flex-direction: column; justify-content: space-between;
-            color: #fff; overflow: hidden;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            color: #fff; 
+            overflow: hidden;
         }
 
         .card-texture {
@@ -172,9 +178,7 @@
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
-
     <div class="main-container">
-        
         <div class="input-panel">
             <div class="input-group">
                 <label for="inputNumber">Card Number</label>
@@ -236,12 +240,11 @@
 
             </div>
         </div>
-
     </div>
 
     <script>
         const card = document.getElementById('card');
-        const cardScene = document.getElementById('cardScene'); // Card scene'i hover için kullanacağız
+        const cardScene = document.getElementById('cardScene'); 
 
         const inputNumber = document.getElementById('inputNumber');
         const inputName = document.getElementById('inputName');
@@ -253,11 +256,7 @@
         const cardDateDisplay = document.getElementById('cardDate');
         const cardCVVDisplay = document.getElementById('cardCVV');
 
-        let isCVVFocused = false; // CVV inputunun odaklı olup olmadığını takip et
-
-        /* --- DATA BINDING --- */
-
-        // Card Number
+        let isCVVFocused = false; 
         inputNumber.addEventListener('input', (e) => {
             let val = e.target.value.replace(/\D/g, '');
             let formatted = '';
@@ -308,7 +307,7 @@
         });
 
         inputCVV.addEventListener('blur', () => {
-            card.style.transform = "rotateY(0deg)"; // Blurring CVV always flips it back to front
+            card.style.transform = "rotateY(0deg)"; 
             isCVVFocused = false;
         });
 
@@ -317,7 +316,6 @@
             cardCVVDisplay.innerText = "*".repeat(val.length); // Always masked
         });
 
-        /* --- CARD HOVER FLIP LOGIC --- */
         cardScene.addEventListener('mouseenter', () => {
             if (!isCVVFocused) {
                 card.style.transform = "rotateY(180deg)";
@@ -335,3 +333,4 @@
 </body>
 
 </html>
+
