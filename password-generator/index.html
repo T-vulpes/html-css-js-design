@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Password Generator</title>
+    <style>
+        /* ==================================== */
+        :root {
+            --neon-green: #0f0;
+            --neon-glow: 0 0 10px #0f0, 0 0 20px #0f0;
+            --dark-bg: #050505;
+            --panel-bg: #111;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--dark-bg);
+            background-image: 
+                linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px; 
+            color: var(--neon-green);
+        }
+
+        /* ==================================== */
+        .container {
+            background-color: var(--panel-bg);
+            padding: 30px;
+            width: 400px;
+            border: 1px solid var(--neon-green);
+            box-shadow: var(--neon-glow);
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 10px;
+            border: 2px solid var(--neon-green);
+            transition: all 0.3s;
+        }
+        .container::before { top: -2px; left: -2px; border-bottom: none; border-right: none; }
+        .container::after { bottom: -2px; right: -2px; border-top: none; border-left: none; }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        /* ==================================== */
+        .result-container {
+            background-color: #000;
+            border: 1px solid #333;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            word-break: break-all;
+            color: #fff; /* Şifre beyaz, efekt yeşil */
+            text-shadow: 0 0 2px #fff;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--neon-green);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+        .copy-btn:active { transform: scale(0.9); }
+        .copy-btn:hover { text-shadow: 0 0 8px var(--neon-green); }
+
+        /* ==================================== */
+        .setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 50%;
+            height: 5px;
+            background: #333;
+            outline: none;
+            border-radius: 5px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px; height: 15px;
+            background: var(--neon-green);
+            cursor: pointer;
+            box-shadow: 0 0 5px var(--neon-green);
+            border-radius: 50%;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 40px; height: 20px;
+            background: #333;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        input[type="checkbox"]:checked { background: var(--neon-green); }
+        input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            top: 2px; left: 2px;
+            background: #fff;
+            transition: 0.3s;
+        }
+        input[type="checkbox"]:checked::before { left: 22px; background: #000; }
+
+        /* ==================================== */
+        .strength-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .bars {
+            display: flex;
+            gap: 5px;
+        }
+        .bar {
+            width: 10px; height: 25px;
+            border: 1px solid #333;
+            background: transparent;
+            transition: all 0.3s;
+        }
+        
+        .strength-weak .bar:nth-child(1) { background: #ff0000; border-color: #ff0000; box-shadow: 0 0 5px #ff0000; }
+        
+        .strength-medium .bar:nth-child(1),
+        .strength-medium .bar:nth-child(2) { background: #ffff00; border-color: #ffff00; box-shadow: 0 0 5px #ffff00; }
+        
+        .strength-strong .bar:nth-child(1),
+        .strength-strong .bar:nth-child(2),
+        .strength-strong .bar:nth-child(3) { background: #0f0; border-color: #0f0; box-shadow: 0 0 5px #0f0; }
+        
+        .strength-strong .bar:nth-child(4) { background: #0f0; border-color: #0f0; box-shadow: 0 0 10px #0f0; }
+
+
+        /* ==================================== */
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generate-btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: var(--neon-glow);
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .generate-btn:hover::before { left: 100%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Password Gen_v1.0</h2>
+        
+        <div class="result-container">
+            <span id="result" class="result-text">CLICK_GENERATE</span>
+            <button class="copy-btn" id="copyBtn">📋</button>
+        </div>
+
+        <div class="setting">
+            <label>Length: <span id="lengthVal">12</span></label>
+            <input type="range" id="length" min="4" max="24" value="12">
+        </div>
+
+        <div class="setting">
+            <label>Uppercase (A-Z)</label>
+            <input type="checkbox" id="uppercase" checked>
+        </div>
+
+        <div class="setting">
+            <label>Lowercase (a-z)</label>
+            <input type="checkbox" id="lowercase" checked>
+        </div>
+
+        <div class="setting">
+            <label>Numbers (0-9)</label>
+            <input type="checkbox" id="numbers" checked>
+        </div>
+
+        <div class="setting">
+            <label>Symbols (!@#)</label>
+            <input type="checkbox" id="symbols" checked>
+        </div>
+
+        <div class="strength-container" id="strengthContainer">
+            <span id="strengthText">STRENGTH: NULL</span>
+            <div class="bars">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+
+        <button class="generate-btn" id="generate">
+            Generate Code
+        </button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const resultEl = document.getElementById('result');
+        const lengthEl = document.getElementById('length');
+        const lengthValEl = document.getElementById('lengthVal');
+        const uppercaseEl = document.getElementById('uppercase');
+        const lowercaseEl = document.getElementById('lowercase');
+        const numbersEl = document.getElementById('numbers');
+        const symbolsEl = document.getElementById('symbols');
+        const generateBtn = document.getElementById('generate');
+        const copyBtn = document.getElementById('copyBtn');
+        const strengthContainer = document.getElementById('strengthContainer');
+        const strengthText = document.getElementById('strengthText');
+
+        const randomFunc = {
+            lower: () => String.fromCharCode(Math.floor(Math.random() * 26) + 97),
+            upper: () => String.fromCharCode(Math.floor(Math.random() * 26) + 65),
+            number: () => String.fromCharCode(Math.floor(Math.random() * 10) + 48),
+            symbol: () => {
+                const symbols = '!@#$%^&*(){}[]=<>/,.';
+                return symbols[Math.floor(Math.random() * symbols.length)];
+            }
+        };
+
+        lengthEl.addEventListener('input', (e) => {
+            lengthValEl.innerText = e.target.value;
+        });
+
+        generateBtn.addEventListener('click', () => {
+            const length = +lengthEl.value;
+            const hasLower = lowercaseEl.checked;
+            const hasUpper = uppercaseEl.checked;
+            const hasNumber = numbersEl.checked;
+            const hasSymbol = symbolsEl.checked;
+
+            const finalPassword = generatePassword(hasLower, hasUpper, hasNumber, hasSymbol, length);
+            
+            if(finalPassword) {
+                scrambleAnimation(finalPassword);
+                checkStrength(length, hasLower, hasUpper, hasNumber, hasSymbol);
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            const textarea = document.createElement('textarea');
+            const password = resultEl.innerText;
+
+            if (!password || password === "CLICK_GENERATE") { return; }
+
+            textarea.value = password;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            textarea.remove();
+
+            alert('Password copied to system clipboard!');
+        });
+
+        function generatePassword(lower, upper, number, symbol, length) {
+            let generatedPassword = '';
+            const typesCount = lower + upper + number + symbol;
+            const typesArr = [{lower}, {upper}, {number}, {symbol}].filter(item => Object.values(item)[0]);
+
+            if (typesCount === 0) {
+                return '';
+            }
+
+            for (let i = 0; i < length; i += typesCount) {
+                typesArr.forEach(type => {
+                    const funcName = Object.keys(type)[0];
+                    generatedPassword += randomFunc[funcName]();
+                });
+            }
+
+            const finalPassword = generatedPassword.slice(0, length);
+            return finalPassword.split('').sort(() => 0.5 - Math.random()).join('');
+        }
+
+        function scrambleAnimation(finalText) {
+            let iteration = 0;
+            const interval = setInterval(() => {
+                resultEl.innerText = finalText
+                    .split("")
+                    .map((letter, index) => {
+                        if(index < iteration) {
+                            return finalText[index];
+                        }
+                        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join("");
+
+                if(iteration >= finalText.length) { 
+                    clearInterval(interval);
+                }
+
+                iteration += 1/2; 
+            }, 30);
+        }
+
+        function checkStrength(length, lower, upper, num, sym) {
+            let score = 0;
+            if(length > 8) score++;
+            if(length > 12) score++;
+            if(upper && lower) score++;
+            if(num) score++;
+            if(sym) score++;
+
+            strengthContainer.className = 'strength-container';
+
+            if(score <= 2) {
+                strengthContainer.classList.add('strength-weak');
+                strengthText.innerText = "STRENGTH: WEAK";
+            } else if (score <= 4) {
+                strengthContainer.classList.add('strength-medium');
+                strengthText.innerText = "STRENGTH: MEDIUM";
+            } else {
+                strengthContainer.classList.add('strength-strong');
+                strengthText.innerText = "STRENGTH: SECURE";
+            }
+        }
+
+    </script>
+
+</body>
+</html>
