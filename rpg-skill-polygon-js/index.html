@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Skill Polygon</title>
+    <style>
+        /* ==================================== */
+        /* GENEL AYARLAR                        */
+        /* ==================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #050505;
+            background-image: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ==================================== */
+        /* ANA KART                            */
+        /* ==================================== */
+        .card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff;
+            letter-spacing: 2px;
+        }
+
+        /* ==================================== */
+        /* GRAFİK ALANI (SVG)                  */
+        /* ==================================== */
+        .chart-container {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 30px auto;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible; /* Taşmaları göster */
+            filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5));
+        }
+
+        /* Arka plandaki sabit çokgen (Referans çizgileri) */
+        .bg-poly {
+            fill: none;
+            stroke: #333;
+            stroke-width: 1;
+        }
+
+        /* Bizim hareketli yetenek grafiğimiz */
+        .skill-poly {
+            fill: rgba(0, 212, 255, 0.2);
+            stroke: #00d4ff;
+            stroke-width: 2;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Köşelerdeki noktalar */
+        .stat-point {
+            fill: #fff;
+            stroke: #00d4ff;
+            stroke-width: 2;
+        }
+
+        /* Etiketler (STR, AGI vb.) */
+        .label {
+            position: absolute;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #888;
+            transform: translate(-50%, -50%);
+        }
+        /* Etiket pozisyonları (Manuel ayarlandı) */
+        .l-top { top: -15px; left: 50%; color: #ff0055; }
+        .l-right-top { top: 25%; right: -30px; color: #ffcc00; }
+        .l-right-bot { bottom: 25%; right: -30px; color: #00ff55; }
+        .l-left-bot { bottom: 25%; left: -30px; color: #00d4ff; }
+        .l-left-top { top: 25%; left: -30px; color: #aa00ff; }
+
+
+        /* ==================================== */
+        /* SLIDER KONTROLLERİ                   */
+        /* ==================================== */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .control-group label {
+            font-size: 0.9rem;
+            width: 50px;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 70%;
+            -webkit-appearance: none;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: background 0.3s;
+        }
+
+        /* Her slider için özel renk */
+        #str::-webkit-slider-thumb { background: #ff0055; box-shadow: 0 0 10px #ff0055; }
+        #dex::-webkit-slider-thumb { background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
+        #vit::-webkit-slider-thumb { background: #00ff55; box-shadow: 0 0 10px #00ff55; }
+        #int::-webkit-slider-thumb { background: #00d4ff; box-shadow: 0 0 10px #00d4ff; }
+        #luk::-webkit-slider-thumb { background: #aa00ff; box-shadow: 0 0 10px #aa00ff; }
+
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>PLAYER STATS</h2>
+
+        <div class="chart-container">
+            <div class="label l-top">STR</div>
+            <div class="label l-right-top">DEX</div>
+            <div class="label l-right-bot">VIT</div>
+            <div class="label l-left-bot">INT</div>
+            <div class="label l-left-top">LUK</div>
+
+            <svg viewBox="0 0 200 200">
+                <polygon class="bg-poly" points="100,10 190,78 156,181 44,181 10,78" />
+                <polygon class="bg-poly" style="stroke-dasharray: 4; opacity: 0.3;" points="100,55 145,89 128,140.5 72,140.5 55,89" />
+                
+                <polygon id="poly" class="skill-poly" points="100,10 190,78 156,181 44,181 10,78" />
+                
+                <circle cx="100" cy="100" r="2" fill="#fff" />
+            </svg>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label style="color:#ff0055">STR</label>
+                <input type="range" id="str" min="0" max="100" value="80">
+            </div>
+            <div class="control-group">
+                <label style="color:#ffcc00">DEX</label>
+                <input type="range" id="dex" min="0" max="100" value="60">
+            </div>
+            <div class="control-group">
+                <label style="color:#00ff55">VIT</label>
+                <input type="range" id="vit" min="0" max="100" value="70">
+            </div>
+            <div class="control-group">
+                <label style="color:#00d4ff">INT</label>
+                <input type="range" id="int" min="0" max="100" value="90">
+            </div>
+            <div class="control-group">
+                <label style="color:#aa00ff">LUK</label>
+                <input type="range" id="luk" min="0" max="100" value="50">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Girdileri Seç
+        const inputs = {
+            str: document.getElementById('str'),
+            dex: document.getElementById('dex'),
+            vit: document.getElementById('vit'),
+            int: document.getElementById('int'),
+            luk: document.getElementById('luk')
+        };
+
+        const poly = document.getElementById('poly');
+
+        // Merkez Noktası ve Yarıçap (SVG viewBox 200x200)
+        const centerX = 100;
+        const centerY = 100;
+        const maxRadius = 90; // Grafiğin en uç noktası
+
+        // Beşgenin açıları (Radyan cinsinden)
+        // SVG koordinat sisteminde 0 derece saat 3 yönüdür.
+        // STR tepede (-90 derece) olsun istiyoruz.
+        // 5 köşe olduğu için her köşe arası 72 derece (360/5).
+        const angles = [
+            -Math.PI / 2,               // STR (Üst)
+            -Math.PI / 2 + (2 * Math.PI / 5), // DEX (Sağ Üst)
+            -Math.PI / 2 + (2 * 2 * Math.PI / 5), // VIT (Sağ Alt)
+            -Math.PI / 2 + (3 * 2 * Math.PI / 5), // INT (Sol Alt)
+            -Math.PI / 2 + (4 * 2 * Math.PI / 5)  // LUK (Sol Üst)
+        ];
+
+        function updateChart() {
+            // Değerleri al (0-100 arası)
+            const values = [
+                inputs.str.value,
+                inputs.dex.value,
+                inputs.vit.value,
+                inputs.int.value,
+                inputs.luk.value
+            ];
+
+            // Her değer için X,Y koordinatlarını hesapla
+            const points = values.map((val, index) => {
+                // Değeri 0-1 arasına çek ve yarıçapla çarp
+                const r = (val / 100) * maxRadius;
+                const angle = angles[index];
+
+                // Trigonometri: X = cx + r * cos(a), Y = cy + r * sin(a)
+                const x = centerX + r * Math.cos(angle);
+                const y = centerY + r * Math.sin(angle);
+                
+                return `${x},${y}`;
+            });
+
+            // SVG polygon points niteliğini güncelle
+            poly.setAttribute('points', points.join(' '));
+        }
+
+        // Tüm sliderlara event listener ekle
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', updateChart);
+        });
+
+        // Başlangıçta çalıştır
+        updateChart();
+
+    </script>
+
+</body>
+</html>
