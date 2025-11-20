@@ -125,7 +125,6 @@
             transition: background 0.3s;
         }
 
-        /* Her slider için özel renk */
         #str::-webkit-slider-thumb { background: #ff0055; box-shadow: 0 0 10px #ff0055; }
         #dex::-webkit-slider-thumb { background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
         #vit::-webkit-slider-thumb { background: #00ff55; box-shadow: 0 0 10px #00ff55; }
@@ -138,7 +137,6 @@
 
     <div class="card">
         <h2>PLAYER STATS</h2>
-
         <div class="chart-container">
             <div class="label l-top">STR</div>
             <div class="label l-right-top">DEX</div>
@@ -181,7 +179,6 @@
     </div>
 
     <script>
-        // Girdileri Seç
         const inputs = {
             str: document.getElementById('str'),
             dex: document.getElementById('dex'),
@@ -192,21 +189,16 @@
 
         const poly = document.getElementById('poly');
 
-        // Merkez Noktası ve Yarıçap (SVG viewBox 200x200)
         const centerX = 100;
         const centerY = 100;
         const maxRadius = 90; // Grafiğin en uç noktası
 
-        // Beşgenin açıları (Radyan cinsinden)
-        // SVG koordinat sisteminde 0 derece saat 3 yönüdür.
-        // STR tepede (-90 derece) olsun istiyoruz.
-        // 5 köşe olduğu için her köşe arası 72 derece (360/5).
         const angles = [
-            -Math.PI / 2,               // STR (Üst)
-            -Math.PI / 2 + (2 * Math.PI / 5), // DEX (Sağ Üst)
-            -Math.PI / 2 + (2 * 2 * Math.PI / 5), // VIT (Sağ Alt)
-            -Math.PI / 2 + (3 * 2 * Math.PI / 5), // INT (Sol Alt)
-            -Math.PI / 2 + (4 * 2 * Math.PI / 5)  // LUK (Sol Üst)
+            -Math.PI / 2,               // STR 
+            -Math.PI / 2 + (2 * Math.PI / 5), // DEX 
+            -Math.PI / 2 + (2 * 2 * Math.PI / 5), // VIT 
+            -Math.PI / 2 + (3 * 2 * Math.PI / 5), // INT 
+            -Math.PI / 2 + (4 * 2 * Math.PI / 5)  // LUK 
         ];
 
         function updateChart() {
@@ -249,3 +241,4 @@
 </body>
 
 </html>
+
