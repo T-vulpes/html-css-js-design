@@ -202,7 +202,6 @@
         ];
 
         function updateChart() {
-            // Değerleri al (0-100 arası)
             const values = [
                 inputs.str.value,
                 inputs.dex.value,
@@ -211,34 +210,21 @@
                 inputs.luk.value
             ];
 
-            // Her değer için X,Y koordinatlarını hesapla
             const points = values.map((val, index) => {
-                // Değeri 0-1 arasına çek ve yarıçapla çarp
                 const r = (val / 100) * maxRadius;
                 const angle = angles[index];
-
-                // Trigonometri: X = cx + r * cos(a), Y = cy + r * sin(a)
                 const x = centerX + r * Math.cos(angle);
                 const y = centerY + r * Math.sin(angle);
-                
                 return `${x},${y}`;
             });
-
-            // SVG polygon points niteliğini güncelle
             poly.setAttribute('points', points.join(' '));
         }
 
-        // Tüm sliderlara event listener ekle
         Object.values(inputs).forEach(input => {
             input.addEventListener('input', updateChart);
         });
 
-        // Başlangıçta çalıştır
         updateChart();
-
     </script>
-
 </body>
-
 </html>
-
