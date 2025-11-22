@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Audio Player</title>
+    <style>
+        :root {
+            --bg-color: #e0e5ec;
+            --text-main: #4d4d4d;
+            --text-sub: #999;
+            --shadow-light: rgba(255,255,255, 0.9);
+            --shadow-dark: rgb(163,177,198,0.6);
+            --accent-color: #ff5f6d; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: color 0.3s ease; }
+
+        body {
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background-color: var(--bg-color);
+        }
+
+        .player {
+            width: 360px; background-color: var(--bg-color); border-radius: 35px; padding: 35px 30px;
+            box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1;
+        }
+
+        .nav-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; color: var(--text-sub); font-weight: 600; font-size: 0.8rem; margin-bottom: 25px; letter-spacing: 1px; }
+        .btn-small { width: 40px; height: 40px; border-radius: 50%; box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light); display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-sub); font-size: 1rem; transition: all 0.2s ease; }
+        .btn-small:active, .btn-small.active { box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); color: var(--accent-color); }
+
+        .disk-container { position: relative; margin-bottom: 30px; }
+        .visualizer-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; background: transparent; border: 2px solid var(--accent-color); opacity: 0; z-index: -1; pointer-events: none; }
+        .disk-container.active .visualizer-ring:nth-child(1) { width: 260px; height: 260px; animation: pulse 1.2s infinite; }
+        .disk-container.active .visualizer-ring:nth-child(2) { width: 260px; height: 260px; animation: pulse 1.2s infinite 0.4s; }
+        @keyframes pulse { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); border-width: 5px; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); border-width: 0px; } }
+
+        .disk-wrapper { width: 260px; height: 260px; border-radius: 50%; box-shadow: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light); display: flex; justify-content: center; align-items: center; padding: 8px; background: var(--bg-color); z-index: 2; }
+        .disk { width: 100%; height: 100%; border-radius: 50%; background: repeating-radial-gradient(#1a1a1a 0, #1a1a1a 2px, #2b2b2b 3px, #2b2b2b 4px); display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); animation: rotate 5s linear infinite; animation-play-state: paused; }
+        .disk.playing { animation-play-state: running; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .cover-art { width: 100px; height: 100px; border-radius: 50%; background: var(--accent-color); background-size: cover; background-position: center; position: relative; border: 4px solid #1a1a1a; transition: background 0.5s ease; }
+        .cover-art::after { content: ''; position: absolute; top: 50%; left: 50%; width: 15px; height: 15px; background: var(--bg-color); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: inset 1px 1px 3px rgba(0,0,0,0.3); }
+
+        .song-info { text-align: center; margin-bottom: 25px; }
+        .title { font-size: 1.5rem; color: var(--text-main); font-weight: 700; margin-bottom: 5px; }
+        .artist { font-size: 0.9rem; color: var(--text-sub); font-weight: 500; }
+
+        .progress-area { width: 100%; margin-bottom: 30px; }
+        .progress-bar-bg { height: 8px; width: 100%; border-radius: 10px; background: var(--bg-color); box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); overflow: hidden; cursor: pointer; }
+        .progress-fill { height: 100%; width: 0%; border-radius: 10px; background: var(--accent-color); transition: width 0.1s linear, background 0.3s ease; }
+        .time-stamps { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-sub); margin-top: 10px; font-weight: 600;}
+
+        .controls { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; }
+        .btn-control { width: 60px; height: 60px; border-radius: 50%; background: var(--bg-color); border: none; box-shadow: 6px 6px 10px var(--shadow-dark), -6px -6px 10px var(--shadow-light); display: flex; justify-content: center; align-items: center; color: var(--text-main); font-size: 1.4rem; cursor: pointer; transition: all 0.2s ease; }
+        .btn-control:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); color: var(--accent-color); }
+        .play-btn { width: 80px; height: 80px; font-size: 2rem; color: var(--accent-color); }
+        .play-btn.active { box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light); }
+    </style>
+</head>
+<body>
+
+    <audio id="main-audio" src=""></audio>
+
+    <div class="player">
+        <div class="nav-bar">
+            <div class="btn-small" id="btnBack">❮</div>
+            <div id="playlistText">PLAYLIST</div>
+            <div class="btn-small" id="btnHeart">♥</div>
+        </div>
+
+        <div class="disk-container" id="diskContainer">
+            <div class="visualizer-ring"></div>
+            <div class="visualizer-ring"></div>
+            <div class="disk-wrapper">
+                <div class="disk" id="vinyl">
+                    <div class="cover-art" id="coverArt"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="song-info">
+            <div class="title" id="songTitle">Song Title</div>
+            <div class="artist" id="songArtist">Artist</div>
+        </div>
+
+        <div class="progress-area">
+            <div class="progress-bar-bg" id="progressBarArea">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <div class="time-stamps">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-control" id="prevBtn">⏮</button>
+            <button class="btn-control play-btn" id="playBtn">▶</button>
+            <button class="btn-control" id="nextBtn">⏭</button>
+        </div>
+    </div>
+
+    <script>
+        const playlist = [
+            {
+                title: "Midnight City",
+                artist: "M83",
+                color: "#ff5f6d",
+                src: "songs/sarki1.mp3" // Kendi dosya adınla değiştir
+            },
+            {
+                title: "Starboy",
+                artist: "The Weeknd",
+                color: "#667eea",
+                src: "songs/sarki2.mp3" // Kendi dosya adınla değiştir
+            },
+            {
+                title: "Get Lucky",
+                artist: "Daft Punk",
+                color: "#ffd700",
+                src: "songs/sarki3.mp3" // Kendi dosya adınla değiştir
+            }
+        ];
+
+        let currentSongIndex = 0;
+        let isPlaying = false;
+
+        // DOM Elements
+        const mainAudio = document.getElementById('main-audio');
+        const root = document.documentElement;
+        const playBtn = document.getElementById('playBtn');
+        const vinyl = document.getElementById('vinyl');
+        const diskContainer = document.getElementById('diskContainer');
+        const progressFill = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const titleEl = document.getElementById('songTitle');
+        const artistEl = document.getElementById('songArtist');
+        const btnHeart = document.getElementById('btnHeart');
+
+        function loadSong(index) {
+            const song = playlist[index];
+            titleEl.innerText = song.title;
+            artistEl.innerText = song.artist;
+            
+            mainAudio.src = song.src;
+            
+            root.style.setProperty('--accent-color', song.color);
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                pauseMusic();
+            } else {
+                playMusic();
+            }
+        }
+
+        function playMusic() {
+            isPlaying = true;
+            mainAudio.play(); // Gerçek sesi oynat
+            playBtn.innerHTML = 'II';
+            playBtn.classList.add('active');
+            vinyl.classList.add('playing');
+            diskContainer.classList.add('active');
+        }
+
+        function pauseMusic() {
+            isPlaying = false;
+            mainAudio.pause(); // Gerçek sesi durdur
+            playBtn.innerHTML = '▶';
+            playBtn.classList.remove('active');
+            vinyl.classList.remove('playing');
+            diskContainer.classList.remove('active');
+        }
+
+        function nextSong() {
+            currentSongIndex++;
+            if (currentSongIndex > playlist.length - 1) currentSongIndex = 0;
+            loadSong(currentSongIndex);
+            if(isPlaying) playMusic(); // Otomatik oynat
+        }
+
+        function prevSong() {
+            currentSongIndex--;
+            if (currentSongIndex < 0) currentSongIndex = playlist.length - 1;
+            loadSong(currentSongIndex);
+            if(isPlaying) playMusic();
+        }
+
+        mainAudio.addEventListener('timeupdate', (e) => {
+            const currentTime = e.target.currentTime;
+            const duration = e.target.duration;
+
+            if(duration) {
+                let progressWidth = (currentTime / duration) * 100;
+                progressFill.style.width = `${progressWidth}%`;
+
+                
+                let currentMin = Math.floor(currentTime / 60);
+                let currentSec = Math.floor(currentTime % 60);
+                if(currentSec < 10) currentSec = `0${currentSec}`;
+                currentTimeEl.innerText = `${currentMin}:${currentSec}`;
+
+                let totalMin = Math.floor(duration / 60);
+                let totalSec = Math.floor(duration % 60);
+                if(totalSec < 10) totalSec = `0${totalSec}`;
+                durationEl.innerText = `${totalMin}:${totalSec}`;
+            }
+        });
+
+        mainAudio.addEventListener('ended', () => {
+            nextSong();
+        });
+
+        document.getElementById('progressBarArea').addEventListener('click', (e) => {
+            let width = document.getElementById('progressBarArea').clientWidth;
+            let clickX = e.offsetX;
+            let duration = mainAudio.duration;
+
+            mainAudio.currentTime = (clickX / width) * duration;
+            if(!isPlaying) playMusic();
+        });
+
+        playBtn.addEventListener('click', togglePlay);
+        document.getElementById('nextBtn').addEventListener('click', nextSong);
+        document.getElementById('prevBtn').addEventListener('click', prevSong);
+        
+        btnHeart.addEventListener('click', () => {
+            btnHeart.classList.toggle('active');
+        });
+
+        window.addEventListener('load', () => {
+            loadSong(currentSongIndex);
+        });
+
+    </script>
+
+</body>
+</html>
