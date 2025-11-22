@@ -160,7 +160,7 @@
 
         function playMusic() {
             isPlaying = true;
-            mainAudio.play(); // Gerçek sesi oynat
+            mainAudio.play(); 
             playBtn.innerHTML = 'II';
             playBtn.classList.add('active');
             vinyl.classList.add('playing');
@@ -169,7 +169,7 @@
 
         function pauseMusic() {
             isPlaying = false;
-            mainAudio.pause(); // Gerçek sesi durdur
+            mainAudio.pause(); 
             playBtn.innerHTML = '▶';
             playBtn.classList.remove('active');
             vinyl.classList.remove('playing');
@@ -180,7 +180,7 @@
             currentSongIndex++;
             if (currentSongIndex > playlist.length - 1) currentSongIndex = 0;
             loadSong(currentSongIndex);
-            if(isPlaying) playMusic(); // Otomatik oynat
+            if(isPlaying) playMusic(); 
         }
 
         function prevSong() {
@@ -237,7 +237,5 @@
         });
 
     </script>
-
 </body>
-
 </html>
