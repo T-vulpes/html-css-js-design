@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Audio Player</title>
+    <title>Audio Player</title>
     <style>
         :root {
             --bg-color: #e0e5ec;
@@ -64,7 +64,6 @@
 <body>
 
     <audio id="main-audio" src=""></audio>
-
     <div class="player">
         <div class="nav-bar">
             <div class="btn-small" id="btnBack">❮</div>
@@ -110,26 +109,25 @@
                 title: "Midnight City",
                 artist: "M83",
                 color: "#ff5f6d",
-                src: "songs/sarki1.mp3" // Kendi dosya adınla değiştir
+                src: "songs/sarki1.mp3" 
             },
             {
                 title: "Starboy",
                 artist: "The Weeknd",
                 color: "#667eea",
-                src: "songs/sarki2.mp3" // Kendi dosya adınla değiştir
+                src: "songs/sarki2.mp3" 
             },
             {
                 title: "Get Lucky",
                 artist: "Daft Punk",
                 color: "#ffd700",
-                src: "songs/sarki3.mp3" // Kendi dosya adınla değiştir
+                src: "songs/sarki3.mp3" 
             }
         ];
 
         let currentSongIndex = 0;
         let isPlaying = false;
 
-        // DOM Elements
         const mainAudio = document.getElementById('main-audio');
         const root = document.documentElement;
         const playBtn = document.getElementById('playBtn');
@@ -241,4 +239,5 @@
     </script>
 
 </body>
+
 </html>
