@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh; display: flex; justify-content: center; align-items: center;
-            background-color: #0a0a0a; /* Koyu, premium arka plan */
+            background-color: #0a0a0a; 
             font-family: 'Poppins', sans-serif;
         }
 
@@ -17,22 +17,21 @@
             padding: 25px 60px;
             background: transparent;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px; /* Hap şeklinde */
+            border-radius: 50px; 
             color: #fff;
             font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
-            overflow: hidden; /* Sıvının dışarı taşmaması için KRİTİK */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Yumuşak dönüşler */
+            overflow: hidden; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             z-index: 1;
         }
 
-        /* Buton Metni */
         .mag-btn span {
             position: relative;
-            z-index: 2; /* Sıvının üstünde kalsın */
-            pointer-events: none; /* Mouse olaylarını engellemesin */
-            transition: transform 0.3s ease; /* Metin de hafif hareket etsin */
+            z-index: 2;
+            pointer-events: none; 
+            transition: transform 0.3s ease;
         }
 
         .mag-btn::before {
@@ -92,4 +91,5 @@
     </script>
 
 </body>
+
 </html>
