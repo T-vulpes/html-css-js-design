@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Glowing Cards</title>
+    <style>
+        /* ========================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background-color: #050505;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            gap: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+
+        /* Başlık */
+        h1 {
+            color: white; font-weight: 300; letter-spacing: 2px;
+            z-index: 1; margin-bottom: 20px; opacity: 0.8;
+        }
+
+        .container {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; z-index: 1;
+        }
+
+        /* ========================================= */
+        .card {
+            position: relative;
+            width: 300px; height: 360px;
+            background: rgba(255, 255, 255, 0.03); /* Çok hafif şeffaf */
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+        }
+
+        /* ========================================= */
+        
+        .card::before {
+            content: "";
+            position: absolute; inset: 0;
+            border-radius: 20px; padding: 2px; /* Kenarlık Kalınlığı */
+            
+            /* --clr değişkeni HTML'den gelecek */
+            background: radial-gradient(
+                600px circle at var(--x) var(--y), 
+                var(--clr), 
+                transparent 40%
+            );
+            
+            /* İçeriği maskeleyerek sadece kenarı göster */
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            
+            opacity: 0; transition: opacity 0.4s;
+        }
+
+        /* İç Spot Işığı (Inner Spotlight) - Hafifçe içeriye de vurur */
+        .card::after {
+            content: "";
+            position: absolute; inset: 0;
+            background: radial-gradient(
+                400px circle at var(--x) var(--y), 
+                var(--clr), 
+                transparent 40%
+            );
+            opacity: 0; transition: opacity 0.4s;
+            z-index: -1; /* İçeriğin arkasında */
+        }
+
+        /* Hover Durumu */
+        .card:hover::before, 
+        .card:hover::after {
+            opacity: 1; /* Parlaklığı aç */
+        }
+        
+        /* İç Spot Işığını biraz daha kısık yapalım ki yazı okunsun */
+        .card:hover::after {
+            opacity: 0.15;
+        }
+
+        .content {
+            padding: 20px;
+            z-index: 2;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover .content { transform: translateY(-5px); }
+
+        .icon-box {
+            font-size: 3rem; margin-bottom: 20px;
+            color: var(--clr);
+            filter: drop-shadow(0 0 10px var(--clr));
+        }
+
+        h3 { font-size: 1.5rem; margin-bottom: 10px; color: #fff; }
+        p { font-size: 0.9rem; line-height: 1.5; color: #aaa; }
+
+        svg { width: 60px; height: 60px; fill: currentColor; }
+
+    </style>
+</head>
+<body>
+
+    <h1>HOVER TO REVEAL</h1>
+
+    <div class="container">
+        
+        <div class="card" style="--clr: #06b6d4;">
+            <div class="content">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 21.61 2.39 21.61 2.39C21.61 2.39 19.07 .64 12.64 3.79C11.82 4.2 11.06 4.7 10.37 5.27C9.37 6.13 8.54 7.23 7.91 8.5C5.97 12.39 6.28 15.09 6.28 15.09C6.28 15.09 8.97 15.4 12.87 13.47C14.13 12.83 15.23 12 16.09 11C16.66 10.31 17.16 9.55 17.57 8.73C20.72 2.3 19.96 -.24 19.96 -.24L21.61 2.39M12.5 7.5C13.88 7.5 15 8.62 15 10C15 11.38 13.88 12.5 12.5 12.5C11.12 12.5 10 11.38 10 10C10 8.62 11.12 7.5 12.5 7.5Z" /></svg>
+                </div>
+                <h3>High Speed</h3>
+                <p>Optimized for maximum performance with zero latency.</p>
+            </div>
+        </div>
+
+        <div class="card" style="--clr: #8b5cf6;">
+            <div class="content">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" /></svg>
+                </div>
+                <h3>Secure</h3>
+                <p>Bank-grade encryption keeping your data safe and private.</p>
+            </div>
+        </div>
+
+        <div class="card" style="--clr: #84cc16;">
+            <div class="content">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12C20,16.42 16.42,20 12,20C7.58,20 4,16.42 4,12C4,7.58 7.58,4 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" /></svg>
+                </div>
+                <h3>Modern UI</h3>
+                <p>Crafted with the latest design trends for the best experience.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+        });
+    </script>
+
+</body>
+</html>
