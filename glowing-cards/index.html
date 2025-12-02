@@ -38,7 +38,7 @@
         .card {
             position: relative;
             width: 300px; height: 360px;
-            background: rgba(255, 255, 255, 0.03); /* Çok hafif şeffaf */
+            background: rgba(255, 255, 255, 0.03); 
             border-radius: 20px;
             overflow: hidden;
             display: flex; flex-direction: column;
@@ -50,14 +50,13 @@
         .card::before {
             content: "";
             position: absolute; inset: 0;
-            border-radius: 20px; padding: 2px; /* Kenarlık Kalınlığı */
+            border-radius: 20px; padding: 2px; 
             background: radial-gradient(
                 600px circle at var(--x) var(--y), 
                 var(--clr), 
                 transparent 40%
             );
             
-            /* İçeriği maskeleyerek sadece kenarı göster */
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -65,7 +64,6 @@
             opacity: 0; transition: opacity 0.4s;
         }
 
-        /* İç Spot Işığı (Inner Spotlight) - Hafifçe içeriye de vurur */
         .card::after {
             content: "";
             position: absolute; inset: 0;
@@ -75,16 +73,14 @@
                 transparent 40%
             );
             opacity: 0; transition: opacity 0.4s;
-            z-index: -1; /* İçeriğin arkasında */
+            z-index: -1; 
         }
 
-        /* Hover Durumu */
         .card:hover::before, 
         .card:hover::after {
             opacity: 1; /* Parlaklığı aç */
         }
         
-        /* İç Spot Işığını biraz daha kısık yapalım ki yazı okunsun */
         .card:hover::after {
             opacity: 0.15;
         }
@@ -164,3 +160,4 @@
 </body>
 
 </html>
+
