@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro Glowing Cards</title>
     <style>
-        /* ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -27,7 +26,6 @@
             pointer-events: none; z-index: 0;
         }
 
-        /* Başlık */
         h1 {
             color: white; font-weight: 300; letter-spacing: 2px;
             z-index: 1; margin-bottom: 20px; opacity: 0.8;
@@ -37,7 +35,6 @@
             display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; z-index: 1;
         }
 
-        /* ========================================= */
         .card {
             position: relative;
             width: 300px; height: 360px;
@@ -50,14 +47,10 @@
             cursor: pointer;
         }
 
-        /* ========================================= */
-        
         .card::before {
             content: "";
             position: absolute; inset: 0;
             border-radius: 20px; padding: 2px; /* Kenarlık Kalınlığı */
-            
-            /* --clr değişkeni HTML'den gelecek */
             background: radial-gradient(
                 600px circle at var(--x) var(--y), 
                 var(--clr), 
@@ -169,4 +162,5 @@
     </script>
 
 </body>
+
 </html>
