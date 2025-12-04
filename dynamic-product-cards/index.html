@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3 Product Cards</title>
     <style>
-        /* ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
         body {
@@ -21,18 +19,16 @@
 
         .wrapper {
             display: flex;
-            flex-wrap: wrap; /* Ekran küçülünce alt alta geçsin */
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 50px; /* Kartlar arası boşluk */
+            gap: 50px; 
             width: 100%;
             max-width: 1200px;
         }
 
-        /* ========================================= */
         .container {
             --primary: #ff4757; 
             --hue-rotate: 0deg;
-
             position: relative;
             width: 320px;
             height: 480px;
@@ -42,7 +38,6 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
-        /* Arka Plandaki Daire */
         .container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--primary); 
@@ -199,4 +194,5 @@
     </script>
 
 </body>
+
 </html>
