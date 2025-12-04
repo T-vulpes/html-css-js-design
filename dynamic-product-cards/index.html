@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Product Cards</title>
+    <style>
+        /* ========================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #111;
+            padding: 50px 0; 
+        }
+
+        .wrapper {
+            display: flex;
+            flex-wrap: wrap; /* Ekran küçülünce alt alta geçsin */
+            justify-content: center;
+            gap: 50px; /* Kartlar arası boşluk */
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* ========================================= */
+        .container {
+            --primary: #ff4757; 
+            --hue-rotate: 0deg;
+
+            position: relative;
+            width: 320px;
+            height: 480px;
+            background: #232323;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        /* Arka Plandaki Daire */
+        .container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary); 
+            clip-path: circle(150px at 80% 20%);
+            transition: 0.5s ease-in-out;
+        }
+
+        .container:hover::before { clip-path: circle(300px at 80% -20%); }
+
+        .container::after {
+            content: 'NIKE'; position: absolute; top: 30%; left: -20%;
+            font-size: 10em; font-weight: 900; font-style: italic;
+            color: rgba(255,255,255,0.04); z-index: 0;
+        }
+
+        /* ========================================= */
+        .imgBox {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+            width: 100%; height: 220px; transition: 0.5s;
+        }
+
+        .container:hover .imgBox { top: 0%; transform: translateY(0%); }
+
+        .imgBox img {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            width: 270px;
+            /* Resim rengini karta özel değişkene göre ayarla */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)) hue-rotate(var(--hue-rotate));
+            transition: 0.5s;
+        }
+
+        .contentBox {
+            position: absolute; bottom: 0; width: 100%; height: 100px;
+            text-align: center; transition: 1s; z-index: 1;
+        }
+
+        .container:hover .contentBox { height: 210px; }
+
+        .contentBox h2 {
+            position: relative; font-weight: 700; letter-spacing: 1px; color: #fff; margin: 0;
+        }
+
+        .size, .color {
+            display: flex; justify-content: center; align-items: center;
+            padding: 8px 20px; transition: 0.5s; opacity: 0; visibility: hidden;
+        }
+
+        .container:hover .size, .container:hover .color {
+            opacity: 1; visibility: visible; transition-delay: 0.5s;
+        }
+
+        .size h3, .color h3 {
+            color: #fff; font-weight: 300; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-right: 10px;
+        }
+
+        .size span {
+            width: 26px; height: 26px; text-align: center; line-height: 26px; font-size: 14px;
+            display: inline-block; color: #111; background: #fff; margin: 0 5px;
+            border-radius: 4px; cursor: pointer; transition: 0.3s;
+        }
+        .size span:hover { background: var(--primary); color: #fff; }
+
+        .color span {
+            width: 20px; height: 20px; background: #ff4757; border-radius: 50%;
+            margin: 0 5px; cursor: pointer; border: 2px solid #222; transition: 0.3s;
+        }
+        /* Renk Topları */
+        .color span:nth-child(2) { background: #2bd2ff; }
+        .color span:nth-child(3) { background: #1eff4c; }
+        .color span:hover { transform: scale(1.2); border-color: #fff; }
+
+        .buy-btn {
+            display: inline-block; padding: 10px 20px; background: #fff; border-radius: 4px;
+            margin-top: 10px; text-decoration: none; font-weight: 600; color: #111;
+            opacity: 0; transform: translateY(50px); transition: 0.5s; cursor: pointer;
+        }
+
+        .container:hover .buy-btn { opacity: 1; transform: translateY(0px); transition-delay: 0.7s; }
+        .buy-btn:hover { background: var(--primary); color: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <div class="container">
+            <div class="imgBox">
+                <img src="https://raw.githubusercontent.com/developedbyed/3d-card-effect/master/adidas.png" alt="Nike Shoes">
+            </div>
+            <div class="contentBox">
+                <h2>Nike Air Max</h2>
+                <div class="size">
+                    <h3>Size :</h3> <span>7</span> <span>8</span> <span>9</span> <span>10</span>
+                </div>
+                <div class="color">
+                    <h3>Color :</h3>
+                    <span onclick="changeColor(this, '#ff4757', '0deg')"></span>
+                    <span onclick="changeColor(this, '#2bd2ff', '180deg')"></span>
+                    <span onclick="changeColor(this, '#1eff4c', '120deg')"></span>
+                </div>
+                <a href="#" class="buy-btn">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="container" style="--primary: #2bd2ff; --hue-rotate: 180deg;">
+            <div class="imgBox">
+                <img src="https://raw.githubusercontent.com/developedbyed/3d-card-effect/master/adidas.png" alt="Nike Shoes">
+            </div>
+            <div class="contentBox">
+                <h2>Nike Zoom</h2>
+                <div class="size">
+                    <h3>Size :</h3> <span>7</span> <span>8</span> <span>9</span> <span>10</span>
+                </div>
+                <div class="color">
+                    <h3>Color :</h3>
+                    <span onclick="changeColor(this, '#ff4757', '0deg')"></span>
+                    <span onclick="changeColor(this, '#2bd2ff', '180deg')"></span>
+                    <span onclick="changeColor(this, '#1eff4c', '120deg')"></span>
+                </div>
+                <a href="#" class="buy-btn">Buy Now</a>
+            </div>
+        </div>
+
+        <div class="container" style="--primary: #1eff4c; --hue-rotate: 120deg;">
+            <div class="imgBox">
+                <img src="https://raw.githubusercontent.com/developedbyed/3d-card-effect/master/adidas.png" alt="Nike Shoes">
+            </div>
+            <div class="contentBox">
+                <h2>Nike Jordan</h2>
+                <div class="size">
+                    <h3>Size :</h3> <span>7</span> <span>8</span> <span>9</span> <span>10</span>
+                </div>
+                <div class="color">
+                    <h3>Color :</h3>
+                    <span onclick="changeColor(this, '#ff4757', '0deg')"></span>
+                    <span onclick="changeColor(this, '#2bd2ff', '180deg')"></span>
+                    <span onclick="changeColor(this, '#1eff4c', '120deg')"></span>
+                </div>
+                <a href="#" class="buy-btn">Buy Now</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function changeColor(element, color, hue) {
+            const card = element.closest('.container');
+            
+            card.style.setProperty('--primary', color);
+            card.style.setProperty('--hue-rotate', hue);
+        }
+    </script>
+
+</body>
+</html>
