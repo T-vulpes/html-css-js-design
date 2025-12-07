@@ -34,7 +34,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1; /* Altta kalacak */
+            z-index: 1; 
         }
 
         .secret-layer h3 {
@@ -59,12 +59,11 @@
         #scratchCanvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; /* Üstte olacak */
+            z-index: 2;
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="black"><circle cx="12" cy="12" r="10"/></svg>') 12 12, auto; /* Özel imleç */
             transition: opacity 0.5s;
         }
         
-        /* Kazıma bitince kartın parlaması için */
         .container.revealed {
             box-shadow: 0 0 20px #ff9a9e;
         }
@@ -74,7 +73,6 @@
 <body>
 
     <div class="container">
-        
         <div class="secret-layer">
             <h3>You Won a Code!</h3>
             <div class="code">50%OFF</div>
@@ -96,9 +94,9 @@
 
         function initCover() {
             const gradient = ctx.createLinearGradient(0, 0, width, height);
-            gradient.addColorStop(0, '#C0C0C0'); // Gümüş
-            gradient.addColorStop(0.5, '#E0E0E0'); // Açık Gümüş
-            gradient.addColorStop(1, '#B0B0B0'); // Koyu Gümüş
+            gradient.addColorStop(0, '#C0C0C0');
+            gradient.addColorStop(0.5, '#E0E0E0');
+            gradient.addColorStop(1, '#B0B0B0'); 
 
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, width, height);
@@ -111,8 +109,6 @@
         }
 
         initCover();
-
-        // 2. KAZIMA MANTIĞI (Sihir Burada)
         let isDrawing = false;
 
         const getMousePos = (e) => {
@@ -125,7 +121,7 @@
         const scratch = (x, y) => {
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 20, 0, Math.PI * 2); // 20px yarıçapında silgi
+            ctx.arc(x, y, 20, 0, Math.PI * 2);  
             ctx.fill();
         };
 
@@ -134,10 +130,10 @@
         
         const moveDraw = (e) => {
             if (!isDrawing) return;
-            e.preventDefault(); // Mobilde kaydırmayı engelle
+            e.preventDefault(); 
             const { x, y } = getMousePos(e);
             scratch(x, y);
-            checkReveal(); // Ne kadar kazındığını kontrol et
+            checkReveal();
         };
 
         const endDraw = () => { isDrawing = false; };
@@ -146,7 +142,6 @@
         canvas.addEventListener('mousemove', moveDraw);
         window.addEventListener('mouseup', endDraw);
 
-        // Mobile
         canvas.addEventListener('touchstart', startDraw);
         canvas.addEventListener('touchmove', moveDraw);
         window.addEventListener('touchend', endDraw);
@@ -172,7 +167,6 @@
         }
 
     </script>
-
 </body>
-
 </html>
+
