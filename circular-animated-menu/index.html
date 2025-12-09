@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Sci-Fi Menu</title>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            background: #2f363e;
+            overflow: hidden;
+        }
+
+        .menu {
+            position: relative;
+            width: 280px; height: 280px;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .toggle {
+            position: absolute;
+            width: 80px; height: 80px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px #2f363e, 0 0 0 10px #fff; 
+            transition: transform 1.25s;
+        }
+
+        .toggle ion-icon {
+            font-size: 3.5rem;
+            color: #2f363e;
+            transition: transform 1.25s;
+        }
+
+        .menu.active .toggle {
+            transform: rotate(360deg);
+            box-shadow: 0 0 0 4px #2f363e, 0 0 0 10px #ff2972; 
+        }
+        
+        .menu.active .toggle ion-icon {
+            transform: rotate(135deg);
+            color: #ff2972;
+        }
+
+        .menu li {
+            position: absolute;
+            left: 0; list-style: none;
+            transform-origin: 140px; 
+            transition: 0.5s;
+            transition-delay: calc(0.1s * var(--i)); 
+            transform: rotate(0deg) translateX(110px); 
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .menu.active li {
+            transform: rotate(calc(360deg / 8 * var(--i)));
+            opacity: 1;
+        }
+
+        .menu li a {
+            display: flex; justify-content: center; align-items: center;
+            width: 60px; height: 60px;
+            background: #fff;
+            border-radius: 50%;
+            color: #2f363e;
+            font-size: 1.75rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.5s;
+            transform: rotate(calc(360deg / -8 * var(--i)));
+        }
+
+        .menu li a:hover {
+            color: #ff2972;
+            box-shadow: 0 0 0 4px #2f363e, 0 0 0 8px #ff2972;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="menu">
+        <div class="toggle">
+            <ion-icon name="add-outline"></ion-icon>
+        </div>
+
+        <li style="--i:0;"><a href="#"><ion-icon name="home-outline"></ion-icon></a></li>
+        <li style="--i:1;"><a href="#"><ion-icon name="person-outline"></ion-icon></a></li>
+        <li style="--i:2;"><a href="#"><ion-icon name="settings-outline"></ion-icon></a></li>
+        <li style="--i:3;"><a href="#"><ion-icon name="mail-outline"></ion-icon></a></li>
+        <li style="--i:4;"><a href="#"><ion-icon name="key-outline"></ion-icon></a></li>
+        <li style="--i:5;"><a href="#"><ion-icon name="videocam-outline"></ion-icon></a></li>
+        <li style="--i:6;"><a href="#"><ion-icon name="game-controller-outline"></ion-icon></a></li>
+        <li style="--i:7;"><a href="#"><ion-icon name="camera-outline"></ion-icon></a></li>
+    </div>
+
+    <script>
+        const toggle = document.querySelector('.toggle');
+        const menu = document.querySelector('.menu');
+
+        toggle.onclick = function() {
+            menu.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>
