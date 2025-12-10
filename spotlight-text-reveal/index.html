@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotlight Reveal Fixed</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        .text-reveal {
+            position: relative;
+            font-size: 9rem;
+            font-weight: 900;
+            text-align: center;
+            line-height: 1;
+            text-transform: uppercase;
+            user-select: none; 
+            
+            color: transparent;
+            
+            
+            background-image: radial-gradient(
+                circle 250px at var(--x, 50%) var(--y, 50%), 
+                #00d4ff 0%, 
+                #ffffff 20%, 
+                transparent 50%
+            );
+            
+            background-clip: text;
+            -webkit-background-clip: text;           
+            background-repeat: no-repeat;           
+            cursor: none;
+        }
+
+        .cursor-light {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            mix-blend-mode: difference;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 30px;
+            color: #333;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="cursor-light" id="cursor"></div>
+
+    <h1 class="text-reveal" id="text">
+        HIDDEN<br>
+        WORLD
+    </h1>
+
+    <div class="hint">EXPLORE THE DARKNESS</div>
+
+    <script>
+        const text = document.getElementById('text');
+        const cursor = document.getElementById('cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            const rect = text.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            text.style.setProperty('--x', x + 'px');
+            text.style.setProperty('--y', y + 'px');
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const rect = text.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;    
+            text.style.setProperty('--x', x + 'px');
+            text.style.setProperty('--y', y + 'px');          
+            cursor.style.display = 'none'; 
+        });
+    </script>
+
+</body>
+</html>
