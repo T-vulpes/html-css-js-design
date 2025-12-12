@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect 3D Carousel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: #111;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex; justify-content: center; align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .item {
+            position: absolute;
+            width: 250px;
+            height: 350px;
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            transition: 0.5s ease-in-out; /* Akıcı geçiş */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            background-size: cover;
+            background-position: center;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            color: white;
+            overflow: hidden;
+        }
+
+        .item:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&q=80'); }
+        .item:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=500&q=80'); }
+        .item:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=500&q=80'); }
+        .item:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&q=80'); }
+        .item:nth-child(5) { background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=500&q=80'); }
+        .item:nth-child(6) { background-image: url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=500&q=80'); }
+
+        .content {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            padding: 15px;
+            border-radius: 15px;
+            transform: translateY(100px); 
+            opacity: 0;
+            transition: 0.5s;
+        }
+        
+        .name { font-size: 1.5rem; font-weight: bold; }
+        .des { font-size: 0.9rem; opacity: 0.8; }
+
+        
+        .item:nth-child(1) {
+            transform: translateX(-300px) scale(0.8) perspective(1000px) rotateY(25deg);
+            z-index: 1;
+            opacity: 0.5;
+            filter: blur(2px);
+        }
+
+        .item:nth-child(2) {
+            transform: translateX(0) scale(1) perspective(1000px) rotateY(0deg);
+            z-index: 2;
+            opacity: 1;
+            filter: blur(0);
+            box-shadow: 0 0 50px rgba(255,255,255,0.2);
+        }
+        
+        .item:nth-child(2) .content {
+            transform: translateY(0);
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
+
+        .item:nth-child(3) {
+            transform: translateX(300px) scale(0.8) perspective(1000px) rotateY(-25deg);
+            z-index: 1;
+            opacity: 0.5;
+            filter: blur(2px);
+        }
+
+        .item:nth-child(n+4) {
+            transform: translateX(600px) scale(0.5);
+            opacity: 0;
+            z-index: 0;
+        }
+
+        .buttons {
+            position: absolute;
+            bottom: 50px;
+            display: flex; gap: 30px;
+            z-index: 100;
+        }
+
+        .buttons button {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .buttons button:hover {
+            background: #fff; color: #000;
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="slider">
+            <div class="item"><div class="content"><div class="name">1. OCEAN</div><div class="des">Deep blue waves.</div></div></div>
+            <div class="item"><div class="content"><div class="name">2. NEON</div><div class="des">City lights glowing.</div></div></div>
+            <div class="item"><div class="content"><div class="name">3. SPACE</div><div class="des">Galaxy far away.</div></div></div>
+            <div class="item"><div class="content"><div class="name">4. AURORA</div><div class="des">Northern lights.</div></div></div>
+            <div class="item"><div class="content"><div class="name">5. DESERT</div><div class="des">Golden sands.</div></div></div>
+            <div class="item"><div class="content"><div class="name">6. FOREST</div><div class="des">Green nature.</div></div></div>
+        </div>
+
+        <div class="buttons">
+            <button id="prev"><i class="fa-solid fa-angle-left"></i></button>
+            <button id="next"><i class="fa-solid fa-angle-right"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.querySelector('.slider');
+        const nextBtn = document.getElementById('next');
+        const prevBtn = document.getElementById('prev');
+
+        let isAnimating = false;
+
+        function moveSlider(direction) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const items = document.querySelectorAll('.item');
+
+            if (direction === 'next') {
+                slider.appendChild(items[0]);
+            } else {
+                slider.prepend(items[items.length - 1]);
+            }
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500);
+        }
+
+        nextBtn.onclick = () => moveSlider('next');
+        prevBtn.onclick = () => moveSlider('prev');
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') moveSlider('next');
+            if (e.key === 'ArrowLeft') moveSlider('prev');
+        });
+
+    </script>
+
+</body>
+</html>
