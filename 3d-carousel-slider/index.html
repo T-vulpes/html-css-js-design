@@ -39,7 +39,7 @@
             background-color: #fff;
             border-radius: 20px;
             padding: 20px;
-            transition: 0.5s ease-in-out; /* Akıcı geçiş */
+            transition: 0.5s ease-in-out; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             background-size: cover;
             background-position: center;
@@ -66,9 +66,7 @@
         }
         
         .name { font-size: 1.5rem; font-weight: bold; }
-        .des { font-size: 0.9rem; opacity: 0.8; }
-
-        
+        .des { font-size: 0.9rem; opacity: 0.8; }        
         .item:nth-child(1) {
             transform: translateX(-300px) scale(0.8) perspective(1000px) rotateY(25deg);
             z-index: 1;
@@ -150,9 +148,7 @@
         const slider = document.querySelector('.slider');
         const nextBtn = document.getElementById('next');
         const prevBtn = document.getElementById('prev');
-
         let isAnimating = false;
-
         function moveSlider(direction) {
             if (isAnimating) return;
             isAnimating = true;
