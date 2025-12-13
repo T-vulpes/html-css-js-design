@@ -22,14 +22,11 @@
 <body>
 
     <canvas id="canvas1"></canvas>
-
     <script>
         const canvas = document.getElementById('canvas1');
         const ctx = canvas.getContext('2d');
-        
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         const particlesArray = [];
         let hue = 0; 
 
@@ -46,7 +43,6 @@
         canvas.addEventListener('mousemove', function(event){
             mouse.x = event.x;
             mouse.y = event.y;
-            // Hareket ettikçe 5 tane parçacık üret
             for (let i = 0; i < 5; i++){
                 particlesArray.push(new Particle());
             }
@@ -109,8 +105,6 @@
         }
 
         animate();
-
     </script>
-
 </body>
 </html>
