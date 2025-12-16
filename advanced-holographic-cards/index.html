@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Holographic Cards</title>
+    <style>
+        /* ========================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cinzel', serif; }
+
+        body {
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            background-color: #050505;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+            overflow: hidden;
+        }
+
+        #app {
+            display: flex;
+            gap: 40px;
+            perspective: 1500px; 
+            padding: 20px;
+        }
+
+        /* ========================================= */
+        .card {
+            position: relative;
+            width: 280px;
+            height: 420px;
+            border-radius: 18px;
+            cursor: pointer;
+            
+            transform-style: preserve-3d;
+            transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
+            
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            
+            box-shadow: 
+                0 0 10px rgba(0,0,0,0.5),
+                0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            background: #222;
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        .card-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .layer-holo {
+            position: absolute; inset: 0; z-index: 2;
+            border-radius: 18px;
+            opacity: 0.6;
+            mix-blend-mode: color-dodge;
+            background: linear-gradient(
+                115deg,
+                transparent 20%,
+                rgba(255, 0, 150, 0.5) 40%,
+                rgba(0, 255, 255, 0.5) 60%,
+                transparent 80%
+            );
+            background-size: 300% 300%;
+            background-position: var(--bgPos);
+            filter: brightness(1.2) contrast(1.2);
+            pointer-events: none;
+        }
+
+        .layer-glare {
+            position: absolute; inset: 0; z-index: 3;
+            border-radius: 18px;
+            opacity: 0.4;
+            mix-blend-mode: hard-light;
+            background: radial-gradient(
+                circle at var(--mouse-x) var(--mouse-y), 
+                rgba(255,255,255,0.8) 0%, 
+                transparent 60%
+            );
+            pointer-events: none;
+        }
+
+        .layer-sparkles {
+            position: absolute; inset: 0; z-index: 4;
+            border-radius: 18px;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            mix-blend-mode: overlay;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .card::after {
+            content: ''; position: absolute; inset: -2px;
+            border-radius: 20px; z-index: -1;
+            background: linear-gradient(var(--rotateY), #ff0080, #00bfff);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .card:hover::after { opacity: 1; }
+
+
+        /* ========================================= */
+        .card-info {
+            position: absolute; bottom: 0; width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, #000 0%, transparent 100%);
+            color: white;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 10;
+        }
+        .card:hover .card-info { transform: translateY(0); opacity: 1; }
+
+        .rarity { 
+            font-size: 0.75rem; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            color: #ff0080; 
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0080;
+        }
+        
+        .name { 
+            font-size: 1.5rem; 
+            margin-top: 5px; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        </div>
+
+    <script>
+        const cardsData = [
+            {
+                id: 1,
+                name: "Cosmic Dragon",
+                rarity: "Ultra Rare",
+                image: "https://images.unsplash.com/photo-1629812456605-4a044aa38fbc?q=80&w=1000&auto=format&fit=crop",
+                color: "#ff0080"
+            },
+            {
+                id: 2,
+                name: "Void Walker",
+                rarity: "Secret Rare",
+                image: "https://images.unsplash.com/photo-1535295972055-1c762f4483e5?q=80&w=1000&auto=format&fit=crop",
+                color: "#8000ff"
+            },
+            {
+id: 3,
+                name: "Solar Paladin",
+                rarity: "Legendary",
+                image: "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1000&auto=format&fit=crop",
+                color: "#ffaa00"
+            }
+        ];
+
+        const app = document.getElementById('app');
+
+        // 2. KARTLARI OLUŞTUR (Render Logic)
+        cardsData.forEach(data => {
+            const cardHTML = `
+                <div class="card" data-color="${data.color}">
+                    <div class="card-face">
+                        <img src="${data.image}" class="card-img" alt="${data.name}">
+                        
+                        <div class="layer-holo"></div>
+                        <div class="layer-glare"></div>
+                        <div class="layer-sparkles"></div>
+
+                        <div class="card-info">
+                            <div class="rarity" style="color: ${data.color}; text-shadow: 0 0 10px ${data.color}">${data.rarity}</div>
+                            <div class="name">${data.name}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            app.innerHTML += cardHTML;
+        });
+
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -20; // Dikey eksende ters hareket
+                const rotateY = ((x - centerX) / centerX) * 20;
+
+                const mouseXper = (x / rect.width) * 100;
+                const mouseYper = (y / rect.height) * 100;
+
+                card.style.setProperty('--rotateX', `${rotateX}deg`);
+                card.style.setProperty('--rotateY', `${rotateY}deg`);
+                
+                card.style.setProperty('--bgPos', `${mouseXper}% ${mouseYper}%`);
+                
+                card.style.setProperty('--mouse-x', `${mouseXper}%`);
+                card.style.setProperty('--mouse-y', `${mouseYper}%`);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.setProperty('--rotateX', '0deg');
+                card.style.setProperty('--rotateY', '0deg');
+                card.style.setProperty('--bgPos', '50% 50%');
+                card.style.setProperty('--mouse-x', '50%');
+                card.style.setProperty('--mouse-y', '50%');
+            });
+        });
+
+    </script>
+
+</body>
+</html>
