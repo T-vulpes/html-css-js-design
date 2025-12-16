@@ -99,9 +99,6 @@
             opacity: 0; transition: opacity 0.3s;
         }
         .card:hover::after { opacity: 1; }
-
-
-        /* ========================================= */
         .card-info {
             position: absolute; bottom: 0; width: 100%;
             padding: 20px;
@@ -132,10 +129,8 @@
     </style>
 </head>
 <body>
-
     <div id="app">
         </div>
-
     <script>
         const cardsData = [
             {
@@ -162,8 +157,6 @@ id: 3,
         ];
 
         const app = document.getElementById('app');
-
-        // 2. KARTLARI OLUŞTUR (Render Logic)
         cardsData.forEach(data => {
             const cardHTML = `
                 <div class="card" data-color="${data.color}">
@@ -195,7 +188,7 @@ id: 3,
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
-                const rotateX = ((y - centerY) / centerY) * -20; // Dikey eksende ters hareket
+                const rotateX = ((y - centerY) / centerY) * -20; 
                 const rotateY = ((x - centerX) / centerX) * 20;
 
                 const mouseXper = (x / rect.width) * 100;
@@ -220,8 +213,5 @@ id: 3,
         });
 
     </script>
-
 </body>
-
 </html>
-
