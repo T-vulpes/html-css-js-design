@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Drop Small Shoes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@300;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .background-text {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center;
+            z-index: 0;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .marquee {
+            display: flex;
+            white-space: nowrap;
+            margin: 10px 0;
+            transform: rotate(-5deg) scale(1.1);
+        }
+
+        .marquee div {
+            font-family: 'Oswald', sans-serif;
+            font-size: 8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: transparent;
+            -webkit-text-stroke: 2px #555;
+            animation: scroll 20s linear infinite;
+            padding-right: 50px;
+        }
+
+        .marquee.reverse div {
+            animation-direction: reverse;
+            color: #222;
+            -webkit-text-stroke: 0;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .products-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .card {
+            width: 280px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            transition: 0.4s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-20px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-color: #fff;
+        }
+
+        .shoe-img {
+            width: 90%;
+            margin-top: 10px; 
+            
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            transition: 0.4s ease;
+            transform: rotate(-20deg);
+        }
+
+        .card:hover .shoe-img {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .info {
+            margin-top: auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        .brand {
+            color: #888;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .price {
+            color: #00ff88;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.4s;
+        }
+
+        .card:hover .btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-text">
+        <div class="marquee">
+            <div>New Collection Summer Drop Exclusive Streetwear • New Collection Summer Drop Exclusive Streetwear</div>
+            <div>New Collection Summer Drop Exclusive Streetwear • New Collection Summer Drop Exclusive Streetwear</div>
+        </div>
+        <div class="marquee reverse">
+            <div>Limited Edition • Urban Style • Fast Moving • Limited Edition • Urban Style • Fast Moving</div>
+            <div>Limited Edition • Urban Style • Fast Moving • Limited Edition • Urban Style • Fast Moving</div>
+        </div>
+        <div class="marquee">
+            <div>Just Dropped • Best Sellers • Just Dropped • Best Sellers • Just Dropped • Best Sellers</div>
+            <div>Just Dropped • Best Sellers • Just Dropped • Best Sellers • Just Dropped • Best Sellers</div>
+        </div>
+    </div>
+
+    <div class="products-container">
+        
+        <div class="card">
+            <span class="brand">Nike Air</span>
+            <img src="https://raw.githubusercontent.com/developedbyed/3d-card-effect/master/adidas.png" class="shoe-img" style="filter: hue-rotate(0deg) drop-shadow(0 10px 10px rgba(0,0,0,0.5));" alt="Shoe">
+            <div class="info">
+                <div class="title">Air Jordan Red</div>
+                <div class="price">$189.00</div>
+                <button class="btn">Buy Now</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="brand">Nike Air</span>
+            <img src="https://raw.githubusercontent.com/developedbyed/3d-card-effect/master/adidas.png" class="shoe-img" style="filter: hue-rotate(180deg) drop-shadow(0 10px 10px rgba(0,0,0,0.5));" alt="Shoe">
+            <div class="info">
+                <div class="title">Air Jordan Blue</div>
+                <div class="price">$189.00</div>
+                <button class="btn">Buy Now</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="brand">Nike Air</span>
+            <img src="https://raw.githubusercontent.com/developedbyed/3d-card-effect/master/adidas.png" class="shoe-img" style="filter: hue-rotate(100deg) drop-shadow(0 10px 10px rgba(0,0,0,0.5));" alt="Shoe">
+            <div class="info">
+                <div class="title">Air Jordan Green</div>
+                <div class="price">$189.00</div>
+                <button class="btn">Buy Now</button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
