@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanding Gallery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden; /* Scroll yok */
+            background: #000;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* ========================================= */
+        .panel {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            
+            flex: 1; 
+            margin: 10px;
+            position: relative;
+            
+            transition: flex 0.7s cubic-bezier(0.05, 0.6, 0.4, 0.9);
+            
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.3);
+        }
+
+        .panel.active {
+            flex: 10; 
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0); 
+        }
+
+        .content {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            opacity: 0; /* Başlangıçta gizli */
+            transition: opacity 0.3s ease-in 0.4s; /* Gecikmeli gelsin */
+            white-space: nowrap; /* Yazı kaymasın */
+        }
+
+        .panel.active .content {
+            opacity: 1; /* Sadece aktifken görün */
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+
+        .desc {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 480px) {
+            .container { flex-direction: column; } /* Mobilde alt alta */
+            .panel:nth-child(4), .panel:nth-child(5) { display: none; } /* Yer kalmazsa gizle */
+            .title { font-size: 1.5rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="panel active" style="background-image: url('https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=1000&auto=format&fit=crop')">
+            <div class="content">
+                <div class="title">Neon City</div>
+                <div class="desc">Explore the cyberpunk vibes.</div>
+            </div>
+        </div>
+
+        <div class="panel" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop')">
+            <div class="content">
+                <div class="title">Wild Ocean</div>
+                <div class="desc">Deep blue waves calling.</div>
+            </div>
+        </div>
+
+        <div class="panel" style="background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop')">
+            <div class="content">
+                <div class="title">Mountain High</div>
+                <div class="desc">Touch the sky peaks.</div>
+            </div>
+        </div>
+
+        <div class="panel" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop')">
+            <div class="content">
+                <div class="title">Dark Forest</div>
+                <div class="desc">Mysteries in the mist.</div>
+            </div>
+        </div>
+
+        <div class="panel" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000&auto=format&fit=crop')">
+            <div class="content">
+                <div class="title">Canyon Echo</div>
+                <div class="desc">Nature's grand design.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const panels = document.querySelectorAll('.panel');
+
+        panels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                removeActiveClasses();
+                panel.classList.add('active');
+            });
+        });
+
+        function removeActiveClasses() {
+            panels.forEach(panel => {
+                panel.classList.remove('active');
+            });
+        }
+    </script>
+
+</body>
+</html>
