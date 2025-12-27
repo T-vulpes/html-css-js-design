@@ -93,7 +93,7 @@
                 let distance = Math.sqrt(dx*dx + dy*dy);                
                 if (distance < mouse.radius + this.size){
                     if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
-                        this.x += 3; // İtme gücü artırıldı
+                        this.x += 3; 
                     }
                     if (mouse.x > this.x && this.x > this.size * 10) {
                         this.x -= 3;
@@ -164,4 +164,5 @@
     </script>
 </body>
 </html>
+
 
