@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Constellation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #000; /* Arka plan siyah */
+            overflow: hidden; 
+            height: 100vh;
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        
+        .title {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: sans-serif;
+            font-size: 3rem;
+            pointer-events: none;
+            z-index: 10;
+            mix-blend-mode: difference;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title">Move Mouse</div>
+    <canvas id="canvas1"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas1');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 150 
+        }
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('resize', function(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = '#ffffff'; 
+                ctx.fill();
+            }
+
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                
+                if (distance < mouse.radius + this.size){
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                        this.x += 3; // İtme gücü artırıldı
+                    }
+                    if (mouse.x > this.x && this.x > this.size * 10) {
+                        this.x -= 3;
+                    }
+                }
+                
+                this.x += this.directionX;
+                this.y += this.directionY;
+                
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 6000; 
+            
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 3) + 1; 
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 2) - 1; 
+                let directionY = (Math.random() * 2) - 1;
+                let color = '#ffffff';
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connect(){
+            let maxDistance = 120; 
+
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    
+                    let distance = Math.sqrt(
+                        Math.pow((particlesArray[a].x - particlesArray[b].x), 2) + 
+                        Math.pow((particlesArray[a].y - particlesArray[b].y), 2)
+                    );
+                    
+                    if (distance < maxDistance) {
+                        let opacity = 1 - (distance / maxDistance);
+                        
+                        ctx.strokeStyle = 'rgba(255, 255, 255,' + opacity + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0,0,innerWidth, innerHeight);
+            
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        init();
+        animate();
+        
+        console.log("Canvas Animation Started");
+
+    </script>
+
+</body>
+</html>
