@@ -45,7 +45,6 @@
             from { transform: translate(-50%, -50%) scale(0) rotate(var(--rot)); }
             to { transform: translate(-50%, -50%) scale(1) rotate(var(--rot)); }
         }
-
        
         @keyframes fadeOut {
             to { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(var(--rot)); }
@@ -54,7 +53,6 @@
     </style>
 </head>
 <body>
-
     <h1 class="msg">Move Your Mouse</h1>
 
     <script>
@@ -74,9 +72,7 @@
         const activateTrail = (e) => {
             const x = e.clientX || e.touches[0].clientX;
             const y = e.clientY || e.touches[0].clientY;
-
             const distanceFromLast = Math.hypot(x - lastX, y - lastY);
-
             if (distanceFromLast < 100) return;
 
             lastX = x;
@@ -84,7 +80,6 @@
 
             const img = document.createElement('img');
             img.className = 'trail-img';
-            
             img.src = images[imageIndex % images.length];
             imageIndex++;
 
@@ -95,7 +90,6 @@
             img.style.top = `${y}px`;
             
             img.style.zIndex = imageIndex;
-
             document.body.appendChild(img);
 
             setTimeout(() => {
@@ -107,6 +101,6 @@
         window.ontouchmove = activateTrail;
 
     </script>
-
 </body>
 </html>
+
