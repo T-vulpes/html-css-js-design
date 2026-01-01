@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Image Trail</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #111;
+            height: 100vh;
+            overflow: hidden; 
+            cursor: none; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .msg {
+            color: #444;
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 100;
+            mix-blend-mode: exclusion; 
+        }
+
+        .trail-img {
+            position: absolute;
+            width: 200px; 
+            height: 280px; 
+            object-fit: cover;
+            border-radius: 5px;
+            pointer-events: none; 
+            transform: translate(-50%, -50%) scale(0);
+            animation: popIn 0.5s ease-out forwards, fadeOut 1s ease-in 1s forwards;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @keyframes popIn {
+            from { transform: translate(-50%, -50%) scale(0) rotate(var(--rot)); }
+            to { transform: translate(-50%, -50%) scale(1) rotate(var(--rot)); }
+        }
+
+       
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(var(--rot)); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1 class="msg">Move Your Mouse</h1>
+
+    <script>
+        const images = [
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&q=80",
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&q=80",
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80",
+            "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=80",
+            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=80"
+        ];
+
+        let imageIndex = 0;
+        let lastX = 0;
+        let lastY = 0;
+
+        const activateTrail = (e) => {
+            const x = e.clientX || e.touches[0].clientX;
+            const y = e.clientY || e.touches[0].clientY;
+
+            const distanceFromLast = Math.hypot(x - lastX, y - lastY);
+
+            if (distanceFromLast < 100) return;
+
+            lastX = x;
+            lastY = y;
+
+            const img = document.createElement('img');
+            img.className = 'trail-img';
+            
+            img.src = images[imageIndex % images.length];
+            imageIndex++;
+
+            const randomRotation = Math.random() * 40 - 20;
+            img.style.setProperty('--rot', randomRotation + 'deg');
+
+            img.style.left = `${x}px`;
+            img.style.top = `${y}px`;
+            
+            img.style.zIndex = imageIndex;
+
+            document.body.appendChild(img);
+
+            setTimeout(() => {
+                img.remove();
+            }, 2000);
+        }
+
+        window.onmousemove = activateTrail;
+        window.ontouchmove = activateTrail;
+
+    </script>
+
+</body>
+</html>
