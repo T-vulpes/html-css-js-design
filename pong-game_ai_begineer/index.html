@@ -141,16 +141,12 @@
             if (collision(ball, playerOrAi)) {
                 let collidePoint = ball.y - (playerOrAi.y + playerOrAi.height / 2);
                 collidePoint = collidePoint / (playerOrAi.height / 2);
-
                 let angleRad = (Math.PI / 4) * collidePoint;
                 let direction = (ball.x < canvas.width / 2) ? 1 : -1;
-
                 ball.velocityX = direction * ball.speed * Math.cos(angleRad);
                 ball.velocityY = ball.speed * Math.sin(angleRad);
-
-                ball.speed += 0.2;
-                
-                playSound(600, 'sine'); // Vuruş sesi
+                ball.speed += 0.2;                
+                playSound(600, 'sine'); 
             }
 
             if (ball.x - ball.radius < 0) {
@@ -232,3 +228,4 @@
     </script>
 </body>
 </html>
+
