@@ -57,21 +57,17 @@
         <div class="player-score" id="pScore">0</div>
         <div class="ai-score" id="aScore">0</div>
     </div>
-
     <div class="start-msg" id="msg">CLICK TO START</div>
     <canvas id="gameCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        
+        const ctx = canvas.getContext('2d');  
         const pScoreEl = document.getElementById('pScore');
         const aScoreEl = document.getElementById('aScore');
         const msgEl = document.getElementById('msg');
-
         canvas.width = 800;
         canvas.height = 500;
-
         let isRunning = false;
         let playerScore = 0;
         let aiScore = 0;
@@ -104,8 +100,6 @@
             velocityY: 5,
             color: '#ffffff'
         };
-
-        // =========================================
         
         function drawRect(x, y, w, h, color) {
             ctx.fillStyle = color;
@@ -130,8 +124,6 @@
                 drawRect(canvas.width / 2 - 1, i, 2, 10, "#333");
             }
         }
-
-        // =========================================
 
         function update() {
             ball.x += ball.velocityX;
@@ -247,3 +239,4 @@
 </body>
 
 </html>
+
