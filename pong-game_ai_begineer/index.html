@@ -187,9 +187,7 @@
             ball.velocityX = -ball.velocityX; 
         }
 
-        // =========================================
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         function playSound(frequency, type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
@@ -204,12 +202,9 @@
         }
 
         function gameLoop() {
-            if(!isRunning) return;
-            
-            // Hafif iz bırakmak için tam temizlemiyoruz (Motion Blur)
+            if(!isRunning) return;            
             ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             update();
 
             drawNet();
@@ -235,8 +230,5 @@
         });
 
     </script>
-
 </body>
-
 </html>
-
