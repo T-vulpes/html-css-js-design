@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Pong vs AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #050505;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Orbitron', sans-serif;
+            cursor: none; 
+        }
+
+        canvas {
+            border: 2px solid #333;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.1);
+            background: #000;
+        }
+
+        .score-board {
+            position: absolute;
+            top: 50px;
+            display: flex;
+            gap: 100px;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .player-score { text-shadow: 0 0 20px #00ffff; }
+        .ai-score { text-shadow: 0 0 20px #ff0055; }
+        
+        .start-msg {
+            position: absolute;
+            color: white;
+            font-size: 1.5rem;
+            animation: blink 1s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+    </style>
+</head>
+<body>
+
+    <div class="score-board">
+        <div class="player-score" id="pScore">0</div>
+        <div class="ai-score" id="aScore">0</div>
+    </div>
+
+    <div class="start-msg" id="msg">CLICK TO START</div>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const pScoreEl = document.getElementById('pScore');
+        const aScoreEl = document.getElementById('aScore');
+        const msgEl = document.getElementById('msg');
+
+        canvas.width = 800;
+        canvas.height = 500;
+
+        let isRunning = false;
+        let playerScore = 0;
+        let aiScore = 0;
+
+        const player = {
+            x: 10,
+            y: canvas.height / 2 - 50,
+            width: 15,
+            height: 100,
+            color: '#00ffff',
+            score: 0
+        };
+
+        const ai = {
+            x: canvas.width - 25,
+            y: canvas.height / 2 - 50,
+            width: 15,
+            height: 100,
+            color: '#ff0055',
+            score: 0,
+            speed: 0.08
+        };
+
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 10,
+            speed: 7,
+            velocityX: 5,
+            velocityY: 5,
+            color: '#ffffff'
+        };
+
+        // =========================================
+        
+        function drawRect(x, y, w, h, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h);
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = color;
+        }
+
+        function drawBall(x, y, r, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2, false);
+            ctx.closePath();
+            ctx.fill();
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "#fff";
+        }
+
+        function drawNet() {
+            ctx.shadowBlur = 0; 
+            for (let i = 0; i <= canvas.height; i += 25) {
+                drawRect(canvas.width / 2 - 1, i, 2, 10, "#333");
+            }
+        }
+
+        // =========================================
+
+        function update() {
+            ball.x += ball.velocityX;
+            ball.y += ball.velocityY;
+
+            if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                ball.velocityY = -ball.velocityY;
+                playSound(400, 'square'); 
+            }
+
+            ai.y += (ball.y - (ai.y + ai.height / 2)) * ai.speed;
+
+            let playerOrAi = (ball.x < canvas.width / 2) ? player : ai;
+
+            if (collision(ball, playerOrAi)) {
+                let collidePoint = ball.y - (playerOrAi.y + playerOrAi.height / 2);
+                collidePoint = collidePoint / (playerOrAi.height / 2);
+
+                let angleRad = (Math.PI / 4) * collidePoint;
+                let direction = (ball.x < canvas.width / 2) ? 1 : -1;
+
+                ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+                ball.velocityY = ball.speed * Math.sin(angleRad);
+
+                ball.speed += 0.2;
+                
+                playSound(600, 'sine'); // Vuruş sesi
+            }
+
+            if (ball.x - ball.radius < 0) {
+                aiScore++;
+                aScoreEl.innerText = aiScore;
+                resetBall();
+                playSound(150, 'sawtooth'); 
+            } else if (ball.x + ball.radius > canvas.width) {
+                playerScore++;
+                pScoreEl.innerText = playerScore;
+                resetBall();
+                playSound(800, 'triangle'); 
+            }
+        }
+
+        function collision(b, p) {
+            p.top = p.y;
+            p.bottom = p.y + p.height;
+            p.left = p.x;
+            p.right = p.x + p.width;
+
+            b.top = b.y - b.radius;
+            b.bottom = b.y + b.radius;
+            b.left = b.x - b.radius;
+            b.right = b.x + b.radius;
+
+            return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
+        }
+
+        function resetBall() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.speed = 7;
+            ball.velocityX = -ball.velocityX; 
+        }
+
+        // =========================================
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(frequency, type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = frequency;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.1);
+            setTimeout(() => osc.stop(), 100);
+        }
+
+        function gameLoop() {
+            if(!isRunning) return;
+            
+            // Hafif iz bırakmak için tam temizlemiyoruz (Motion Blur)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            update();
+
+            drawNet();
+            drawRect(player.x, player.y, player.width, player.height, player.color);
+            drawRect(ai.x, ai.y, ai.width, ai.height, ai.color);
+            drawBall(ball.x, ball.y, ball.radius, ball.color);
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            let rect = canvas.getBoundingClientRect();
+            player.y = (e.clientY - rect.top) - player.height / 2;
+        });
+        
+        window.addEventListener('click', () => {
+            if(!isRunning) {
+                isRunning = true;
+                msgEl.style.display = 'none';
+                gameLoop();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            }
+        });
+
+    </script>
+
+</body>
+</html>
