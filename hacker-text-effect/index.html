@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker Text Effect</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #050505;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Arka Plan Izgarası (Cyberpunk Havası) */
+        .grid-bg {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Ana Konteyner */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* HACKER TEXT EFEKTİ */
+        h1 {
+            font-size: 5rem;
+            text-transform: uppercase;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem 3rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            min-width: 500px; /* Sabit genişlik titremeyi önler */
+            transition: 0.3s;
+        }
+
+        h1:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Alt Başlık */
+        .subtitle {
+            font-size: 1.2rem;
+            color: #00ff41; /* Matrix Yeşili */
+            opacity: 0.7;
+            letter-spacing: 2px;
+        }
+
+        /* Dekoratif Köşeler */
+        .corner {
+            position: absolute;
+            width: 20px; height: 20px;
+            border: 2px solid #00ff41;
+            transition: 0.3s;
+        }
+        .tl { top: -10px; left: -10px; border-right: 0; border-bottom: 0; }
+        .tr { top: -10px; right: -10px; border-left: 0; border-bottom: 0; }
+        .bl { bottom: -10px; left: -10px; border-right: 0; border-top: 0; }
+        .br { bottom: -10px; right: -10px; border-left: 0; border-top: 0; }
+
+        h1:hover ~ .corner {
+            width: 30px; height: 30px;
+            border-color: #fff;
+        }
+
+        /* Mobilde Yazı Boyutu */
+        @media(max-width: 600px) {
+            h1 { font-size: 2.5rem; min-width: 300px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        <h1 id="hacker-text" data-value="CYBERPUNK">CYBERPUNK</h1>
+        
+        <div class="subtitle">HOVER TO DECRYPT</div>
+
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+    </div>
+
+    <script>
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%&"; // Rastgele seçilecek karakterler
+        const h1 = document.querySelector("#hacker-text");
+
+        let interval = null;
+
+        // Mouse üzerine gelince çalışacak fonksiyon
+        h1.onmouseover = event => {  
+            let iteration = 0;
+            
+            // Eğer önceki bir döngü varsa temizle (Hata olmasın)
+            clearInterval(interval);
+            
+            // Her 30 milisaniyede bir harfleri değiştir
+            interval = setInterval(() => {
+                // Yazıyı güncelle
+                event.target.innerText = event.target.innerText
+                .split("") // Harfleri diziye çevir
+                .map((letter, index) => {
+                    // Eğer harf zaten çözüldüyse (index < iteration), orijinal harfi koy
+                    if(index < iteration) {
+                        return event.target.dataset.value[index];
+                    }
+                    
+                    // Değilse, rastgele bir karakter koy
+                    return letters[Math.floor(Math.random() * 26)];
+                })
+                .join(""); // Diziyi tekrar birleştir
+                
+                // Çözülme hızını kontrol et (Her 3 döngüde 1 harf çöz)
+                if(iteration >= event.target.dataset.value.length){ 
+                    clearInterval(interval);
+                }
+                
+                iteration += 1 / 3; // Hız ayarı (Daha yavaş çözülme için sayıyı küçült)
+            }, 30);
+        }
+    </script>
+
+</body>
+</html>
