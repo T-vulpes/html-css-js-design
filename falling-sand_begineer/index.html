@@ -108,57 +108,43 @@
                     let state = grid[i][j];
 
                     if (state > 0) {
-                        // 1. Önce kumu çiz
                         ctx.fillStyle = `hsl(${state}, 100%, 50%)`;
                         ctx.fillRect(i * grainSize, j * grainSize, grainSize, grainSize);
 
-                        // 2. Fizik Kuralları
-                        // Aşağısı sınırın içinde mi?
                         let below = j + 1;
-                        if (below < rows) {
-                            
-                            // A) Aşağısı BOŞ ise -> Düş
-                            let belowIsFree = grid[i][below] === 0;
-                            
+                        if (below < rows) {                            
+                            let belowIsFree = grid[i][below] === 0;                            
                             if (belowIsFree) {
                                 nextGrid[i][below] = state;
                             } else {
-                                // B) Aşağısı DOLU ise -> Sağa veya Sola kay
-                                let dir = Math.random() < 0.5 ? -1 : 1; // Rastgele yön
+                                let dir = Math.random() < 0.5 ? -1 : 1; 
                                 let infoA = i + dir;
                                 let infoB = i - dir;
 
-                                // Yön A (Sağ veya Sol) boş mu?
                                 if (infoA >= 0 && infoA < cols && grid[infoA][below] === 0) {
                                     nextGrid[infoA][below] = state;
                                 } 
-                                // Yön B (Diğer taraf) boş mu?
                                 else if (infoB >= 0 && infoB < cols && grid[infoB][below] === 0) {
                                     nextGrid[infoB][below] = state;
                                 } 
-                                // C) Her yer dolu -> Olduğun yerde kal
                                 else {
                                     nextGrid[i][j] = state;
                                 }
                             }
                         } else {
-                            // En alttaysan orada kal
                             nextGrid[i][j] = state;
                         }
                     }
                 }
             }
 
-            // Grid'i güncelle
             grid = nextGrid;
 
             requestAnimationFrame(draw);
         }
 
         setup();
-        draw();
-        
-        // Pencere değişirse resetle
+        draw();        
         window.addEventListener('resize', setup);
 
     </script>
@@ -166,4 +152,5 @@
 </body>
 
 </html>
+
 
