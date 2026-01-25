@@ -73,7 +73,6 @@
                     for (let j = -extent; j <= extent; j++) {
                         let col = mouseCol + i;
                         let row = mouseRow + j;
-                        // Sınır kontrolü ve boşluk kontrolü
                         if (col >= 0 && col < cols && row >= 0 && row < rows) {
                             if (Math.random() > 0.1) { 
                                 grid[col][row] = hueValue; 
@@ -100,22 +99,14 @@
             }
         });
 
-        // OYUN DÖNGÜSÜ (FİZİK)
         function draw() {
-            // Arka planı temizle
             ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Bir sonraki kare için yeni grid oluştur
-            // (Doğrudan grid üzerinde değişiklik yaparsak kumlar ışınlanır)
             let nextGrid = make2DArray(cols, rows);
-
-            // Tüm hücreleri tara
             for (let i = 0; i < cols; i++) {
                 for (let j = 0; j < rows; j++) {
                     let state = grid[i][j];
 
-                    // Eğer burada bir kum varsa (Değer 0'dan büyükse)
                     if (state > 0) {
                         // 1. Önce kumu çiz
                         ctx.fillStyle = `hsl(${state}, 100%, 50%)`;
@@ -175,3 +166,4 @@
 </body>
 
 </html>
+
