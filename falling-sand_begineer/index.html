@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falling Sand Game</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #111;
+            overflow: hidden;
+            touch-action: none; /* Mobilde kaydırmayı engelle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 1px solid #333;
+            cursor: crosshair;
+            image-rendering: pixelated; /* Pikseller net görünsün */
+        }
+        .instruction {
+            position: absolute;
+            top: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: sans-serif;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instruction">Click & Drag to Draw Sand</div>
+    <canvas id="sandbox"></canvas>
+
+    <script>
+        const canvas = document.getElementById('sandbox');
+        const ctx = canvas.getContext('2d');
+
+        // AYARLAR
+        const grainSize = 10; // Kum tanesi boyutu (Piksel)
+        let cols, rows;
+        let grid; // Mevcut durum
+        let hueValue = 0; // Renk değişimi için
+
+        // Canvas Boyutlandırma
+        function setup() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            cols = Math.floor(canvas.width / grainSize);
+            rows = Math.floor(canvas.height / grainSize);
+            
+            // Grid'i oluştur (2 Boyutlu Dizi)
+            grid = make2DArray(cols, rows);
+        }
+
+        function make2DArray(cols, rows) {
+            let arr = new Array(cols);
+            for (let i = 0; i < arr.length; i++) {
+                arr[i] = new Array(rows).fill(0); // 0 = Boş, >0 = Kum Rengi
+            }
+            return arr;
+        }
+
+        // Mouse Etkileşimi
+        let isDrawing = false;
+
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                // Mouse'un olduğu grid hücresini bul
+                let mouseCol = Math.floor(e.clientX / grainSize);
+                let mouseRow = Math.floor(e.clientY / grainSize);
+
+                // Fırça boyutu (Biraz geniş olsun diye etrafını da boyuyoruz)
+                let matrix = 3; 
+                let extent = Math.floor(matrix / 2);
+                
+                for (let i = -extent; i <= extent; i++) {
+                    for (let j = -extent; j <= extent; j++) {
+                        let col = mouseCol + i;
+                        let row = mouseRow + j;
+                        // Sınır kontrolü ve boşluk kontrolü
+                        if (col >= 0 && col < cols && row >= 0 && row < rows) {
+                            if (Math.random() > 0.1) { // Hafif dağınıklık
+                                grid[col][row] = hueValue; 
+                            }
+                        }
+                    }
+                }
+                // Rengi değiştir
+                hueValue += 1;
+                if (hueValue > 360) hueValue = 0;
+            }
+        });
+
+        // Dokunmatik Ekran Desteği (Mobil)
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        canvas.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('touchmove', (e) => {
+            if (isDrawing) {
+                let touch = e.touches[0];
+                let mouseCol = Math.floor(touch.clientX / grainSize);
+                let mouseRow = Math.floor(touch.clientY / grainSize);
+                if (mouseCol >= 0 && mouseCol < cols && mouseRow >= 0 && mouseRow < rows) {
+                    grid[mouseCol][mouseRow] = hueValue;
+                    hueValue += 2;
+                }
+            }
+        });
+
+        // OYUN DÖNGÜSÜ (FİZİK)
+        function draw() {
+            // Arka planı temizle
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Bir sonraki kare için yeni grid oluştur
+            // (Doğrudan grid üzerinde değişiklik yaparsak kumlar ışınlanır)
+            let nextGrid = make2DArray(cols, rows);
+
+            // Tüm hücreleri tara
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let state = grid[i][j];
+
+                    // Eğer burada bir kum varsa (Değer 0'dan büyükse)
+                    if (state > 0) {
+                        // 1. Önce kumu çiz
+                        ctx.fillStyle = `hsl(${state}, 100%, 50%)`;
+                        ctx.fillRect(i * grainSize, j * grainSize, grainSize, grainSize);
+
+                        // 2. Fizik Kuralları
+                        // Aşağısı sınırın içinde mi?
+                        let below = j + 1;
+                        if (below < rows) {
+                            
+                            // A) Aşağısı BOŞ ise -> Düş
+                            let belowIsFree = grid[i][below] === 0;
+                            
+                            if (belowIsFree) {
+                                nextGrid[i][below] = state;
+                            } else {
+                                // B) Aşağısı DOLU ise -> Sağa veya Sola kay
+                                let dir = Math.random() < 0.5 ? -1 : 1; // Rastgele yön
+                                let infoA = i + dir;
+                                let infoB = i - dir;
+
+                                // Yön A (Sağ veya Sol) boş mu?
+                                if (infoA >= 0 && infoA < cols && grid[infoA][below] === 0) {
+                                    nextGrid[infoA][below] = state;
+                                } 
+                                // Yön B (Diğer taraf) boş mu?
+                                else if (infoB >= 0 && infoB < cols && grid[infoB][below] === 0) {
+                                    nextGrid[infoB][below] = state;
+                                } 
+                                // C) Her yer dolu -> Olduğun yerde kal
+                                else {
+                                    nextGrid[i][j] = state;
+                                }
+                            }
+                        } else {
+                            // En alttaysan orada kal
+                            nextGrid[i][j] = state;
+                        }
+                    }
+                }
+            }
+
+            // Grid'i güncelle
+            grid = nextGrid;
+
+            requestAnimationFrame(draw);
+        }
+
+        setup();
+        draw();
+        
+        // Pencere değişirse resetle
+        window.addEventListener('resize', setup);
+
+    </script>
+
+</body>
+</html>
