@@ -9,7 +9,7 @@
         body {
             background-color: #111;
             overflow: hidden;
-            touch-action: none; /* Mobilde kaydırmayı engelle */
+            touch-action: none; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,7 +18,7 @@
         canvas {
             border: 1px solid #333;
             cursor: crosshair;
-            image-rendering: pixelated; /* Pikseller net görünsün */
+            image-rendering: pixelated; 
         }
         .instruction {
             position: absolute;
@@ -39,44 +39,33 @@
     <script>
         const canvas = document.getElementById('sandbox');
         const ctx = canvas.getContext('2d');
-
-        // AYARLAR
-        const grainSize = 10; // Kum tanesi boyutu (Piksel)
+        const grainSize = 10; 
         let cols, rows;
-        let grid; // Mevcut durum
-        let hueValue = 0; // Renk değişimi için
-
-        // Canvas Boyutlandırma
+        let grid;
+        let hueValue = 0; n
         function setup() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             cols = Math.floor(canvas.width / grainSize);
-            rows = Math.floor(canvas.height / grainSize);
-            
-            // Grid'i oluştur (2 Boyutlu Dizi)
+            rows = Math.floor(canvas.height / grainSize);            
             grid = make2DArray(cols, rows);
         }
 
         function make2DArray(cols, rows) {
             let arr = new Array(cols);
             for (let i = 0; i < arr.length; i++) {
-                arr[i] = new Array(rows).fill(0); // 0 = Boş, >0 = Kum Rengi
+                arr[i] = new Array(rows).fill(0);
             }
             return arr;
         }
 
-        // Mouse Etkileşimi
         let isDrawing = false;
-
         canvas.addEventListener('mousedown', () => isDrawing = true);
         canvas.addEventListener('mouseup', () => isDrawing = false);
         canvas.addEventListener('mousemove', (e) => {
             if (isDrawing) {
-                // Mouse'un olduğu grid hücresini bul
                 let mouseCol = Math.floor(e.clientX / grainSize);
                 let mouseRow = Math.floor(e.clientY / grainSize);
-
-                // Fırça boyutu (Biraz geniş olsun diye etrafını da boyuyoruz)
                 let matrix = 3; 
                 let extent = Math.floor(matrix / 2);
                 
@@ -86,19 +75,17 @@
                         let row = mouseRow + j;
                         // Sınır kontrolü ve boşluk kontrolü
                         if (col >= 0 && col < cols && row >= 0 && row < rows) {
-                            if (Math.random() > 0.1) { // Hafif dağınıklık
+                            if (Math.random() > 0.1) { 
                                 grid[col][row] = hueValue; 
                             }
                         }
                     }
                 }
-                // Rengi değiştir
                 hueValue += 1;
                 if (hueValue > 360) hueValue = 0;
             }
         });
 
-        // Dokunmatik Ekran Desteği (Mobil)
         canvas.addEventListener('touchstart', () => isDrawing = true);
         canvas.addEventListener('touchend', () => isDrawing = false);
         canvas.addEventListener('touchmove', (e) => {
@@ -186,4 +173,5 @@
     </script>
 
 </body>
+
 </html>
