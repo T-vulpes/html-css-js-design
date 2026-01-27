@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Physics Game</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            overflow: hidden;
+            background: #111;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            user-select: none;
+        }
+        .ui {
+            position: absolute;
+            top: 20px; left: 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        h1 { margin: 0; font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        p { opacity: 0.7; }
+        .hint { color: #ff0055; font-weight: bold; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+</head>
+<body>
+
+    <div class="ui">
+        <h1>Merge Balls</h1>
+        <p>Click to spawn. Combine same colors!</p>
+        <p class="hint">Red + Red = Orange</p>
+    </div>
+
+    <script>
+        const Engine = Matter.Engine,
+              Render = Matter.Render,
+              Runner = Matter.Runner,
+              Bodies = Matter.Bodies,
+              Composite = Matter.Composite,
+              Events = Matter.Events,
+              Mouse = Matter.Mouse,
+              MouseConstraint = Matter.MouseConstraint;
+
+        // MOTOR KURULUMU
+        const engine = Engine.create();
+        const world = engine.world;
+
+        const render = Render.create({
+            element: document.body,
+            engine: engine,
+            options: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                wireframes: false,
+                background: '#111'
+            }
+        });
+
+        Render.run(render);
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+
+        const wallOpt = { isStatic: true, render: { fillStyle: '#333' } };
+        const walls = [
+            Bodies.rectangle(window.innerWidth/2, window.innerHeight, window.innerWidth, 50, wallOpt), 
+            Bodies.rectangle(window.innerWidth/2, 0, window.innerWidth, 50, wallOpt), 
+            Bodies.rectangle(window.innerWidth, window.innerHeight/2, 50, window.innerHeight, wallOpt),
+            Bodies.rectangle(0, window.innerHeight/2, 50, window.innerHeight, wallOpt) 
+        ];
+        Composite.add(world, walls);
+        const levels = [
+            { r: 20, color: '#ff0055' }, 
+            { r: 30, color: '#ff7700' }, 
+            { r: 40, color: '#ffdd00' }, 
+            { r: 55, color: '#00ff55' },
+            { r: 75, color: '#00ddff' }, 
+            { r: 100, color: '#aa00ff' }, 
+            { r: 130, color: '#ffffff' }  
+        ];
+
+        function spawnBall(x, y, levelIndex) {
+            if (levelIndex >= levels.length) levelIndex = levels.length - 1;
+
+            const settings = levels[levelIndex];
+            
+            const ball = Bodies.circle(x, y, settings.r, {
+                restitution: 0.6, 
+                render: { fillStyle: settings.color },
+                label: 'ball', 
+                customLevel: levelIndex
+            });
+            
+            Composite.add(world, ball);
+        }
+
+        for(let i=0; i<10; i++) {
+            spawnBall(Math.random() * window.innerWidth, 100, 0);
+        }
+
+        const mouse = Mouse.create(render.canvas);
+        const mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: { render: { visible: false } }
+        });
+        Composite.add(world, mouseConstraint);
+        render.mouse = mouse;
+
+        Events.on(mouseConstraint, 'mousedown', (e) => {
+            if (!mouseConstraint.body) {
+                const randomLvl = Math.random() > 0.8 ? 1 : 0;
+                spawnBall(e.mouse.position.x, e.mouse.position.y, randomLvl);
+            }
+        });
+
+        Events.on(engine, 'collisionStart', (event) => {
+            const pairs = event.pairs;
+
+            pairs.forEach((pair) => {
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
+                if (bodyA.label === 'ball' && bodyB.label === 'ball') {                    
+                    if (bodyA.customLevel === bodyB.customLevel && !bodyA.isRemoved && !bodyB.isRemoved) {                        
+                        const nextLevel = bodyA.customLevel + 1;
+                        if (nextLevel < levels.length) {                            
+                            bodyA.isRemoved = true;
+                            bodyB.isRemoved = true;
+                            Composite.remove(world, [bodyA, bodyB]);
+
+                            const midX = (bodyA.position.x + bodyB.position.x) / 2;
+                            const midY = (bodyA.position.y + bodyB.position.y) / 2;
+                            spawnBall(midX, midY, nextLevel);
+                        }
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            render.canvas.width = window.innerWidth;
+            render.canvas.height = window.innerHeight;
+        });
+
+    </script>
+</body>
+</html>
