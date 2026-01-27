@@ -43,10 +43,8 @@
               Mouse = Matter.Mouse,
               MouseConstraint = Matter.MouseConstraint;
 
-        // MOTOR KURULUMU
         const engine = Engine.create();
         const world = engine.world;
-
         const render = Render.create({
             element: document.body,
             engine: engine,
@@ -82,9 +80,7 @@
 
         function spawnBall(x, y, levelIndex) {
             if (levelIndex >= levels.length) levelIndex = levels.length - 1;
-
-            const settings = levels[levelIndex];
-            
+            const settings = levels[levelIndex];            
             const ball = Bodies.circle(x, y, settings.r, {
                 restitution: 0.6, 
                 render: { fillStyle: settings.color },
