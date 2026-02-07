@@ -251,12 +251,9 @@
 
         function changeVolume(id, val) {
             const audio = audioElements[id];
-            const card = document.getElementById(`card-${id}`);
-            
+            const card = document.getElementById(`card-${id}`);            
             if(card.classList.contains('error')) return;
-
             audio.volume = val / 100;
-
             if (val > 0 && audio.paused) {
                 audio.play().catch(e => console.log(e));
                 card.classList.add('active');
@@ -324,6 +321,4 @@
         }
     </script>
 </body>
-
 </html>
-
