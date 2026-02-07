@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Focus | Local Version</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent: #38bdf8;
+            --error: #ef4444;
+            --text: #e2e8f0;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        header { text-align: center; margin-bottom: 2rem; }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        /* GRID SETTINGS: 3 Columns */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        /* Card Design */
+        .sound-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sound-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .sound-card.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .sound-card.error { border-color: var(--error); opacity: 0.7; }
+        .sound-card.error .icon-wrapper { color: var(--error); }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sound-card.active .icon-wrapper {
+            background: var(--accent);
+            color: #0f172a;
+            animation: pulse 2s infinite;
+        }
+
+        .card-title { font-weight: 600; margin-bottom: 1rem; }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            margin-top: -6px;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+
+        .global-controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary { background: var(--accent); color: #0f172a; }
+        .btn-secondary { background: transparent; border: 1px solid var(--glass-border); color: var(--text); }
+        .btn:hover { filter: brightness(1.1); transform: scale(1.05); }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Sonic Focus</h1>
+        <p style="color: #94a3b8; font-size: 0.9rem;">Files are loaded from the 'sounds' folder.</p>
+    </header>
+
+    <div class="grid" id="soundGrid"></div>
+
+    <div class="global-controls">
+        <button class="btn btn-secondary" onclick="resetAll()">
+            <i class="fas fa-undo"></i> Reset
+        </button>
+        <button class="btn btn-primary" id="masterBtn" onclick="toggleMaster()">
+            <i class="fas fa-pause"></i> Pause All
+        </button>
+    </div>
+
+    <script>
+        // CONFIGURATION: English Names & Local Paths
+        const sounds = [
+            { id: 'rain', name: 'Rain', icon: 'fa-cloud-rain', src: 'sounds/rain.mp3' },
+            { id: 'fire', name: 'Fireplace', icon: 'fa-fire', src: 'sounds/fire.mp3' },
+            { id: 'coffee', name: 'Coffee Shop', icon: 'fa-mug-hot', src: 'sounds/coffee.mp3' },
+            
+            // 2nd Row
+            { id: 'keyboard', name: 'Keyboard', icon: 'fa-keyboard', src: 'sounds/keyboard.mp3' },
+            { id: 'ocean', name: 'Ocean', icon: 'fa-water', src: 'sounds/ocean.mp3' },
+            { id: 'forest', name: 'Forest', icon: 'fa-tree', src: 'sounds/forest.mp3' }
+        ];
+
+        const audioElements = {};
+        let isMasterPlaying = true;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('soundGrid');
+
+            sounds.forEach(sound => {
+                const audio = new Audio();
+                audio.src = sound.src;
+                audio.loop = true;
+                
+                audio.onerror = () => {
+                    console.error(`${sound.src} not found!`);
+                    const card = document.getElementById(`card-${sound.id}`);
+                    if(card) {
+                        card.classList.add('error');
+                        card.querySelector('.card-title').innerText = "File Missing!";
+                    }
+                };
+
+                audioElements[sound.id] = audio;
+
+                const card = document.createElement('div');
+                card.className = 'sound-card';
+                card.id = `card-${sound.id}`;
+                
+                card.innerHTML = `
+                    <div class="icon-wrapper" onclick="toggleSound('${sound.id}')">
+                        <i class="fas ${sound.icon}"></i>
+                    </div>
+                    <div class="card-title">${sound.name}</div>
+                    <input type="range" min="0" max="100" value="0" 
+                        oninput="changeVolume('${sound.id}', this.value)">
+                `;
+                grid.appendChild(card);
+            });
+
+            loadSettings();
+        });
+
+        function toggleSound(id) {
+            const audio = audioElements[id];
+            const card = document.getElementById(`card-${id}`);
+            const slider = card.querySelector('input[type=range]');
+
+            if(card.classList.contains('error')) {
+                alert(`Sound file (${audio.getAttribute('src')}) not found.`);
+                return;
+            }
+
+            if (audio.paused) {
+                audio.play()
+                    .then(() => {
+                        if(audio.volume === 0) audio.volume = 0.5;
+                        slider.value = audio.volume * 100;
+                        card.classList.add('active');
+                        saveSettings();
+                    })
+                    .catch(e => console.log("Playback error:", e));
+            } else {
+                audio.pause();
+                slider.value = 0;
+                card.classList.remove('active');
+                saveSettings();
+            }
+        }
+
+        function changeVolume(id, val) {
+            const audio = audioElements[id];
+            const card = document.getElementById(`card-${id}`);
+            
+            if(card.classList.contains('error')) return;
+
+            audio.volume = val / 100;
+
+            if (val > 0 && audio.paused) {
+                audio.play().catch(e => console.log(e));
+                card.classList.add('active');
+            } else if (val == 0) {
+                audio.pause();
+                card.classList.remove('active');
+            }
+            saveSettings();
+        }
+
+        function toggleMaster() {
+            const btn = document.getElementById('masterBtn');
+            isMasterPlaying = !isMasterPlaying;
+
+            if (isMasterPlaying) {
+                loadSettings();
+                btn.innerHTML = '<i class="fas fa-pause"></i> Pause All';
+            } else {
+                Object.values(audioElements).forEach(audio => audio.pause());
+                document.querySelectorAll('.sound-card').forEach(c => c.classList.remove('active'));
+                btn.innerHTML = '<i class="fas fa-play"></i> Resume';
+            }
+        }
+
+        function resetAll() {
+            Object.values(audioElements).forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            document.querySelectorAll('input[type=range]').forEach(input => input.value = 0);
+            document.querySelectorAll('.sound-card').forEach(c => c.classList.remove('active'));
+            localStorage.removeItem('sonicFocusLocal');
+        }
+
+        function saveSettings() {
+            const settings = {};
+            sounds.forEach(sound => {
+                settings[sound.id] = {
+                    volume: audioElements[sound.id].volume,
+                    isPlaying: !audioElements[sound.id].paused
+                };
+            });
+            localStorage.setItem('sonicFocusLocal', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('sonicFocusLocal'));
+            if (!settings) return;
+
+            sounds.forEach(sound => {
+                if (settings[sound.id] && settings[sound.id].isPlaying) {
+                    const audio = audioElements[sound.id];
+                    const card = document.getElementById(`card-${sound.id}`);
+                    const slider = card.querySelector('input[type=range]');
+
+                    if(audio && !audio.error) {
+                        audio.volume = settings[sound.id].volume;
+                        slider.value = settings[sound.id].volume * 100;
+                        audio.play().then(() => {
+                            card.classList.add('active');
+                        }).catch(() => console.log("Autoplay waiting for interaction..."));
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
