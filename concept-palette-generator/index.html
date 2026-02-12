@@ -23,7 +23,6 @@
             background-color: #f0f2f5;
         }
 
-        /* Üst Kontrol Barı */
         .header-controls {
             height: 8vh;
             background: #fff;
@@ -94,7 +93,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            transition: background-color 0.4s ease; /* Daha yumuşak geçiş */
+            transition: background-color 0.4s ease; 
             cursor: pointer;
         }
 
@@ -126,7 +125,6 @@
             transform: translateY(0);
         }
 
-        /* Alt Panel */
         .panel {
             height: 10vh;
             background: #fff;
@@ -163,7 +161,6 @@
     </style>
 </head>
 <body>
-
     <div class="header-controls">
         <span class="label-txt">Select Concept:</span>
         <div class="theme-select-wrapper">
@@ -193,13 +190,11 @@
     </div>
 
     <script>
-        // KONSEPT RENK HAVUZLARI
-        // Buraya o konsepte uygun olmayan hiçbir renk girmedi.
         const colorThemes = {
             modern: [
-                '#2b2d42', '#8d99ae', '#edf2f4', '#ef233c', '#d90429', // Gri/Kırmızı
-                '#000000', '#FFFFFF', '#F2F2F2', '#BFBFBF', '#FFD700', // Monochrome + Gold
-                '#3A506B', '#5BC0BE', '#6FFFE9', '#1C2541', '#FFFFFF'  // Modern Mavi
+                '#2b2d42', '#8d99ae', '#edf2f4', '#ef233c', '#d90429', 
+                '#000000', '#FFFFFF', '#F2F2F2', '#BFBFBF', '#FFD700', 
+                '#3A506B', '#5BC0BE', '#6FFFE9', '#1C2541', '#FFFFFF'  
             ],
             vintage: [
                 '#A89B8C', '#D4C4A9', '#8F9779', '#C2B280', '#E5D3B3', // Sepia tonları
@@ -290,3 +285,4 @@
 </body>
 
 </html>
+
