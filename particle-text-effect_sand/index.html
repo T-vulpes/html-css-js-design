@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particle Text Effect</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #111;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Verdana', sans-serif;
+        }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0; left: 0;
+        }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: #222;
+            color: #00ffcc;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 1px solid #00ffcc;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #00ffcc;
+            border: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas1"></canvas>
+    
+    <div class="controls">
+        <input type="text" id="textInput" value="CODE" maxlength="8">
+        <button onclick="init()">RENDER</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas1');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particleArray = [];
+        let adjustX = 0;
+        let adjustY = 0;
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 100 
+        }
+
+        window.addEventListener('mousemove', function(event){
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Verdana';
+        ctx.fillText('A', 0, 30);
+        class Particle {
+            constructor(x, y){
+                this.x = x; 
+                this.y = y;
+                this.size = 3;
+                this.baseX = x; 
+                this.baseY = y;
+                this.density = (Math.random() * 30) + 1; 
+                this.color = 'hsl(' + (Math.random() * 60 + 160) + ', 100%, 50%)';
+            }
+            draw(){
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+            update(){
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                let maxDistance = mouse.radius;
+                
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    // Mouse yakınsa kaç
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx/10; 
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy/10;
+                    }
+                }
+            }
+        }
+
+        function init(){
+            particleArray = [];
+            const textInput = document.getElementById('textInput').value;            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = 'bold 150px Verdana';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.fillText(textInput, canvas.width/2, canvas.height/2);
+            const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);            
+            for (let y = 0, y2 = textCoordinates.height; y < y2; y += 4){
+                for (let x = 0, x2 = textCoordinates.width; x < x2; x += 4){                    
+                    if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128){
+                        let positionX = x;
+                        let positionY = y;
+                        particleArray.push(new Particle(positionX * 1, positionY * 1));
+                    }
+                }
+            }
+        }
+
+        function animate(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particleArray.length; i++){
+                particleArray[i].draw();
+                particleArray[i].update();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+        window.addEventListener('resize', () => {
+             canvas.width = window.innerWidth;
+             canvas.height = window.innerHeight;
+             init();
+        });
+
+    </script>
+</body>
+</html>
