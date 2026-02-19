@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Snake Arcade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            background-color: #050505;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive; 
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            position: relative;
+            border: 4px solid #0ff;
+            box-shadow: 0 0 30px #0ff, inset 0 0 30px #0ff;
+            border-radius: 10px;
+            padding: 5px;
+            background: #000;
+        }
+
+        canvas {
+            display: block;
+            background: #000;
+            filter: contrast(1.5) brightness(1.2);
+        }
+
+        .ui {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        #gameOverMessage {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+        #gameOverMessage h2 { color: #ff0055; text-shadow: 0 0 20px #ff0055; font-size: 1.5rem;}
+        #gameOverMessage p { margin-top: 20px; font-size: 0.7rem; cursor: pointer; animation: blink 1s infinite; }
+
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="ui">
+        <div>Score: <span id="score">0</span></div>
+        <div>High Score: <span id="highScore">0</span></div>
+    </div>
+
+    <div class="game-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="gameOverMessage">
+            <h2>GAME OVER</h2>
+            <p>Press Any Key to Restart</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const highScoreEl = document.getElementById('highScore');
+        const gameOverMsg = document.getElementById('gameOverMessage');
+
+        // AYARLAR
+        const gridSize = 20; 
+        const tileCount = canvas.width / gridSize;
+
+        let snake = [];
+        let food = {};
+        let dx = 0; 
+        let dy = 0; 
+        let score = 0;
+        let highScore = localStorage.getItem('snakeHighScore') || 0;
+        highScoreEl.innerText = highScore;
+
+        let gameLoop;
+        let isGameOver = false;
+        let changingDirection = false;
+        function initGame() {
+            snake = [{x: 10, y: 10}]; 
+            dx = 0; dy = 0;
+            score = 0;
+            scoreEl.innerText = score;
+            isGameOver = false;
+            gameOverMsg.style.display = 'none';
+            spawnFood();
+            clearInterval(gameLoop);
+            gameLoop = setInterval(drawGame, 100); 
+        }
+
+        // Yem Oluştur
+        function spawnFood() {
+            food = {
+                x: Math.floor(Math.random() * tileCount),
+                y: Math.floor(Math.random() * tileCount),
+                color: `hsl(${Math.random() * 360}, 100%, 50%)` 
+            };
+            snake.forEach(part => {
+                if (part.x === food.x && part.y === food.y) spawnFood();
+            });
+        }
+
+        function drawGame() {
+            if (isGameOver) return;
+            changingDirection = false;
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            snake.unshift(head); 
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreEl.innerText = score;
+                spawnFood(); 
+            } else {
+                snake.pop(); 
+            }
+
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || checkSelfCollision(head)) {
+                gameOver();
+                return;
+            }
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = food.color;
+            ctx.fillStyle = food.color;
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+            snake.forEach((part, index) => {
+                const color = index === 0 ? '#fff' : '#0ff'; 
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = color;
+                ctx.fillStyle = color;
+                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+            });            
+            ctx.shadowBlur = 0; 
+        }
+
+        function checkSelfCollision(head) {
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[i].x === head.x && snake[i].y === head.y) return true;
+            }
+            return false;
+        }
+
+        function gameOver() {
+            isGameOver = true;
+            clearInterval(gameLoop);
+            gameOverMsg.style.display = 'block';
+
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('snakeHighScore', highScore);
+                highScoreEl.innerText = highScore;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (isGameOver) {
+                initGame(); 
+                return;
+            }
+            if (changingDirection) return; 
+
+            const key = e.key;
+            if (key === 'ArrowUp' && dy === 0) { dx = 0; dy = -1; }
+            if (key === 'ArrowDown' && dy === 0) { dx = 0; dy = 1; }
+            if (key === 'ArrowLeft' && dx === 0) { dx = -1; dy = 0; }
+            if (key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; }
+            
+            if (dx !== 0 || dy !== 0) changingDirection = true;
+        });
+
+        initGame();
+
+    </script>
+</body>
+</html>
