@@ -81,8 +81,6 @@
         const scoreEl = document.getElementById('score');
         const highScoreEl = document.getElementById('highScore');
         const gameOverMsg = document.getElementById('gameOverMessage');
-
-        // AYARLAR
         const gridSize = 20; 
         const tileCount = canvas.width / gridSize;
 
@@ -109,7 +107,6 @@
             gameLoop = setInterval(drawGame, 100); 
         }
 
-        // Yem Oluştur
         function spawnFood() {
             food = {
                 x: Math.floor(Math.random() * tileCount),
@@ -195,3 +192,4 @@
     </script>
 </body>
 </html>
+
