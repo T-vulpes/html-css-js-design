@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon ToneMatrix</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            user-select: none;
+        }
+
+        .header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1 { margin: 0; color: #00e5ff; text-shadow: 0 0 10px #00e5ff; letter-spacing: 3px; }
+        p { color: #888; font-size: 0.9rem; margin-top: 5px; }
+
+        /* Müzik Izgarası (Grid) */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr); 
+            grid-template-rows: repeat(8, 1fr);    
+            gap: 4px;
+            background: #111;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #333;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #222;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.1s, transform 0.1s;
+        }
+
+        .cell:hover { background-color: #444; }
+
+        .cell.active {
+            background-color: #00e5ff;
+            box-shadow: 0 0 15px #00e5ff;
+        }
+
+        .cell.playing {
+            background-color: #ff00ff !important;
+            box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff !important;
+            transform: scale(1.1);
+        }
+
+        .cell.current-step {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 30px;
+            background: transparent;
+            color: #00e5ff;
+            border: 2px solid #00e5ff;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #00e5ff;
+            color: #000;
+            box-shadow: 0 0 20px #00e5ff;
+        }
+
+        @media (max-width: 600px) {
+            .cell { width: 18px; height: 18px; }
+            .grid { gap: 2px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>TONEMATRIX</h1>
+        <p>Draw patterns to make music</p>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="controls">
+        <button id="playBtn">PLAY / STOP</button>
+        <button id="clearBtn">CLEAR</button>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const playBtn = document.getElementById('playBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        const rows = 8;
+        const cols = 16;
+        let isPlaying = false;
+        let currentStep = 0;
+        let intervalId;
+        
+        const tempo = 150;
+
+        let audioCtx;
+        const frequencies = [1046.50, 880.00, 783.99, 659.25, 587.33, 523.25, 440.00, 392.00];
+
+        const cells = [];
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.row = r;
+                cell.dataset.col = c;
+                
+                cell.addEventListener('mousedown', () => toggleCell(cell));
+                cell.addEventListener('mouseenter', (e) => {
+                    if (e.buttons === 1) toggleCell(cell); 
+                });
+
+                grid.appendChild(cell);
+                cells.push(cell);
+            }
+        }
+
+        function toggleCell(cell) {
+            cell.classList.toggle('active');
+            if (cell.classList.contains('active') && audioCtx) {
+                playNote(frequencies[cell.dataset.row]);
+            }
+        }
+
+        function playNote(frequency) {
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            // Sesi bağla: Osilatör
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.type = 'sine'; 
+            osc.frequency.value = frequency;
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); 
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 1);
+        }
+
+        function step() {
+            cells.forEach(cell => {
+                cell.classList.remove('playing');
+                cell.classList.remove('current-step');
+            });
+
+            const currentCells = cells.filter(cell => parseInt(cell.dataset.col) === currentStep);
+            currentCells.forEach(cell => cell.classList.add('current-step'));
+            currentCells.forEach(cell => {
+                if (cell.classList.contains('active')) {
+                    cell.classList.add('playing');
+                    playNote(frequencies[cell.dataset.row]);
+                }
+            });
+
+            currentStep = (currentStep + 1) % cols;
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (isPlaying) {
+                clearInterval(intervalId);
+                playBtn.innerText = 'PLAY';
+                playBtn.style.color = '#00e5ff';
+                playBtn.style.borderColor = '#00e5ff';
+                // Görsel izleri temizle
+                cells.forEach(cell => {
+                    cell.classList.remove('playing');
+                    cell.classList.remove('current-step');
+                });
+            } else {
+                currentStep = 0; 
+                intervalId = setInterval(step, tempo);
+                playBtn.innerText = 'STOP';
+                playBtn.style.color = '#ff0055';
+                playBtn.style.borderColor = '#ff0055';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        clearBtn.addEventListener('click', () => {
+            cells.forEach(cell => cell.classList.remove('active'));
+        });
+
+    </script>
+</body>
+</html>
