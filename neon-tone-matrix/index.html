@@ -17,7 +17,6 @@
             font-family: 'Courier New', Courier, monospace;
             user-select: none;
         }
-
         .header {
             margin-bottom: 20px;
             text-align: center;
@@ -26,7 +25,6 @@
         h1 { margin: 0; color: #00e5ff; text-shadow: 0 0 10px #00e5ff; letter-spacing: 3px; }
         p { color: #888; font-size: 0.9rem; margin-top: 5px; }
 
-        /* Müzik Izgarası (Grid) */
         .grid {
             display: grid;
             grid-template-columns: repeat(16, 1fr); 
@@ -115,31 +113,25 @@
         const grid = document.getElementById('grid');
         const playBtn = document.getElementById('playBtn');
         const clearBtn = document.getElementById('clearBtn');
-
         const rows = 8;
         const cols = 16;
         let isPlaying = false;
         let currentStep = 0;
-        let intervalId;
-        
+        let intervalId;        
         const tempo = 150;
-
         let audioCtx;
         const frequencies = [1046.50, 880.00, 783.99, 659.25, 587.33, 523.25, 440.00, 392.00];
-
         const cells = [];
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 const cell = document.createElement('div');
                 cell.classList.add('cell');
                 cell.dataset.row = r;
-                cell.dataset.col = c;
-                
+                cell.dataset.col = c;                
                 cell.addEventListener('mousedown', () => toggleCell(cell));
                 cell.addEventListener('mouseenter', (e) => {
                     if (e.buttons === 1) toggleCell(cell); 
                 });
-
                 grid.appendChild(cell);
                 cells.push(cell);
             }
@@ -154,11 +146,8 @@
 
         function playNote(frequency) {
             if (!audioCtx) return;
-
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-
-            // Sesi bağla: Osilatör
             osc.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             osc.type = 'sine'; 
@@ -197,7 +186,6 @@
                 playBtn.innerText = 'PLAY';
                 playBtn.style.color = '#00e5ff';
                 playBtn.style.borderColor = '#00e5ff';
-                // Görsel izleri temizle
                 cells.forEach(cell => {
                     cell.classList.remove('playing');
                     cell.classList.remove('current-step');
