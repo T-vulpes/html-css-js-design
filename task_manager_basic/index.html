@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban PRO</title>
+    <style>
+        :root {
+            --bg-color: #0e0f11;
+            --surface-color: #1a1b1e;
+            --border-color: #2c2e33;
+            --text-main: #e1e3e6;
+            --text-muted: #8b909a;
+            --accent: #5e6ad2;
+            --accent-hover: #6f7bf7;
+            
+            /* Öncelik Renkleri */
+            --prio-low: #3fb950;
+            --prio-med: #d29922;
+            --prio-high: #f85149;
+        }
+
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 2rem;
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .header { width: 100%; max-width: 1200px; margin-bottom: 2rem; }
+        .header h1 { margin: 0; font-size: 2rem; font-weight: 600; letter-spacing: -0.5px; }
+        .header p { color: var(--text-muted); margin-top: 5px; }
+
+        /* Girdi Alanı (Toolbar) */
+        .toolbar {
+            display: flex; gap: 10px; width: 100%; max-width: 1200px;
+            margin-bottom: 2rem; background: var(--surface-color);
+            padding: 1rem; border-radius: 12px; border: 1px solid var(--border-color);
+        }
+
+        input[type="text"], select {
+            padding: 10px 15px; border-radius: 6px; border: 1px solid var(--border-color);
+            background: var(--bg-color); color: var(--text-main); font-size: 0.95rem; outline: none;
+        }
+        input[type="text"] { flex-grow: 1; }
+        input[type="text"]:focus, select:focus { border-color: var(--accent); }
+
+        button.primary-btn {
+            background: var(--accent); color: white; border: none; padding: 10px 20px;
+            border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        button.primary-btn:hover { background: var(--accent-hover); }
+
+        .board {
+            display: flex; gap: 1.5rem; width: 100%; max-width: 1200px;
+            align-items: flex-start;
+        }
+
+        .column {
+            flex: 1; background: var(--surface-color); border-radius: 12px;
+            border: 1px solid var(--border-color); display: flex; flex-direction: column;
+            min-height: 500px;
+        }
+
+        .column-header {
+            padding: 1rem; border-bottom: 1px solid var(--border-color);
+            font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .task-count {
+            background: var(--bg-color); color: var(--text-muted); font-size: 0.8rem;
+            padding: 2px 8px; border-radius: 10px;
+        }
+
+        .task-list {
+            padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .task-list.drag-over { background: rgba(255, 255, 255, 0.02); }
+
+        .task {
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 12px; cursor: grab; position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.1s, border-color 0.2s;
+        }
+        .task:hover { border-color: #444; }
+        .task:active { cursor: grabbing; transform: scale(0.98); }
+        .task.dragging { opacity: 0.4; border: 2px dashed var(--accent); }
+
+        .task-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        
+        .badge {
+            font-size: 0.7rem; font-weight: 600; padding: 2px 6px;
+            border-radius: 4px; text-transform: uppercase;
+        }
+        .badge.low { background: rgba(63, 185, 80, 0.1); color: var(--prio-low); }
+        .badge.medium { background: rgba(210, 153, 34, 0.1); color: var(--prio-med); }
+        .badge.high { background: rgba(248, 81, 73, 0.1); color: var(--prio-high); }
+
+        .delete-btn {
+            background: transparent; color: var(--text-muted); border: none; cursor: pointer;
+            font-size: 1.1rem; line-height: 1; padding: 0 4px; border-radius: 4px;
+        }
+        .delete-btn:hover { color: var(--prio-high); background: rgba(248, 81, 73, 0.1); }
+
+        /* Inline Edit Alanı */
+        .task-text { font-size: 0.95rem; line-height: 1.4; word-break: break-word; cursor: text; }
+        .task-text-input {
+            width: 100%; background: var(--surface-color); color: white; border: 1px solid var(--accent);
+            border-radius: 4px; padding: 4px; font-size: 0.95rem; font-family: inherit; resize: none;
+            outline: none; overflow: hidden;
+        }
+
+        .task-footer {
+            margin-top: 10px; font-size: 0.75rem; color: var(--text-muted);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        @media (max-width: 800px) {
+            .board { flex-direction: column; }
+            .toolbar { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Workspace</h1>
+        <p>Advanced Kanban Board with Object State Management</p>
+    </div>
+
+    <div class="toolbar">
+        <input type="text" id="taskInput" placeholder="Task description..." autocomplete="off">
+        <select id="priorityInput">
+            <option value="low">Low Priority</option>
+            <option value="medium" selected>Medium Priority</option>
+            <option value="high">High Priority</option>
+        </select>
+        <button class="primary-btn" id="addBtn">Create Issue</button>
+    </div>
+
+    <div class="board">
+        <div class="column" id="todo">
+            <div class="column-header">
+                <span>To Do</span>
+                <span class="task-count" id="count-todo">0</span>
+            </div>
+            <div class="task-list" id="todo-list"></div>
+        </div>
+
+        <div class="column" id="progress">
+            <div class="column-header">
+                <span>In Progress</span>
+                <span class="task-count" id="count-progress">0</span>
+            </div>
+            <div class="task-list" id="progress-list"></div>
+        </div>
+
+        <div class="column" id="done">
+            <div class="column-header">
+                <span>Done</span>
+                <span class="task-count" id="count-done">0</span>
+            </div>
+            <div class="task-list" id="done-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const priorityInput = document.getElementById('priorityInput');
+        const addBtn = document.getElementById('addBtn');
+        const taskLists = document.querySelectorAll('.task-list');
+
+        let appState = JSON.parse(localStorage.getItem('kanbanProState')) || {
+            'todo-list': [],
+            'progress-list': [],
+            'done-list': []
+        };
+
+        function renderBoard() {
+            taskLists.forEach(list => list.innerHTML = '');
+
+            for (const listId in appState) {
+                const listElement = document.getElementById(listId);
+                const tasks = appState[listId];
+                
+                tasks.forEach(taskObj => {
+                    createTaskDOM(taskObj, listElement);
+                });
+
+                document.getElementById(`count-${listId.replace('-list', '')}`).innerText = tasks.length;
+            }
+        }
+
+        addBtn.addEventListener('click', () => {
+            const text = taskInput.value.trim();
+            if (!text) return;
+
+            const newTask = {
+                id: 'task-' + Date.now(), 
+                text: text,
+                priority: priorityInput.value,
+                date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+            };
+
+            appState['todo-list'].push(newTask);
+            saveState();
+            renderBoard(); 
+
+            taskInput.value = '';
+        });
+
+        taskInput.addEventListener('keypress', e => e.key === 'Enter' && addBtn.click());
+
+        function createTaskDOM(task, parentList) {
+            const taskEl = document.createElement('div');
+            taskEl.classList.add('task');
+            taskEl.setAttribute('draggable', 'true');
+            taskEl.id = task.id;
+
+            taskEl.innerHTML = `
+                <div class="task-header">
+                    <span class="badge ${task.priority}">${task.priority}</span>
+                    <button class="delete-btn" title="Delete Task">&times;</button>
+                </div>
+                <div class="task-text" title="Double click to edit">${task.text}</div>
+                <div class="task-footer">
+                    <span>${task.id.replace('task-', '#').substring(0,6)}</span>
+                    <span>${task.date}</span>
+                </div>
+            `;
+
+            taskEl.querySelector('.delete-btn').addEventListener('click', () => {
+                appState[parentList.id] = appState[parentList.id].filter(t => t.id !== task.id);
+                saveState();
+                renderBoard();
+            });
+
+            const textEl = taskEl.querySelector('.task-text');
+            textEl.addEventListener('dblclick', () => {
+                const currentText = textEl.innerText;
+                textEl.innerHTML = `<textarea class="task-text-input">${currentText}</textarea>`;
+                const input = textEl.querySelector('textarea');
+                input.focus();
+
+                const saveEdit = () => {
+                    const newText = input.value.trim() || currentText; 
+                    
+                    // State'de bul ve güncelle
+                    const listArray = appState[parentList.id];
+                    const taskIndex = listArray.findIndex(t => t.id === task.id);
+                    if (taskIndex !== -1) {
+                        listArray[taskIndex].text = newText;
+                        saveState();
+                        renderBoard();
+                    }
+                };
+
+                input.addEventListener('blur', saveEdit);
+                input.addEventListener('keypress', e => {
+                    if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveEdit(); }
+                });
+            });
+
+            taskEl.addEventListener('dragstart', (e) => {
+                taskEl.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', task.id); 
+            });
+
+            taskEl.addEventListener('dragend', () => {
+                taskEl.classList.remove('dragging');
+                syncDOMtoState(); 
+            });
+
+            parentList.appendChild(taskEl);
+        }
+
+        taskLists.forEach(list => {
+            list.addEventListener('dragover', e => {
+                e.preventDefault();
+                list.classList.add('drag-over');
+                const draggingTask = document.querySelector('.dragging');
+                if (draggingTask) list.appendChild(draggingTask);
+            });
+
+            list.addEventListener('dragleave', () => list.classList.remove('drag-over'));
+            list.addEventListener('drop', () => list.classList.remove('drag-over'));
+        });
+
+        function syncDOMtoState() {
+            const newState = { 'todo-list': [], 'progress-list': [], 'done-list': [] };
+
+            taskLists.forEach(list => {
+                const listId = list.id;
+                const taskElements = list.querySelectorAll('.task');
+                
+                taskElements.forEach(el => {
+                    let foundTaskObj = null;
+                    for (const oldList in appState) {
+                        const match = appState[oldList].find(t => t.id === el.id);
+                        if (match) foundTaskObj = match;
+                    }
+                    
+                    if (foundTaskObj) newState[listId].push(foundTaskObj);
+                });
+            });
+
+            appState = newState;
+            saveState();
+            renderBoard(); 
+        }
+
+        function saveState() {
+            localStorage.setItem('kanbanProState', JSON.stringify(appState));
+        }
+
+        renderBoard();
+
+    </script>
+</body>
+</html>
