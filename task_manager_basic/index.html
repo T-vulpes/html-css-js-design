@@ -12,9 +12,7 @@
             --text-main: #e1e3e6;
             --text-muted: #8b909a;
             --accent: #5e6ad2;
-            --accent-hover: #6f7bf7;
-            
-            /* Öncelik Renkleri */
+            --accent-hover: #6f7bf7;        
             --prio-low: #3fb950;
             --prio-med: #d29922;
             --prio-high: #f85149;
@@ -34,7 +32,6 @@
         .header h1 { margin: 0; font-size: 2rem; font-weight: 600; letter-spacing: -0.5px; }
         .header p { color: var(--text-muted); margin-top: 5px; }
 
-        /* Girdi Alanı (Toolbar) */
         .toolbar {
             display: flex; gap: 10px; width: 100%; max-width: 1200px;
             margin-bottom: 2rem; background: var(--surface-color);
@@ -107,7 +104,6 @@
         }
         .delete-btn:hover { color: var(--prio-high); background: rgba(248, 81, 73, 0.1); }
 
-        /* Inline Edit Alanı */
         .task-text { font-size: 0.95rem; line-height: 1.4; word-break: break-word; cursor: text; }
         .task-text-input {
             width: 100%; background: var(--surface-color); color: white; border: 1px solid var(--accent);
@@ -127,12 +123,10 @@
     </style>
 </head>
 <body>
-
     <div class="header">
         <h1>Workspace</h1>
         <p>Advanced Kanban Board with Object State Management</p>
     </div>
-
     <div class="toolbar">
         <input type="text" id="taskInput" placeholder="Task description..." autocomplete="off">
         <select id="priorityInput">
@@ -142,7 +136,6 @@
         </select>
         <button class="primary-btn" id="addBtn">Create Issue</button>
     </div>
-
     <div class="board">
         <div class="column" id="todo">
             <div class="column-header">
@@ -151,7 +144,6 @@
             </div>
             <div class="task-list" id="todo-list"></div>
         </div>
-
         <div class="column" id="progress">
             <div class="column-header">
                 <span>In Progress</span>
@@ -159,7 +151,6 @@
             </div>
             <div class="task-list" id="progress-list"></div>
         </div>
-
         <div class="column" id="done">
             <div class="column-header">
                 <span>Done</span>
@@ -168,13 +159,11 @@
             <div class="task-list" id="done-list"></div>
         </div>
     </div>
-
     <script>
         const taskInput = document.getElementById('taskInput');
         const priorityInput = document.getElementById('priorityInput');
         const addBtn = document.getElementById('addBtn');
         const taskLists = document.querySelectorAll('.task-list');
-
         let appState = JSON.parse(localStorage.getItem('kanbanProState')) || {
             'todo-list': [],
             'progress-list': [],
@@ -183,15 +172,12 @@
 
         function renderBoard() {
             taskLists.forEach(list => list.innerHTML = '');
-
             for (const listId in appState) {
                 const listElement = document.getElementById(listId);
-                const tasks = appState[listId];
-                
+                const tasks = appState[listId];                
                 tasks.forEach(taskObj => {
                     createTaskDOM(taskObj, listElement);
                 });
-
                 document.getElementById(`count-${listId.replace('-list', '')}`).innerText = tasks.length;
             }
         }
@@ -199,7 +185,6 @@
         addBtn.addEventListener('click', () => {
             const text = taskInput.value.trim();
             if (!text) return;
-
             const newTask = {
                 id: 'task-' + Date.now(), 
                 text: text,
@@ -210,7 +195,6 @@
             appState['todo-list'].push(newTask);
             saveState();
             renderBoard(); 
-
             taskInput.value = '';
         });
 
@@ -221,7 +205,6 @@
             taskEl.classList.add('task');
             taskEl.setAttribute('draggable', 'true');
             taskEl.id = task.id;
-
             taskEl.innerHTML = `
                 <div class="task-header">
                     <span class="badge ${task.priority}">${task.priority}</span>
@@ -246,7 +229,6 @@
                 textEl.innerHTML = `<textarea class="task-text-input">${currentText}</textarea>`;
                 const input = textEl.querySelector('textarea');
                 input.focus();
-
                 const saveEdit = () => {
                     const newText = input.value.trim() || currentText;                     
                     const listArray = appState[parentList.id];
@@ -273,7 +255,6 @@
                 taskEl.classList.remove('dragging');
                 syncDOMtoState(); 
             });
-
             parentList.appendChild(taskEl);
         }
 
@@ -291,11 +272,9 @@
 
         function syncDOMtoState() {
             const newState = { 'todo-list': [], 'progress-list': [], 'done-list': [] };
-
             taskLists.forEach(list => {
                 const listId = list.id;
-                const taskElements = list.querySelectorAll('.task');
-                
+                const taskElements = list.querySelectorAll('.task');                
                 taskElements.forEach(el => {
                     let foundTaskObj = null;
                     for (const oldList in appState) {
@@ -319,3 +298,4 @@
     </script>
 </body>
 </html>
+
