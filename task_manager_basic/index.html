@@ -248,9 +248,7 @@
                 input.focus();
 
                 const saveEdit = () => {
-                    const newText = input.value.trim() || currentText; 
-                    
-                    // State'de bul ve güncelle
+                    const newText = input.value.trim() || currentText;                     
                     const listArray = appState[parentList.id];
                     const taskIndex = listArray.findIndex(t => t.id === task.id);
                     if (taskIndex !== -1) {
@@ -317,10 +315,7 @@
         function saveState() {
             localStorage.setItem('kanbanProState', JSON.stringify(appState));
         }
-
         renderBoard();
-
     </script>
 </body>
-
 </html>
