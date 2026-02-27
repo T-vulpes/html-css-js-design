@@ -138,20 +138,12 @@
                 return alert('Message is too long for this image!');
             }
 
-            // Piksellerin en sağdaki bitini (LSB) mesajımızla değiştir (BITWISE MAGIC)
             for (let i = 0; i < binaryMsg.length; i++) {
-                // parseInt ile string olan '1' veya '0'ı gerçek sayıya çevir
                 const bit = parseInt(binaryMsg[i]); 
-                
-                // data[i] & 254 : Pikselin son bitini 0 yapar (Çift sayı yapar).
-                // | bit : O son bite bizim şifremizin bitini ekler (1 veya 0).
                 data[i] = (data[i] & 254) | bit; 
             }
 
-            // Değiştirilmiş pikselleri tekrar Canvas'a koy
             ctx.putImageData(imgData, 0, 0);
-
-            // Resmi indir (Kayıpsız PNG olmak zorunda, JPG olursa sıkıştırmadan dolayı şifre bozulur!)
             const link = document.createElement('a');
             link.download = 'secret-image.png';
             link.href = canvas.toDataURL('image/png');
@@ -160,7 +152,6 @@
             alert('Message encoded! Image downloaded.');
         });
 
-        // 3. DECODE (Gizli Mesajı Çıkar)
         decodeBtn.addEventListener('click', () => {
             if (!img.src) return alert('Please upload an encoded image first!');
 
@@ -169,25 +160,15 @@
 
             let binaryMsg = '';
             let decodedMsg = '';
-
-            // Tüm piksellerin LSB'sini (son bitini) topla
             for (let i = 0; i < data.length; i++) {
-                // data[i] & 1 : Pikselin sadece en sağdaki (son) bitini okur (1 mi 0 mı?)
                 binaryMsg += (data[i] & 1).toString();
             }
-
-            // 8'erli gruplara (Byte) ayır ve harflere çevir
             for (let i = 0; i < binaryMsg.length; i += 8) {
                 const byte = binaryMsg.slice(i, i + 8);
-                
-                // Eğer 00000000 geldiyse, mesaj bitmiştir, döngüyü kır!
                 if (byte === '00000000') break;
-
-                // İkili (Binary) kodu 10'luk tabana (ASCII sayıya) çevir, sonra harfe dönüştür
                 decodedMsg += String.fromCharCode(parseInt(byte, 2));
             }
 
-            // Sonucu Ekrana Bas
             if (decodedMsg) {
                 resultText.innerHTML = `🔓 Secret Message Found:<br><br>${decodedMsg}`;
                 resultText.style.display = 'block';
@@ -201,3 +182,4 @@
 </body>
 
 </html>
+
