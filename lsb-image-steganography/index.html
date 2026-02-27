@@ -75,7 +75,6 @@
 
     <h1>Digital Spy</h1>
     <p>Hide secret messages inside normal images using LSB Steganography.</p>
-
     <div class="container">
         <div class="input-group">
             <label for="imageLoader">1. Select an Image (PNG/JPG)</label>
@@ -93,7 +92,6 @@
         </div>
 
         <div id="resultText"></div>
-
         <canvas id="canvas"></canvas>
     </div>
 
@@ -102,11 +100,9 @@
         const secretMessage = document.getElementById('secretMessage');
         const encodeBtn = document.getElementById('encodeBtn');
         const decodeBtn = document.getElementById('decodeBtn');
-        const resultText = document.getElementById('resultText');
-        
+        const resultText = document.getElementById('resultText');        
         const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        
+        const ctx = canvas.getContext('2d');        
         let img = new Image();
 
         imageLoader.addEventListener('change', function(e) {
@@ -154,7 +150,6 @@
 
         decodeBtn.addEventListener('click', () => {
             if (!img.src) return alert('Please upload an encoded image first!');
-
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imgData.data;
 
@@ -180,6 +175,4 @@
 
     </script>
 </body>
-
 </html>
-
