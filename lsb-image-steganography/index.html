@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganography: Hide Text in Image</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            margin: 0;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        h1 { color: #58a6ff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; text-align: center;}
+        p { color: #8b949e; margin-bottom: 30px; text-align: center;}
+
+        .container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 25px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #58a6ff; }
+        
+        input[type="file"], textarea {
+            width: 100%; padding: 10px; border-radius: 6px;
+            background: #0d1117; color: #fff; border: 1px solid #30363d;
+            font-family: inherit; box-sizing: border-box;
+        }
+        
+        textarea { resize: vertical; min-height: 80px; }
+        textarea:focus { outline: none; border-color: #58a6ff; }
+
+        .btn-group { display: flex; gap: 15px; margin-top: 10px; }
+
+        button {
+            flex: 1; padding: 12px; font-weight: bold; border: none;
+            border-radius: 6px; cursor: pointer; transition: 0.2s; font-family: inherit;
+        }
+
+        #encodeBtn { background-color: #238636; color: white; }
+        #encodeBtn:hover { background-color: #2ea043; }
+        
+        #decodeBtn { background-color: #8957e5; color: white; }
+        #decodeBtn:hover { background-color: #9e6cf2; }
+
+        /* Resim Önizleme */
+        canvas {
+            display: block;
+            max-width: 100%;
+            margin-top: 20px;
+            border: 1px dashed #30363d;
+            border-radius: 6px;
+            background-color: #000;
+        }
+
+        #resultText {
+            margin-top: 20px; padding: 15px; background: rgba(88, 166, 255, 0.1);
+            border-left: 4px solid #58a6ff; color: #58a6ff; font-weight: bold;
+            display: none; word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Digital Spy</h1>
+    <p>Hide secret messages inside normal images using LSB Steganography.</p>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="imageLoader">1. Select an Image (PNG/JPG)</label>
+            <input type="file" id="imageLoader" accept="image/png, image/jpeg">
+        </div>
+
+        <div class="input-group">
+            <label for="secretMessage">2. Secret Message (to Encode)</label>
+            <textarea id="secretMessage" placeholder="Type your hidden message here..."></textarea>
+        </div>
+
+        <div class="btn-group">
+            <button id="encodeBtn">ENCODE & DOWNLOAD</button>
+            <button id="decodeBtn">DECODE IMAGE</button>
+        </div>
+
+        <div id="resultText"></div>
+
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        const imageLoader = document.getElementById('imageLoader');
+        const secretMessage = document.getElementById('secretMessage');
+        const encodeBtn = document.getElementById('encodeBtn');
+        const decodeBtn = document.getElementById('decodeBtn');
+        const resultText = document.getElementById('resultText');
+        
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let img = new Image();
+
+        // 1. Resmi Yükle ve Canvas'a Çiz
+        imageLoader.addEventListener('change', function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    resultText.style.display = 'none'; // Uyarıyı temizle
+                }
+                img.src = event.target.result;
+            }
+            if(e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
+        });
+
+        // 2. ENCODE (Mesajı Gizle)
+        encodeBtn.addEventListener('click', () => {
+            if (!img.src) return alert('Please upload an image first!');
+            const msg = secretMessage.value;
+            if (!msg) return alert('Please enter a secret message!');
+
+            // Mesajı Binary'ye (0 ve 1'lere) çevir
+            let binaryMsg = '';
+            for (let i = 0; i < msg.length; i++) {
+                // Her harfi 8 bitlik (1 byte) ikili koda çevir (Örn: 'A' -> 01000001)
+                binaryMsg += msg.charCodeAt(i).toString(2).padStart(8, '0');
+            }
+            // Şifrenin bittiğini anlamak için sonuna özel bir durdurucu (Null Terminator) ekle
+            binaryMsg += '00000000'; 
+
+            // Resmin piksellerini al (RGBA dizisi)
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+
+            // Güvenlik kontrolü (Resim mesajdan küçükse hata ver)
+            if (binaryMsg.length > data.length) {
+                return alert('Message is too long for this image!');
+            }
+
+            // Piksellerin en sağdaki bitini (LSB) mesajımızla değiştir (BITWISE MAGIC)
+            for (let i = 0; i < binaryMsg.length; i++) {
+                // parseInt ile string olan '1' veya '0'ı gerçek sayıya çevir
+                const bit = parseInt(binaryMsg[i]); 
+                
+                // data[i] & 254 : Pikselin son bitini 0 yapar (Çift sayı yapar).
+                // | bit : O son bite bizim şifremizin bitini ekler (1 veya 0).
+                data[i] = (data[i] & 254) | bit; 
+            }
+
+            // Değiştirilmiş pikselleri tekrar Canvas'a koy
+            ctx.putImageData(imgData, 0, 0);
+
+            // Resmi indir (Kayıpsız PNG olmak zorunda, JPG olursa sıkıştırmadan dolayı şifre bozulur!)
+            const link = document.createElement('a');
+            link.download = 'secret-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            alert('Message encoded! Image downloaded.');
+        });
+
+        // 3. DECODE (Gizli Mesajı Çıkar)
+        decodeBtn.addEventListener('click', () => {
+            if (!img.src) return alert('Please upload an encoded image first!');
+
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+
+            let binaryMsg = '';
+            let decodedMsg = '';
+
+            // Tüm piksellerin LSB'sini (son bitini) topla
+            for (let i = 0; i < data.length; i++) {
+                // data[i] & 1 : Pikselin sadece en sağdaki (son) bitini okur (1 mi 0 mı?)
+                binaryMsg += (data[i] & 1).toString();
+            }
+
+            // 8'erli gruplara (Byte) ayır ve harflere çevir
+            for (let i = 0; i < binaryMsg.length; i += 8) {
+                const byte = binaryMsg.slice(i, i + 8);
+                
+                // Eğer 00000000 geldiyse, mesaj bitmiştir, döngüyü kır!
+                if (byte === '00000000') break;
+
+                // İkili (Binary) kodu 10'luk tabana (ASCII sayıya) çevir, sonra harfe dönüştür
+                decodedMsg += String.fromCharCode(parseInt(byte, 2));
+            }
+
+            // Sonucu Ekrana Bas
+            if (decodedMsg) {
+                resultText.innerHTML = `🔓 Secret Message Found:<br><br>${decodedMsg}`;
+                resultText.style.display = 'block';
+            } else {
+                resultText.innerHTML = `⚠️ No secret message found in this image.`;
+                resultText.style.display = 'block';
+            }
+        });
+
+    </script>
+</body>
+</html>
