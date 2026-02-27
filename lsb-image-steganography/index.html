@@ -55,8 +55,6 @@
         
         #decodeBtn { background-color: #8957e5; color: white; }
         #decodeBtn:hover { background-color: #9e6cf2; }
-
-        /* Resim Önizleme */
         canvas {
             display: block;
             max-width: 100%;
@@ -111,7 +109,6 @@
         
         let img = new Image();
 
-        // 1. Resmi Yükle ve Canvas'a Çiz
         imageLoader.addEventListener('change', function(e) {
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -126,26 +123,17 @@
             if(e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
         });
 
-        // 2. ENCODE (Mesajı Gizle)
         encodeBtn.addEventListener('click', () => {
             if (!img.src) return alert('Please upload an image first!');
             const msg = secretMessage.value;
             if (!msg) return alert('Please enter a secret message!');
-
-            // Mesajı Binary'ye (0 ve 1'lere) çevir
             let binaryMsg = '';
             for (let i = 0; i < msg.length; i++) {
-                // Her harfi 8 bitlik (1 byte) ikili koda çevir (Örn: 'A' -> 01000001)
                 binaryMsg += msg.charCodeAt(i).toString(2).padStart(8, '0');
             }
-            // Şifrenin bittiğini anlamak için sonuna özel bir durdurucu (Null Terminator) ekle
             binaryMsg += '00000000'; 
-
-            // Resmin piksellerini al (RGBA dizisi)
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imgData.data;
-
-            // Güvenlik kontrolü (Resim mesajdan küçükse hata ver)
             if (binaryMsg.length > data.length) {
                 return alert('Message is too long for this image!');
             }
@@ -211,4 +199,5 @@
 
     </script>
 </body>
+
 </html>
