@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinding AI Visualizer</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+        }
+
+        .header { text-align: center; margin-bottom: 20px; }
+        h1 { margin: 0; color: #58a6ff; font-size: 2rem; }
+        p { margin: 5px 0 15px 0; color: #8b949e; }
+
+        .controls { display: flex; gap: 15px; margin-bottom: 20px; }
+        
+        button {
+            padding: 10px 20px; font-weight: bold; font-family: inherit;
+            border: none; border-radius: 6px; cursor: pointer; transition: 0.2s;
+        }
+        #solveBtn { background-color: #238636; color: white; }
+        #solveBtn:hover { background-color: #2ea043; }
+        #clearBtn { background-color: #da3633; color: white; }
+        #clearBtn:hover { background-color: #f85149; }
+
+        .grid {
+            display: grid;
+            gap: 1px;
+            background-color: #30363d;
+            border: 2px solid #30363d;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .node {
+            width: 25px; height: 25px;
+            background-color: #0d1117;
+            transition: background-color 0.1s, transform 0.2s;
+        }
+
+        .node.wall { background-color: #8b949e; transform: scale(0.9); border-radius: 4px; }
+        .node.start { background-color: #238636 !important; box-shadow: 0 0 15px #238636; border-radius: 50%; }
+        .node.target { background-color: #da3633 !important; box-shadow: 0 0 15px #da3633; border-radius: 50%; }
+        
+        .node.visited {
+            background-color: rgba(88, 166, 255, 0.3);
+            animation: searchAnim 0.3s ease-out forwards;
+        }
+
+        .node.path {
+            background-color: #f1e05a;
+            box-shadow: 0 0 10px #f1e05a;
+            border-radius: 4px;
+            animation: pathAnim 0.2s ease-out forwards;
+        }
+
+        @keyframes searchAnim {
+            0% { transform: scale(0.3); border-radius: 100%; background-color: #bc8cff; }
+            50% { background-color: #58a6ff; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pathAnim {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Pathfinder AI</h1>
+        <p>Draw walls with your mouse. Find the shortest path.</p>
+    </div>
+
+    <div class="controls">
+        <button id="solveBtn">SOLVE MAZE</button>
+        <button id="clearBtn">CLEAR WALLS</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <script>
+        const gridElement = document.getElementById('grid');
+        const rows = 20;
+        const cols = 40;
+        
+        let startNode = { r: 10, c: 5 };
+        let targetNode = { r: 10, c: 35 };
+        
+        let gridData = [];
+        let isDrawing = false;
+        let isSolving = false;
+
+        function initGrid() {
+            gridElement.style.gridTemplateColumns = `repeat(${cols}, 25px)`;
+            gridElement.innerHTML = '';
+            gridData = [];
+
+            for (let r = 0; r < rows; r++) {
+                let rowArray = [];
+                for (let c = 0; c < cols; c++) {
+                    const nodeEl = document.createElement('div');
+                    nodeEl.classList.add('node');
+                    nodeEl.id = `node-${r}-${c}`;
+
+                    if (r === startNode.r && c === startNode.c) nodeEl.classList.add('start');
+                    if (r === targetNode.r && c === targetNode.c) nodeEl.classList.add('target');
+
+                    nodeEl.addEventListener('mousedown', () => {
+                        if (isSolving) return;
+                        isDrawing = true;
+                        toggleWall(r, c, nodeEl);
+                    });
+                    
+                    nodeEl.addEventListener('mouseenter', () => {
+                        if (isDrawing && !isSolving) toggleWall(r, c, nodeEl);
+                    });
+
+                    gridElement.appendChild(nodeEl);
+                    
+                    rowArray.push({
+                        r: r, c: c,
+                        isWall: false,
+                        visited: false,
+                        parent: null 
+                    });
+                }
+                gridData.push(rowArray);
+            }
+        }
+
+        window.addEventListener('mouseup', () => isDrawing = false);
+
+        function toggleWall(r, c, el) {
+            if ((r === startNode.r && c === startNode.c) || (r === targetNode.r && c === targetNode.c)) return;
+            
+            gridData[r][c].isWall = true;
+            el.classList.add('wall');
+        }
+
+        function solve() {
+            if (isSolving) return;
+            isSolving = true;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    gridData[r][c].visited = false;
+                    gridData[r][c].parent = null;
+                    const el = document.getElementById(`node-${r}-${c}`);
+                    el.classList.remove('visited', 'path');
+                }
+            }
+
+            let queue = [gridData[startNode.r][startNode.c]];
+            gridData[startNode.r][startNode.c].visited = true;
+
+            let searchHistory = [];
+            let pathFound = false;
+
+            while (queue.length > 0) {
+                let current = queue.shift();
+
+                if (current.r === targetNode.r && current.c === targetNode.c) {
+                    pathFound = true;
+                    break;
+                }
+
+                const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+                
+                for (let dir of directions) {
+                    let newR = current.r + dir[0];
+                    let newC = current.c + dir[1];
+
+                    if (newR >= 0 && newR < rows && newC >= 0 && newC < cols) {
+                        let neighbor = gridData[newR][newC];
+                        
+                        if (!neighbor.visited && !neighbor.isWall) {
+                            neighbor.visited = true;
+                            neighbor.parent = current;
+                            queue.push(neighbor);
+                            searchHistory.push(neighbor); 
+                        }
+                    }
+                }
+            }
+
+            animateSearch(searchHistory, pathFound);
+        }
+
+        function animateSearch(history, pathFound) {
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i >= history.length) {
+                    clearInterval(timer);
+                    if (pathFound) drawPath();
+                    else { alert("No path exists!"); isSolving = false; }
+                    return;
+                }
+                
+                let node = history[i];
+                if (!(node.r === targetNode.r && node.c === targetNode.c)) {
+                    document.getElementById(`node-${node.r}-${node.c}`).classList.add('visited');
+                }
+                i++;
+            }, 10); 
+        }
+
+        function drawPath() {
+            let path = [];
+            let current = gridData[targetNode.r][targetNode.c];
+            
+            while (current.parent != null) {
+                path.push(current.parent);
+                current = current.parent;
+            }
+            
+            path.reverse(); 
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i >= path.length - 1) { 
+                    clearInterval(timer);
+                    isSolving = false;
+                    return;
+                }
+                let node = path[i];
+                document.getElementById(`node-${node.r}-${node.c}`).classList.add('path');
+                i++;
+            }, 50); // Yol çizim hızı
+        }
+
+        document.getElementById('solveBtn').addEventListener('click', solve);
+        
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            isSolving = false;
+            initGrid();
+        });
+
+        initGrid();
+
+    </script>
+</body>
+</html>
