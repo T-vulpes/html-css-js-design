@@ -76,7 +76,6 @@
     </style>
 </head>
 <body>
-
     <div class="header">
         <h1>Pathfinder AI</h1>
         <p>Draw walls with your mouse. Find the shortest path.</p>
@@ -92,15 +91,12 @@
     <script>
         const gridElement = document.getElementById('grid');
         const rows = 20;
-        const cols = 40;
-        
+        const cols = 40;        
         let startNode = { r: 10, c: 5 };
-        let targetNode = { r: 10, c: 35 };
-        
+        let targetNode = { r: 10, c: 35 };        
         let gridData = [];
         let isDrawing = false;
         let isSolving = false;
-
         function initGrid() {
             gridElement.style.gridTemplateColumns = `repeat(${cols}, 25px)`;
             gridElement.innerHTML = '';
@@ -140,10 +136,8 @@
         }
 
         window.addEventListener('mouseup', () => isDrawing = false);
-
         function toggleWall(r, c, el) {
-            if ((r === startNode.r && c === startNode.c) || (r === targetNode.r && c === targetNode.c)) return;
-            
+            if ((r === startNode.r && c === startNode.c) || (r === targetNode.r && c === targetNode.c)) return;            
             gridData[r][c].isWall = true;
             el.classList.add('wall');
         }
@@ -151,7 +145,6 @@
         function solve() {
             if (isSolving) return;
             isSolving = true;
-
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     gridData[r][c].visited = false;
@@ -166,7 +159,6 @@
 
             let searchHistory = [];
             let pathFound = false;
-
             while (queue.length > 0) {
                 let current = queue.shift();
 
@@ -235,7 +227,7 @@
                 let node = path[i];
                 document.getElementById(`node-${node.r}-${node.c}`).classList.add('path');
                 i++;
-            }, 50); // Yol çizim hızı
+            }, 50); 
         }
 
         document.getElementById('solveBtn').addEventListener('click', solve);
@@ -246,7 +238,7 @@
         });
 
         initGrid();
-
     </script>
 </body>
+
 </html>
