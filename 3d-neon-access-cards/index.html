@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced 3D Holographic Cards</title>
+<style>
+:root {
+--bg: #030712;
+--card-bg: rgba(255, 255, 255, 0.03);
+--border: rgba(255, 255, 255, 0.08);
+
+--c1-glow: rgba(56, 189, 248, 0.3);
+--c1-accent: #38bdf8;
+
+--c2-glow: rgba(236, 72, 153, 0.3); 
+--c2-accent: #ec4899; 
+} 
+
+body { 
+margin: 0; min-height: 100vh; background: var(--bg); 
+display:flex; justify-content: center; align-items: center; 
+font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+perspective: 1500px;  
+color:white; 
+} 
+
+.container { 
+display:flex; gap: 40px; padding: 20px; 
+flex-wrap: wrap; justify-content: center; 
+}
+
+.card-wrapper {
+width: 300px; height: 450px; position: relative;
+transform-style: preserve-3d; transition: transform 0.1s ease;
+cursor: pointer;
+}
+
+.card {
+width: 100%; height: 100%; position: absolute;
+border-radius: 24px; background: var(--card-bg);
+border: 1px solid var(--border);
+backdrop-filter: blur(10px); 
+overflow: hidden; transform-style: preserve-3d;
+}
+
+.c1-shadow { box-shadow: 0 25px 50px -12px var(--c1-glow); }
+.c2-shadow { box-shadow: 0 25px 50px -12px var(--c2-glow); }
+
+.glare {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+opacity: 0; pointer-events: none; transition: opacity 0.3s;
+transform: translateZ(1px); 
+}
+
+.content {
+padding: 30px; display: flex; flex-direction: column;
+height: 100%; box-sizing: border-box; 
+transform: translateZ(50px); 
+pointer-events: none; 
+} 
+
+.icon { font-size: 3rem; margin-bottom: 15px; } 
+.c1-icon { color: var(--c1-accent); text-shadow: 0 0 15px var(--c1-accent); } 
+.c2-icon { color: var(--c2-accent); text-shadow: 0 0 15px var(--c2-accent); } 
+
+h2 { margin: 0; font-size: 1.8rem; font-weight: 800; } 
+.price { font-size: 2.5rem; font-weight: 800; margin: 10px 0; } 
+.price span { font-size: 1rem; color: #9ca3af; } 
+
+ul { 
+list-style: none; padding: 0; margin: 20px 0 auto 0; 
+font-size: 0.9rem; color: #9ca3af; line-height: 1.8; 
+} 
+ul li::before { content: '✓ '; color: #6b7280; margin-right: 5px; } 
+
+.btn { 
+width: 100%; padding: 12px; border:none; border-radius: 12px; 
+font-weight: bold; font-size: 1rem; cursor: pointer; 
+transition: 0.2s; transform: translateZ(80px); 
+pointer-events: auto; 
+} 
+.c1-btn { background: var(--c1-accent); color: #000; } 
+.c2-btn { background: var(--c2-accent); color: #fff; } 
+.btn:hover { transform: translateZ(90px) scale(1.05); }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card-wrapper c1-shadow">
+<div class="card">
+<div class="glare"></div>
+<div class="content">
+<div class="icon c1-icon">✦</div>
+<h2>Standard</h2>
+<div class="price">₺0 <span>/month</span></div>
+<ul>
+<li>1 User</li>
+<li>5 Projects</li>
+<li>Restricted API Access</li>
+<li>Community Support</li>
+</ul>
+<button class="btn c1-btn">Start for Free</button>
+</div>
+</div>
+</div>
+
+<div class="card-wrapper c2-shadow">
+<div class="card">
+<div class="glare"></div>
+<div class="content">
+<div class="icon c2-icon">▲</div>
+<h2>Pro Tier</h2>
+<div class="price">₺199 <span>/month</span></div>
+<ul>
+<li>Unlimited Users</li>
+<li>Unlimited Projects</li>
+<li>Full API Access</li>
+<li>24/7 FrontSteel Support</li> 
+</ul> 
+<button class="btn c2-btn">Upgrade</button> 
+</div> 
+</div> 
+</div> 
+
+</div> 
+
+<script> 
+const wrappers = document.querySelectorAll('.card-wrapper'); 
+
+wrappers.forEach(wrapper => { 
+const glare = wrapper.querySelector('.glare'); 
+
+wrapper.addEventListener('mousemove', (e) => { 
+const rect = wrapper.getBoundingClientRect(); 
+const x = e.clientX - rect.left; 
+const y = e.clientY - rect.top; 
+
+const centerX = rect.width / 2; 
+const centerY = rect.height / 2; 
+
+const rotateX = ((y - centerY) / centerY) * -15; 
+const rotateY = ((x - centerX) / centerX) * 15; 
+
+wrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+glare.style.opacity = '1';
+glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15), transparent 60%)`;
+});
+
+wrapper.addEventListener('mouseleave', () => {
+wrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+wrapper.style.transition = `transform 0.5s ease-out`; 
+glare.style.opacity = '0';
+});
+
+wrapper.addEventListener('mouseenter', () => { 
+wrapper.style.transition = `transform 0.1s ease-out`; 
+}); 
+}); 
+</script>
+</body>
+</html>
