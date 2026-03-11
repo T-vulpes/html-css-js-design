@@ -9,10 +9,8 @@
 --bg: #030712;
 --card-bg: rgba(255, 255, 255, 0.03);
 --border: rgba(255, 255, 255, 0.08);
-
 --c1-glow: rgba(56, 189, 248, 0.3);
 --c1-accent: #38bdf8;
-
 --c2-glow: rgba(236, 72, 153, 0.3); 
 --c2-accent: #ec4899; 
 } 
@@ -83,15 +81,10 @@ pointer-events: auto;
 .c1-btn { background: var(--c1-accent); color: #000; } 
 .c2-btn { background: var(--c2-accent); color: #fff; } 
 .btn:hover { transform: translateZ(90px) scale(1.05); }
-
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
-
 <div class="card-wrapper c1-shadow">
 <div class="card">
 <div class="glare"></div>
@@ -127,38 +120,28 @@ pointer-events: auto;
 </div> 
 </div> 
 </div> 
-
 </div> 
-
 <script> 
 const wrappers = document.querySelectorAll('.card-wrapper'); 
-
 wrappers.forEach(wrapper => { 
 const glare = wrapper.querySelector('.glare'); 
-
 wrapper.addEventListener('mousemove', (e) => { 
 const rect = wrapper.getBoundingClientRect(); 
 const x = e.clientX - rect.left; 
 const y = e.clientY - rect.top; 
-
 const centerX = rect.width / 2; 
 const centerY = rect.height / 2; 
-
 const rotateX = ((y - centerY) / centerY) * -15; 
 const rotateY = ((x - centerX) / centerX) * 15; 
-
 wrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
 glare.style.opacity = '1';
 glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15), transparent 60%)`;
 });
-
 wrapper.addEventListener('mouseleave', () => {
 wrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
 wrapper.style.transition = `transform 0.5s ease-out`; 
 glare.style.opacity = '0';
 });
-
 wrapper.addEventListener('mouseenter', () => { 
 wrapper.style.transition = `transform 0.1s ease-out`; 
 }); 
