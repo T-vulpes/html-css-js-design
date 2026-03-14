@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Node Editor</title>
+    <style>
+        body {
+            margin: 0; overflow: hidden;
+            background-color: #1a1a1a; color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+        canvas { display: block; cursor: default; }
+        
+        .ui {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(40, 40, 40, 0.9); padding: 15px;
+            border-radius: 8px; border: 1px solid #444;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: none;
+        }
+        h1 { margin: 0; font-size: 1.2rem; color: #4facfe; }
+        ul { margin: 10px 0 0; padding-left: 20px; font-size: 0.85rem; color: #ccc; }
+        li { margin-bottom: 5px; }
+        .highlight { color: #f5a623; font-weight: bold; }
+
+        /* Çift tıklayınca çıkan gizli input */
+        #editInput {
+            position: absolute; display: none;
+            background: #2a2a2a; color: #fff;
+            border: 2px solid #4facfe; border-radius: 4px;
+            padding: 5px; font-family: inherit; font-size: 14px;
+            outline: none; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui">
+        <h1>Node Flow Engine</h1>
+        <ul>
+            <li><span class="highlight">Right Click</span>: Add Node</li>
+            <li><span class="highlight">Drag Ports (⚪)</span>: Connect Nodes</li>
+            <li><span class="highlight">Left Click & Drag</span>: Move Node / Pan Canvas</li>
+            <li><span class="highlight">Double Click</span>: Rename Node</li>
+            <li><span class="highlight">Delete Key</span>: Remove Node</li>
+            <li><span class="highlight">Scroll</span>: Zoom</li>
+        </ul>
+    </div>
+
+    <input type="text" id="editInput" autocomplete="off">
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const editInput = document.getElementById('editInput');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // --- STATE YÖNETİMİ ---
+        let camera = { x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 100, zoom: 1 };
+        
+        let nodes = [
+            { id: 1, x: 0, y: 0, w: 160, h: 60, text: 'Start Process' },
+            { id: 2, x: 300, y: 50, w: 160, h: 60, text: 'Send Email' }
+        ];
+        
+        let connections = [
+            { from: 1, to: 2 } // id 1'den id 2'ye bağlantı
+        ];
+
+        // Etkileşim Durumları
+        let isPanning = false;
+        let isDraggingNode = false;
+        let isConnecting = false;
+        
+        let selectedNode = null;
+        let hoverPort = null; // Üzerine gelinen bağlantı noktası
+        let tempConnection = null; // Çizilmekte olan kablo
+        
+        let dragStart = { x: 0, y: 0 };
+        let cameraStart = { x: 0, y: 0 };
+        let nodeStart = { x: 0, y: 0 };
+        let mouseWorld = { x: 0, y: 0 }; // Farenin dünyadaki konumu
+
+        // --- MATEMATİK & YARDIMCILAR ---
+        function getScreenToWorld(x, y) {
+            return { x: (x - camera.x) / camera.zoom, y: (y - camera.y) / camera.zoom };
+        }
+
+        // Farenin hangi objenin üzerinde olduğunu bulma (Hit Test)
+        function getHoveredObject(wx, wy) {
+            // Önce portları (noktaları) kontrol et (Tıklama önceliği)
+            for (let node of nodes) {
+                let outPort = { x: node.x + node.w, y: node.y + node.h / 2 };
+                let inPort = { x: node.x, y: node.y + node.h / 2 };
+                
+                // Noktaya uzaklık (Pisagor)
+                if (Math.hypot(wx - outPort.x, wy - outPort.y) < 15) return { type: 'port', node: node, portType: 'out' };
+                if (Math.hypot(wx - inPort.x, wy - inPort.y) < 15) return { type: 'port', node: node, portType: 'in' };
+            }
+
+            // Sonra düğümleri kontrol et (Tersten döngü ki üstte olanı seçsin)
+            for (let i = nodes.length - 1; i >= 0; i--) {
+                let n = nodes[i];
+                if (wx >= n.x && wx <= n.x + n.w && wy >= n.y && wy <= n.y + n.h) {
+                    return { type: 'node', node: n };
+                }
+            }
+            return null;
+        }
+
+        // --- ETKİLEŞİMLER (EVENTS) ---
+        window.addEventListener('mousedown', (e) => {
+            if (e.target === editInput) return; // Inputa tıklanıyorsa canvası elleme
+            
+            // Edit modundan çık
+            editInput.style.display = 'none';
+            
+            mouseWorld = getScreenToWorld(e.clientX, e.clientY);
+            const hit = getHoveredObject(mouseWorld.x, mouseWorld.y);
+
+            if (e.button === 0) { // Sol Tık
+                if (hit && hit.type === 'port' && hit.portType === 'out') {
+                    // Bağlantı Çekmeye Başla
+                    isConnecting = true;
+                    selectedNode = hit.node;
+                    tempConnection = { startX: hit.node.x + hit.node.w, startY: hit.node.y + hit.node.h / 2 };
+                } 
+                else if (hit && hit.type === 'node') {
+                    // Düğümü Tut ve Taşı
+                    isDraggingNode = true;
+                    selectedNode = hit.node;
+                    dragStart = { x: e.clientX, y: e.clientY };
+                    nodeStart = { x: selectedNode.x, y: selectedNode.y };
+                } 
+                else {
+                    // Boşluğa tıklandı: Pan yap (Kaydır) ve seçimi kaldır
+                    selectedNode = null;
+                    isPanning = true;
+                    dragStart = { x: e.clientX, y: e.clientY };
+                    cameraStart = { x: camera.x, y: camera.y };
+                }
+            } 
+            else if (e.button === 2) { // Sağ Tık
+                // Yeni Düğüm Ekle
+                nodes.push({
+                    id: Date.now(),
+                    x: mouseWorld.x - 80, y: mouseWorld.y - 30,
+                    w: 160, h: 60, text: 'New Process'
+                });
+                selectedNode = nodes[nodes.length - 1]; // Ekleneni seçili yap
+            }
+            render();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouseWorld = getScreenToWorld(e.clientX, e.clientY);
+
+            // İmleci duruma göre değiştir
+            const hit = getHoveredObject(mouseWorld.x, mouseWorld.y);
+            canvas.style.cursor = hit && hit.type === 'port' ? 'crosshair' : (hit ? 'pointer' : (isPanning ? 'grabbing' : 'default'));
+
+            if (isPanning) {
+                camera.x = cameraStart.x + (e.clientX - dragStart.x);
+                camera.y = cameraStart.y + (e.clientY - dragStart.y);
+            } 
+            else if (isDraggingNode && selectedNode) {
+                // Kameranın zoom seviyesine göre taşıma hızını ayarla
+                selectedNode.x = nodeStart.x + (e.clientX - dragStart.x) / camera.zoom;
+                selectedNode.y = nodeStart.y + (e.clientY - dragStart.y) / camera.zoom;
+            }
+
+            render();
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isConnecting && selectedNode) {
+                const hit = getHoveredObject(mouseWorld.x, mouseWorld.y);
+                // Eğer kabloyu başka bir düğümün 'in' (giriş) noktasına bıraktıysa
+                if (hit && hit.type === 'port' && hit.portType === 'in' && hit.node.id !== selectedNode.id) {
+                    // Aynı bağlantıdan var mı kontrol et
+                    const exists = connections.find(c => c.from === selectedNode.id && c.to === hit.node.id);
+                    if (!exists) {
+                        connections.push({ from: selectedNode.id, to: hit.node.id });
+                    }
+                }
+            }
+
+            isPanning = false;
+            isDraggingNode = false;
+            isConnecting = false;
+            tempConnection = null;
+            render();
+        });
+
+        // Çift Tıklama (İsim Değiştirme)
+        window.addEventListener('dblclick', (e) => {
+            const hit = getHoveredObject(mouseWorld.x, mouseWorld.y);
+            if (hit && hit.type === 'node') {
+                selectedNode = hit.node;
+                
+                // HTML Input'u kameraya göre düğümün tam üzerine oturt
+                const screenX = selectedNode.x * camera.zoom + camera.x;
+                const screenY = selectedNode.y * camera.zoom + camera.y;
+                
+                editInput.style.display = 'block';
+                editInput.style.left = `${screenX}px`;
+                editInput.style.top = `${screenY}px`;
+                editInput.style.width = `${selectedNode.w * camera.zoom - 10}px`; // Padding payı
+                editInput.style.height = `${selectedNode.h * camera.zoom - 10}px`;
+                
+                editInput.value = selectedNode.text;
+                editInput.focus();
+                editInput.select();
+            }
+        });
+
+        // Editörden çıkış (Enter'a basınca)
+        editInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (selectedNode) selectedNode.text = editInput.value;
+                editInput.style.display = 'none';
+                render();
+            }
+        });
+
+        // Silme İşlemi (Delete)
+        window.addEventListener('keydown', (e) => {
+            if ((e.key === 'Delete' || e.key === 'Backspace') && selectedNode && document.activeElement !== editInput) {
+                // Düğümü sil
+                nodes = nodes.filter(n => n.id !== selectedNode.id);
+                // Düğüme bağlı tüm kabloları sil
+                connections = connections.filter(c => c.from !== selectedNode.id && c.to !== selectedNode.id);
+                selectedNode = null;
+                render();
+            }
+        });
+
+        // Zoom İşlemi
+        window.addEventListener('wheel', (e) => {
+            const zoomDelta = Math.exp(-e.deltaY * 0.001); 
+            const worldXBefore = (e.clientX - camera.x) / camera.zoom;
+            const worldYBefore = (e.clientY - camera.y) / camera.zoom;
+
+            camera.zoom *= zoomDelta;
+            camera.zoom = Math.max(0.2, Math.min(camera.zoom, 3)); 
+
+            camera.x = e.clientX - (worldXBefore * camera.zoom);
+            camera.y = e.clientY - (worldYBefore * camera.zoom);
+            render();
+        });
+
+        window.addEventListener('contextmenu', e => e.preventDefault());
+
+        // --- ÇİZİM MOTORU (RENDER) ---
+        function drawBezier(x1, y1, x2, y2, color = '#666', width = 3) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            // Kablonun yatayda esnemesi için kontrol noktaları (Curve)
+            const offset = Math.abs(x2 - x1) * 0.5 + 20; 
+            ctx.bezierCurveTo(x1 + offset, y1, x2 - offset, y2, x2, y2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+        }
+
+        function render() {
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(camera.x, camera.y);
+            ctx.scale(camera.zoom, camera.zoom);
+
+            // 1. Grid (Izgara)
+            ctx.strokeStyle = '#2a2a2a';
+            ctx.lineWidth = 1 / camera.zoom;
+            const size = 40;
+            const sX = Math.floor(-camera.x / camera.zoom / size) * size;
+            const eX = sX + (canvas.width / camera.zoom) + size;
+            const sY = Math.floor(-camera.y / camera.zoom / size) * size;
+            const eY = sY + (canvas.height / camera.zoom) + size;
+
+            ctx.beginPath();
+            for (let x = sX; x < eX; x += size) { ctx.moveTo(x, sY); ctx.lineTo(x, eY); }
+            for (let y = sY; y < eY; y += size) { ctx.moveTo(sX, y); ctx.lineTo(eX, y); }
+            ctx.stroke();
+
+            // 2. Bağlantılar (Kablolar)
+            for (let conn of connections) {
+                const nodeA = nodes.find(n => n.id === conn.from);
+                const nodeB = nodes.find(n => n.id === conn.to);
+                if (nodeA && nodeB) {
+                    drawBezier(nodeA.x + nodeA.w, nodeA.y + nodeA.h/2, nodeB.x, nodeB.y + nodeB.h/2, '#4facfe');
+                }
+            }
+
+            // Çizilmekte olan geçici kablo
+            if (isConnecting && tempConnection) {
+                drawBezier(tempConnection.startX, tempConnection.startY, mouseWorld.x, mouseWorld.y, '#f5a623', 2);
+            }
+
+            // 3. Düğümler (Kutular)
+            for (let node of nodes) {
+                const isSelected = selectedNode && selectedNode.id === node.id;
+
+                // Gövde
+                ctx.fillStyle = '#2d2d2d';
+                ctx.beginPath();
+                ctx.roundRect(node.x, node.y, node.w, node.h, 8);
+                ctx.fill();
+                
+                // Seçiliyse parlayan sınır (Border)
+                ctx.strokeStyle = isSelected ? '#f5a623' : '#444';
+                ctx.lineWidth = isSelected ? 3 / camera.zoom : 1 / camera.zoom;
+                ctx.stroke();
+
+                // Üst Bar Rengi
+                ctx.fillStyle = '#3a3a3a';
+                ctx.beginPath();
+                ctx.roundRect(node.x, node.y, node.w, 15, [8, 8, 0, 0]);
+                ctx.fill();
+
+                // Yazı
+                ctx.fillStyle = '#e0e0e0';
+                ctx.font = '14px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                // Eğer bu düğüm editleniyorsa yazıyı kanvasta gizle (Çünkü üstünde input var)
+                if (editInput.style.display === 'none' || !isSelected) {
+                    ctx.fillText(node.text, node.x + node.w/2, node.y + node.h/2 + 5);
+                }
+
+                // Portlar (Bağlantı Noktaları)
+                ctx.fillStyle = '#4facfe';
+                ctx.beginPath(); ctx.arc(node.x, node.y + node.h/2, 6, 0, Math.PI*2); ctx.fill(); // IN Port
+                ctx.beginPath(); ctx.arc(node.x + node.w, node.y + node.h/2, 6, 0, Math.PI*2); ctx.fill(); // OUT Port
+            }
+
+            ctx.restore();
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
+        });
+
+        render();
+    </script>
+</body>
+</html>
