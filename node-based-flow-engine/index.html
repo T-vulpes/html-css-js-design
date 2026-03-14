@@ -23,8 +23,6 @@
         ul { margin: 10px 0 0; padding-left: 20px; font-size: 0.85rem; color: #ccc; }
         li { margin-bottom: 5px; }
         .highlight { color: #f5a623; font-weight: bold; }
-
-        /* Çift tıklayınca çıkan gizli input */
         #editInput {
             position: absolute; display: none;
             background: #2a2a2a; color: #fff;
@@ -35,7 +33,6 @@
     </style>
 </head>
 <body>
-
     <div class="ui">
         <h1>Node Flow Engine</h1>
         <ul>
@@ -47,7 +44,6 @@
             <li><span class="highlight">Scroll</span>: Zoom</li>
         </ul>
     </div>
-
     <input type="text" id="editInput" autocomplete="off">
     <canvas id="canvas"></canvas>
 
@@ -58,51 +54,36 @@
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
-        // --- STATE YÖNETİMİ ---
         let camera = { x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 100, zoom: 1 };
-        
         let nodes = [
             { id: 1, x: 0, y: 0, w: 160, h: 60, text: 'Start Process' },
             { id: 2, x: 300, y: 50, w: 160, h: 60, text: 'Send Email' }
         ];
-        
         let connections = [
             { from: 1, to: 2 } // id 1'den id 2'ye bağlantı
         ];
-
-        // Etkileşim Durumları
         let isPanning = false;
         let isDraggingNode = false;
-        let isConnecting = false;
-        
+        let isConnecting = false;        
         let selectedNode = null;
-        let hoverPort = null; // Üzerine gelinen bağlantı noktası
-        let tempConnection = null; // Çizilmekte olan kablo
-        
+        let hoverPort = null; 
+        let tempConnection = null;         
         let dragStart = { x: 0, y: 0 };
         let cameraStart = { x: 0, y: 0 };
         let nodeStart = { x: 0, y: 0 };
-        let mouseWorld = { x: 0, y: 0 }; // Farenin dünyadaki konumu
-
-        // --- MATEMATİK & YARDIMCILAR ---
+        let mouseWorld = { x: 0, y: 0 }; 
         function getScreenToWorld(x, y) {
             return { x: (x - camera.x) / camera.zoom, y: (y - camera.y) / camera.zoom };
         }
 
-        // Farenin hangi objenin üzerinde olduğunu bulma (Hit Test)
-        function getHoveredObject(wx, wy) {
-            // Önce portları (noktaları) kontrol et (Tıklama önceliği)
+        function getHoveredObject(wx, wy) 
             for (let node of nodes) {
                 let outPort = { x: node.x + node.w, y: node.y + node.h / 2 };
                 let inPort = { x: node.x, y: node.y + node.h / 2 };
-                
-                // Noktaya uzaklık (Pisagor)
                 if (Math.hypot(wx - outPort.x, wy - outPort.y) < 15) return { type: 'port', node: node, portType: 'out' };
                 if (Math.hypot(wx - inPort.x, wy - inPort.y) < 15) return { type: 'port', node: node, portType: 'in' };
             }
 
-            // Sonra düğümleri kontrol et (Tersten döngü ki üstte olanı seçsin)
             for (let i = nodes.length - 1; i >= 0; i--) {
                 let n = nodes[i];
                 if (wx >= n.x && wx <= n.x + n.w && wy >= n.y && wy <= n.y + n.h) {
