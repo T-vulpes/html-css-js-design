@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tearable Cloth Physics</title>
+    <style>
+        body {
+            margin: 0; overflow: hidden; background-color: #0f172a;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', sans-serif; color: #fff;
+            user-select: none;
+        }
+        canvas {
+            display: block; cursor: crosshair;
+        }
+        .ui {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px);
+            padding: 20px; border-radius: 12px; border: 1px solid #334155;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+        h1 { margin: 0; font-size: 1.2rem; color: #38bdf8; }
+        p { margin: 8px 0 15px; font-size: 0.85rem; color: #94a3b8; line-height: 1.5;}
+        .highlight { color: #f43f5e; font-weight: bold; }
+        
+        #resetBtn {
+            background: #38bdf8; color: #0f172a; border: none;
+            padding: 10px 15px; border-radius: 6px; font-weight: bold;
+            cursor: pointer; width: 100%; transition: 0.2s;
+        }
+        #resetBtn:hover { background: #0ea5e9; transform: translateY(-2px); }
+        #resetBtn:active { transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="ui">
+        <h1>Cloth Physics Engine</h1>
+        <p>Left Click & Drag to <span class="highlight">Tear</span><br>
+           Right Click & Drag to <span class="highlight">Pull</span></p>
+        <button id="resetBtn">Reset Cloth</button>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const gravity = 0.5;
+        const friction = 0.99;
+        const bounce = 0.9;
+        const tearDistance = 40; 
+        let points = [];
+        let sticks = [];
+        let mouse = { x: -1000, y: -1000, px: -1000, py: -1000, isDown: false, button: 0 };
+        window.addEventListener('mousedown', e => { 
+            if(e.target.id === 'resetBtn') return; 
+            mouse.isDown = true; mouse.button = e.button; 
+        });
+        window.addEventListener('mouseup', () => mouse.isDown = false);
+        window.addEventListener('mousemove', e => {
+            mouse.px = mouse.x; mouse.py = mouse.y;
+            mouse.x = e.clientX; mouse.y = e.clientY;
+        });
+        window.addEventListener('contextmenu', e => e.preventDefault());
+
+        class Point {
+            constructor(x, y, isPinned = false) {
+                this.x = x; this.y = y;
+                this.oldX = x; this.oldY = y;
+                this.isPinned = isPinned;
+            }
+
+            update() {
+                if (this.isPinned) return;
+                let vx = (this.x - this.oldX) * friction;
+                let vy = (this.y - this.oldY) * friction;
+                this.oldX = this.x; this.oldY = this.y;
+                this.x += vx;
+                this.y += vy + gravity;
+
+                if (this.y > canvas.height - 10) {
+                    this.y = canvas.height - 10;
+                    this.oldY = this.y + vy * bounce;
+                }
+            }
+        }
+
+        class Stick {
+            constructor(p1, p2) {
+                this.p1 = p1; this.p2 = p2;
+                this.length = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            }
+
+            update() {
+                let dx = this.p2.x - this.p1.x;
+                let dy = this.p2.y - this.p1.y;
+                let distance = Math.hypot(dx, dy);                
+                if (distance > tearDistance) return false; 
+                let difference = this.length - distance;
+                let percent = difference / distance / 2;
+                let offsetX = dx * percent;
+                let offsetY = dy * percent;
+                if (!this.p1.isPinned) { this.p1.x -= offsetX; this.p1.y -= offsetY; }
+                if (!this.p2.isPinned) { this.p2.x += offsetX; this.p2.y += offsetY; }
+
+                return true; 
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.p1.x, this.p1.y);
+                ctx.lineTo(this.p2.x, this.p2.y);
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+
+        function createCloth(width, height, spacing, startX, startY) {
+            for (let y = 0; y <= height; y++) {
+                for (let x = 0; x <= width; x++) {
+                    let p = new Point(startX + x * spacing, startY + y * spacing, y === 0);
+                    points.push(p);
+                    if (x > 0) sticks.push(new Stick(p, points[points.length - 2])); 
+                    if (y > 0) sticks.push(new Stick(p, points[points.length - width - 2])); 
+                }
+            }
+        }
+
+        function initCloth() {
+            points = []; 
+            sticks = [];             
+            const clothWidth = 40;
+            const spacing = 15;
+            const startX = (canvas.width / 2) - ((clothWidth * spacing) / 2);            
+            createCloth(clothWidth, 25, spacing, startX, 50);
+        }
+
+        document.getElementById('resetBtn').addEventListener('click', initCloth);
+        initCloth();
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (mouse.isDown) {
+                for (let p of points) {
+                    if (Math.hypot(p.x - mouse.x, p.y - mouse.y) < 20) {
+                        if (mouse.button === 0) {
+                            p.oldX = p.x + (mouse.x - mouse.px) * 3;
+                            p.oldY = p.y + (mouse.y - mouse.py) * 3;
+                        } else if (mouse.button === 2) {
+                            p.x = mouse.x;
+                            p.y = mouse.y;
+                        }
+                    }
+                }
+            }
+
+            for (let p of points) p.update();
+            for (let i = 0; i < 3; i++) {
+                sticks = sticks.filter(stick => stick.update());
+            }
+
+            for (let stick of sticks) stick.draw();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initCloth(); 
+        });
+    </script>
+</body>
+</html>
