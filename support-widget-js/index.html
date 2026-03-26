@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Support Portal</title>
+    <style>
+        body { 
+            margin: 0; min-height: 100vh; 
+            background: #0f172a; 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+
+        .widget-wrapper {
+            position: relative;
+            display: flex; flex-direction: column; align-items: center;
+            height: 500px; width: 340px;
+        }
+
+        .support-portal {
+            position: absolute; 
+            bottom: 75px; 
+            width: 340px; height: 420px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; overflow: hidden;
+            transform-origin: bottom center;
+            opacity: 0; transform: translateY(20px) scale(0.9); pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .support-portal.open { 
+            opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; 
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .portal-header h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+        
+        .close-btn { 
+            background: none; border: none; color: rgba(255,255,255,0.7); 
+            font-size: 1.4rem; cursor: pointer; transition: 0.2s; padding: 0;
+        }
+        .close-btn:hover { color: white; transform: rotate(90deg); }
+
+        .portal-tabs { display: flex; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        
+        .tab-btn {
+            flex: 1; padding: 12px; border: none; background: none;
+            color: #64748b; font-weight: 600; font-size: 0.8rem;
+            text-transform: uppercase; cursor: pointer; position: relative; transition: 0.2s;
+        }
+        .tab-btn:hover { color: #2563eb; }
+        .tab-btn.active { color: #2563eb; }
+        .tab-btn.active::after { 
+            content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 2px; background: #2563eb; 
+        }
+
+        .portal-content { flex: 1; overflow: hidden; position: relative; }
+        
+        .tab-content {
+            position: absolute; inset: 0; padding: 20px; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 12px;
+            opacity: 0; transform: translateX(30px); pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            overflow-y: auto;
+        }
+        .tab-content.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
+        
+        input, textarea, select {
+            padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;
+            font-family: inherit; font-size: 0.85rem; outline: none; transition: 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        
+        .submit-btn {
+            background: #2563eb; color: white; border: none; padding: 10px;
+            border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;
+            display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 5px;
+        }
+        .submit-btn:hover { background: #1d4ed8; }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .sss-item { background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.85rem; cursor: pointer;}
+        .sss-item:hover { border-color: #cbd5e1; }
+        .sss-q { font-weight: 600; color: #0f172a;}
+        .chat-demo { text-align: center; color: #64748b; margin-top: 40px; font-size: 0.85rem;}
+
+        .portal-trigger {
+            position: absolute; bottom: 0;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white; border: none; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(37,99,235,0.5);
+            font-size: 1.6rem; display: flex; justify-content: center; align-items: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000;
+        }
+        .portal-trigger:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(37,99,235,0.7); }
+        .portal-trigger.active { transform: rotate(135deg); background: #ef4444; box-shadow: 0 10px 30px rgba(239,68,68,0.5); }
+
+        .form-feedback { display: none; padding: 10px; border-radius: 8px; font-size: 0.8rem; text-align: center; }
+        .form-feedback.success { display: block; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid #10b981; }
+        .form-feedback.error { display: block; background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="widget-wrapper">
+        <div class="support-portal" id="supportPortal">
+            <div class="portal-header">
+                <h2>Help Center</h2>
+                <button class="close-btn" id="closePortal">✕</button>
+            </div>
+
+            <div class="portal-tabs">
+                <button class="tab-btn active" data-tab="chat">Chat</button>
+                <button class="tab-btn" data-tab="report">Ticket</button>
+                <button class="tab-btn" data-tab="faq">FAQ</button>
+            </div>
+
+            <div class="portal-content">
+                <div class="tab-content active" id="content-chat">
+                    <div class="chat-demo">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">💬</div>
+                        Our agents are currently offline.<br>Please use the ticket form for urgent matters.
+                    </div>
+                </div>
+
+                <div class="tab-content" id="content-report">
+                    <div class="form-feedback" id="formFeedback"></div>
+                    <form id="reportForm">
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select required name="topic">
+                                <option value="">Select a topic...</option>
+                                <option value="account">Account Issues</option>
+                                <option value="billing">Billing & Payments</option>
+                                <option value="bug">Report a Bug</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" required name="email" placeholder="you@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea required name="message" rows="3" placeholder="Describe your issue..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span id="btnText">Submit Ticket</span>
+                            <span id="btnLoader" style="display: none;">⌛</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="content-faq">
+                    <div class="sss-item">
+                        <div class="sss-q">How do I reset my password?</div>
+                        <div class="sss-a" style="display: none; color: #64748b; margin-top: 5px; font-size: 0.8rem;">Click the 'Forgot Password' link on the login screen and follow the instructions.</div>
+                    </div>
+                    <div class="sss-item">
+                        <div class="sss-q">What payment methods are accepted?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="portal-trigger" id="portalTrigger">📬</button>
+    </div>
+
+    <script>
+        const uiState = { isOpen: false, activeTab: 'chat', isSubmitting: false };
+        const portal = document.getElementById('supportPortal');
+        const trigger = document.getElementById('portalTrigger');
+        const closeBtn = document.getElementById('closePortal');
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+        const reportForm = document.getElementById('reportForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const feedback = document.getElementById('formFeedback');
+
+        function togglePortal() {
+            uiState.isOpen = !uiState.isOpen;
+            portal.classList.toggle('open');
+            trigger.classList.toggle('active');
+            trigger.innerText = uiState.isOpen ? '✕' : '📬';
+        }
+
+        trigger.addEventListener('click', togglePortal);
+        closeBtn.addEventListener('click', togglePortal);
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                if (targetTab === uiState.activeTab) return; 
+                uiState.activeTab = targetTab;
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                contents.forEach(c => c.classList.remove('active'));
+                document.getElementById(`content-${targetTab}`).classList.add('active');
+                feedback.className = 'form-feedback';
+            });
+        });
+
+        reportForm.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            if (uiState.isSubmitting) return;
+
+            uiState.isSubmitting = true;
+            submitBtn.disabled = true;
+            document.getElementById('btnText').innerText = 'Submitting...';
+            document.getElementById('btnLoader').style.display = 'inline-block';
+            feedback.className = 'form-feedback';
+
+            setTimeout(() => {
+                uiState.isSubmitting = false;
+                submitBtn.disabled = false;
+                document.getElementById('btnText').innerText = 'Submit Ticket';
+                document.getElementById('btnLoader').style.display = 'none';
+
+                feedback.innerText = 'Ticket submitted successfully!';
+                feedback.classList.add('success');
+                reportForm.reset(); 
+                
+                setTimeout(() => { if(uiState.isOpen) togglePortal(); }, 2500);
+            }, 1500);
+        });
+
+        document.querySelectorAll('.sss-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const answer = item.querySelector('.sss-a');
+                if(answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
