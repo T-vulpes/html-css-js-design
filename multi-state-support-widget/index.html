@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-State Dynamic Island</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background: #f5f5f7;
+            display: flex; justify-content: center; align-items: flex-end;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+            padding-bottom: 50px;
+        }
+
+        .dynamic-island {
+            position: fixed;
+            bottom: 50px;
+            background: #000;
+            color: #fff;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .dynamic-island.state-pill { width: 170px; height: 44px; cursor: pointer; }
+        .dynamic-island.state-menu { width: 280px; height: 180px; border-radius: 28px; cursor: default; }
+        .dynamic-island.state-form { width: 320px; height: 280px; border-radius: 32px; cursor: default; }
+
+        .view {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.4s ease;
+            display: flex; flex-direction: column;
+        }
+
+        .state-pill .view-pill { opacity: 1; pointer-events: auto; transform: scale(1); }
+        .state-menu .view-menu { opacity: 1; pointer-events: auto; transform: scale(1); transition-delay: 0.15s;}
+        .state-form .view-form { opacity: 1; pointer-events: auto; transform: scale(1); transition-delay: 0.15s;}
+
+        .view-menu, .view-form { transform: scale(0.95); }
+
+        .view-pill {
+            flex-direction: row; justify-content: center; align-items: center; gap: 10px;
+            padding: 0;
+        }
+        
+        .pulse-dot { width: 6px; height: 6px; background: #34c759; border-radius: 50%; box-shadow: 0 0 8px #34c759; }
+        .pill-text { font-size: 0.9rem; font-weight: 500; letter-spacing: 0.5px; }
+
+        .header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+        }
+        .header-title { font-size: 0.9rem; color: #86868b; font-weight: 500; }
+        
+        .icon-btn {
+            background: #1c1c1e; color: #fff; border: none; width: 26px; height: 26px;
+            border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center;
+            font-size: 0.8rem; transition: 0.2s;
+        }
+        .icon-btn:hover { background: #2c2c2e; }
+
+        .options-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1;
+        }
+        .option-btn {
+            background: #1c1c1e; color: #fff; border: none; border-radius: 16px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+            cursor: pointer; transition: 0.2s; font-size: 0.8rem; font-weight: 500;
+        }
+        .option-btn:hover { background: #2c2c2e; transform: scale(0.97); }
+        .option-icon { font-size: 1.2rem; }
+
+        .minimal-input {
+            background: #1c1c1e; border: 1px solid transparent; color: #fff;
+            padding: 12px 15px; border-radius: 14px; font-family: inherit; font-size: 0.9rem;
+            margin-bottom: 10px; outline: none; transition: 0.2s; width: 100%; box-sizing: border-box;
+        }
+        .minimal-input:focus { border-color: #007aff; background: #000; }
+        textarea.minimal-input { resize: none; flex: 1; }
+
+        .action-btn {
+            background: #fff; color: #000; border: none; padding: 12px;
+            border-radius: 14px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.2s;
+        }
+        .action-btn:hover { transform: scale(0.97); background: #f5f5f7; }
+    </style>
+</head>
+<body>
+
+    <div class="dynamic-island state-pill" id="island">
+        
+        <div class="view view-pill" id="triggerPill">
+            <div class="pulse-dot"></div>
+            <span class="pill-text">Support</span>
+        </div>
+
+        <div class="view view-menu">
+            <div class="header">
+                <span class="header-title">How can we help?</span>
+                <button class="icon-btn" id="closeMenuBtn">✕</button>
+            </div>
+            <div class="options-grid">
+                <button class="option-btn" id="openFormBtn">
+                    <span class="option-icon">✉️</span> Email
+                </button>
+                <button class="option-btn" onclick="alert('Starting Live Chat...')">
+                    <span class="option-icon">💬</span> Chat
+                </button>
+                <button class="option-btn" onclick="alert('Opening Help Center...')">
+                    <span class="option-icon">📚</span> FAQ
+                </button>
+                <button class="option-btn" onclick="alert('Calling Support...')">
+                    <span class="option-icon">📞</span> Call
+                </button>
+            </div>
+        </div>
+
+        <div class="view view-form">
+            <div class="header">
+                <button class="icon-btn" id="backToMenuBtn">←</button>
+                <span class="header-title">Send a Message</span>
+                <div style="width: 26px;"></div>
+            </div>
+            <input type="email" class="minimal-input" placeholder="Your email address" required>
+            <textarea class="minimal-input" placeholder="Describe your issue..."></textarea>
+            <button class="action-btn" onclick="alert('Message Sent!')">Submit</button>
+        </div>
+
+    </div>
+
+    <script>
+        const island = document.getElementById('island');
+        const triggerPill = document.getElementById('triggerPill');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const openFormBtn = document.getElementById('openFormBtn');
+        const backToMenuBtn = document.getElementById('backToMenuBtn');
+        
+        triggerPill.addEventListener('click', () => {
+            island.className = 'dynamic-island state-menu';
+        });
+
+        closeMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            island.className = 'dynamic-island state-pill';
+        });
+
+        openFormBtn.addEventListener('click', () => {
+            island.className = 'dynamic-island state-form';
+        });
+
+        backToMenuBtn.addEventListener('click', () => {
+            island.className = 'dynamic-island state-menu';
+        });
+    </script>
+</body>
+</html>
