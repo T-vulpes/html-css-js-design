@@ -36,7 +36,6 @@
         }
 
         .dock-item span { pointer-events: none; }
-
         .dock-item.bounce { animation: bounce 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
 
         @keyframes bounce {
@@ -54,7 +53,6 @@
         }
 
         .dock-item:hover .tooltip { opacity: 1; transform: translateY(0); }
-
         .dock-item::after {
             content: ''; position: absolute; bottom: -6px; width: 4px; height: 4px;
             border-radius: 50%; background: rgba(255, 255, 255, 0.4); opacity: 0;
@@ -73,22 +71,17 @@
         <div class="dock-item" data-title="Photos"><span>🖼️</span><div class="tooltip">Photos</div></div>
         <div class="dock-item" data-title="Settings"><span>⚙️</span><div class="tooltip">Settings</div></div>
     </div>
-
     <script>
         const dock = document.getElementById('dock');
-        const items = document.querySelectorAll('.dock-item');
-        
+        const items = document.querySelectorAll('.dock-item');        
         const maxScale = 1.8;
         const range = 150;
-
         dock.addEventListener('mousemove', (e) => {
             items.forEach(item => {
                 const rect = item.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const distance = Math.abs(e.clientX - centerX);
-
                 let scale = 1;
-
                 if (distance < range) {
                     scale = 1 + (maxScale - 1) * (1 - distance / range);
                 }
@@ -108,8 +101,7 @@
         items.forEach(item => {
             item.addEventListener('click', () => {
                 item.classList.add('bounce');
-                setTimeout(() => item.classList.remove('bounce'), 500);
-                
+                setTimeout(() => item.classList.remove('bounce'), 500);                
                 items.forEach(i => i.classList.remove('active'));
                 item.classList.add('active');
             });
