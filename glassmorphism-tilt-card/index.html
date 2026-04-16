@@ -7,31 +7,28 @@
     <style>
         body {
             margin: 0; min-height: 100vh;
-            background-color: #050505; /* Çok derin siyah */
-            /* Arka plana ince bir siber ızgara (grid) ekliyoruz */
+            background-color: #050505; 
             background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
             background-size: 40px 40px;
             display: flex; justify-content: center; align-items: center;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             overflow: hidden;
-            perspective: 1500px; /* 3D Derinlik Kamera Açısı */
+            perspective: 1500px; 
         }
 
-        /* Kartın arkasında fareyi takip edecek Neon Işık Küresi */
         .glow-orb {
             position: absolute;
             width: 300px; height: 300px;
             background: linear-gradient(135deg, #00f2fe, #4facfe, #f093fb);
             border-radius: 50%;
-            filter: blur(80px); /* Işığı tamamen dağıt */
+            filter: blur(80px); 
             opacity: 0.6;
             z-index: 0;
             pointer-events: none;
             transition: transform 0.1s ease-out;
         }
 
-        /* --- 3D KART --- */
         .glass-card {
             position: relative;
             width: 380px; height: 480px;
@@ -47,14 +44,11 @@
             display: flex; flex-direction: column; padding: 40px;
             box-sizing: border-box;
             z-index: 1;
-            /* 3D Dönüşümleri Koru */
             transform-style: preserve-3d; 
             transition: transform 0.1s;
         }
 
-        /* --- İÇERİK (PARALLAX EFEKTİ İÇİN Z EKSENİNDE KALDIRILDI) --- */
         .card-content {
-            /* Tüm iç elemanları kartın 60px önüne (havaya) kaldırıyoruz */
             transform: translateZ(60px); 
             display: flex; flex-direction: column; height: 100%;
         }
@@ -91,7 +85,6 @@
             background: #f0f0f0;
         }
 
-        /* Parlama (Reflection) Efekti */
         .reflection {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             border-radius: 30px; pointer-events: none;
@@ -120,47 +113,28 @@
     <script>
         const card = document.getElementById('card');
         const orb = document.getElementById('orb');
-        
-        // Kartın merkezini ve boyutlarını alıyoruz
         let rect = card.getBoundingClientRect();
-
-        // Ekran boyutu değişirse referansları güncelle
         window.addEventListener('resize', () => {
             rect = card.getBoundingClientRect();
         });
 
-        // Tüm Doküman üzerinde fareyi dinle
         document.addEventListener('mousemove', (e) => {
-            // 1. NEON IŞIĞI FAREYE BAĞLA
-            // Işığın merkezini tam farenin ucuna getirmek için -150px (genişliğin yarısı) offset veriyoruz
             orb.style.transform = `translate(${e.clientX - 150}px, ${e.clientY - 150}px)`;
-
-            // 2. KARTI 3D OLARAK EĞ (TILT EFEKTİ)
-            // Farenin kartın neresinde olduğunu bul (Kartın içine girdiyse)
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
-
-            // Fare kartın üzerindeyse eğilme efektini başlat
             if (mouseX >= -100 && mouseX <= rect.width + 100 && mouseY >= -100 && mouseY <= rect.height + 100) {
-                // Farenin konumunu -1 ile 1 arasında normalize et
                 const xPct = (mouseX / rect.width) - 0.5;
                 const yPct = (mouseY / rect.height) - 0.5;
-
-                // Eğilme çarpanı (Ne kadar yüksekse o kadar çok döner)
-                const rotateY = xPct * 30; // X ekseninde farenin yeri, Y ekseninde rotasyon yaratır
-                const rotateX = -yPct * 30; // Y ekseninde farenin yeri, X ekseninde rotasyon yaratır (Tersine)
-
-                // Kartı döndür
+                const rotateY = xPct * 30; 
+                const rotateX = -yPct * 30; 
                 card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                card.style.transition = 'none'; // Hareket halindeyken gecikmeyi kapat (Daha akıcı olması için)
+                card.style.transition = 'none'; 
             } else {
-                // Fare uzaktaysa kartı düzelt
                 card.style.transform = `rotateX(0deg) rotateY(0deg)`;
                 card.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
             }
         });
 
-        // Fare karttan çıkınca kartı anında düzelt
         card.addEventListener('mouseleave', () => {
             card.style.transform = `rotateX(0deg) rotateY(0deg)`;
             card.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
