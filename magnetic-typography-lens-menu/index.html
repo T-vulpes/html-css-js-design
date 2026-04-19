@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Typography Lens Menu</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #050505;
+            color: #111; /* Devasa arka plan yazısı için karanlık renk */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+            cursor: none; /* Varsayılan fare imlecini gizle */
+        }
+
+        /* --- ARKA PLAN TİPOGRAFİSİ (STATİK) --- */
+        .bg-typography {
+            font-size: 25vw; /* Devasa boyut */
+            font-weight: 900; /* Çok kalın */
+            text-transform: uppercase;
+            letter-spacing: -2vw;
+            line-height: 0.8;
+            opacity: 1; /* Arka planda kalması için karanlık */
+            pointer-events: none;
+            user-select: none;
+            position: absolute;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+        /* --- MANYETİK MERCEK (CURSÖRDÜN) --- */
+        .magnetic-lens {
+            position: fixed;
+            width: 15px; /* Başlangıç (Kapalı) boyutu */
+            height: 15px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            transform: translate(-50%, -50%);
+            /* Sihirli Karışım Modu: Yazının Rengini Tersine Çevirir */
+            mix-blend-mode: difference;
+            /* Boyut değişikliği için pürüzsüz geçiş */
+            transition: width 0.3s cubic-bezier(0.2, 1, 0.3, 1),
+                        height 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        /* Menü kelimesine odaklanınca (aktif) boyutu genişle */
+        .magnetic-lens.active {
+            width: 250px;
+            height: 250px;
+        }
+
+        /* --- ÖN PLANDAKİ MENÜ LİSTESİ --- */
+        .menu-list {
+            position: relative;
+            z-index: 100;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        .menu-item {
+            display: block;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .menu-link {
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0); /* Başlangıçta şeffaf */
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 101;
+            padding: 10px 30px;
+        }
+
+        /* Mercek altındaki yazıyı sihirli bir şekilde göster (Rengi tersine çevir) */
+        .magnetic-lens.active ~ .menu-list .menu-link {
+            color: rgba(255, 255, 255, 1); /* Mercek oradayken sihirli bir şekilde görünür */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-typography">
+        DESIGN<br>STUDIO
+    </div>
+
+    <div class="magnetic-lens" id="lens"></div>
+
+    <ul class="menu-list">
+        <li class="menu-item"><a href="#" class="menu-link" data-title="EXPLORE">EXPLORE</a></li>
+        <li class="menu-item"><a href="#" class="menu-link" data-title="WORK">WORK</a></li>
+        <li class="menu-item"><a href="#" class="menu-link" data-title="ABOUT">ABOUT</a></li>
+        <li class="menu-item"><a href="#" class="menu-link" data-title="CONTACT">CONTACT</a></li>
+    </ul>
+
+    <script>
+        const lens = document.getElementById('lens');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        let lensX = 0;
+        let lensY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                lens.classList.add('active');
+            });
+
+            link.addEventListener('mouseleave', function() {
+                lens.classList.remove('active');
+                lens.style.transform = `translate(${mouseX}px, ${mouseY}px) scale(1)`; // Kilidi aç ve fareye geri bağla
+                lens.style.transition = 'width 0.3s ease, height 0.3s ease, transform 0.05s ease'; // Transition'ı geri aç
+            });
+
+            link.addEventListener('mousemove', function(e) {
+                // Kilitleme (Magnetic Hook) Fiziği
+                // Farenin anlık konumu yerine, kelimenin koordinatlarına göre hafifçe "asılı" kalma
+                const rect = this.getBoundingClientRect();
+                
+                // Kelimenin merkez koordinatlarını bul
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                // Farenin kelimenin merkezine olan mesafesini hesapla (0 ile 1 arası bir "kilit" çarpanı)
+                // Kelimenin sınırları içinde (padler dahil) farenin nereye gittiğini hesapla
+                const offsetX = (e.clientX - centerX) * 0.2; // 0.2 çarpanı ile kelimenin merkezine kilitlenme gücünü ayarla
+                const offsetY = (e.clientY - centerY) * 0.2;
+
+                // Merceği fareye değil, kelimenin merkezine kilitlenmiş ve farenin hareketlerine göre hafifçe esneyen pozisyona taşı
+                lens.style.transform = `translate(${centerX + offsetX}px, ${centerY + offsetY}px)`;
+                lens.style.transition = 'none'; // Hareket halindeyken gecikmeyi kapat
+            });
+        });
+
+        function animate() {
+            // Mercek fareye kilitlenmemişse, yumuşatılmış (Lerp) takip
+            if (!lens.classList.contains('active')) {
+                lensX += (mouseX - lensX) * 0.15; // 0.15 çarpanı ile yumuşatma
+                lensY += (mouseY - lensY) * 0.15;
+                lens.style.transform = `translate(${lensX}px, ${lensY}px)`;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
