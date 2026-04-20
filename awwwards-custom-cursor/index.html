@@ -51,7 +51,6 @@
             font-size: 1.2rem; font-weight: 600; text-transform: uppercase;
             letter-spacing: 2px; position: relative; z-index: 10;
         }
-
         .hover-target { display: inline-block; padding: 10px; }
     </style>
 </head>
@@ -59,7 +58,6 @@
 
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-follower" id="cursorFollower"></div>
-
     <div class="nav-menu">
         <span class="hover-target">Menu</span>
     </div>
@@ -73,14 +71,12 @@
         const dot = document.getElementById('cursorDot');
         const follower = document.getElementById('cursorFollower');
         const hoverTargets = document.querySelectorAll('.hover-target');
-
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let dotX = mouseX;
         let dotY = mouseY;
         let followerX = mouseX;
         let followerY = mouseY;
-
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -101,11 +97,9 @@
             dotX += (mouseX - dotX) * 0.4;
             dotY += (mouseY - dotY) * 0.4;
             dot.style.transform = `translate3d(calc(${dotX}px - 50%), calc(${dotY}px - 50%), 0)`;
-
             followerX += (mouseX - followerX) * 0.12;
             followerY += (mouseY - followerY) * 0.12;
             follower.style.transform = `translate3d(calc(${followerX}px - 50%), calc(${followerY}px - 50%), 0)`;
-
             requestAnimationFrame(animate);
         }
         
