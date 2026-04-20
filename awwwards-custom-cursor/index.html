@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blend Mode Cursor Reveal</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .cursor-dot {
+            position: fixed; top: 0; left: 0;
+            width: 8px; height: 8px;
+            background: #ffffff; border-radius: 50%;
+            pointer-events: none; z-index: 1000;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-follower {
+            position: fixed; top: 0; left: 0;
+            width: 40px; height: 40px;
+            background: #ffffff; border-radius: 50%;
+            pointer-events: none; z-index: 999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1), height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero-text {
+            font-size: 12vw; font-weight: 900;
+            text-transform: uppercase; letter-spacing: -4px;
+            line-height: 0.9; text-align: center;
+            margin: 0; position: relative; z-index: 10;
+        }
+
+        .subtitle {
+            font-size: 1.2rem; font-weight: 400; color: #888;
+            margin-top: 30px; letter-spacing: 4px; text-transform: uppercase;
+            position: relative; z-index: 10;
+        }
+
+        .nav-menu {
+            position: absolute; top: 40px; right: 50px;
+            font-size: 1.2rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 2px; position: relative; z-index: 10;
+        }
+
+        .hover-target { display: inline-block; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <div class="nav-menu">
+        <span class="hover-target">Menu</span>
+    </div>
+
+    <h1 class="hero-text hover-target">
+        Creative<br>Agency
+    </h1>
+    <div class="subtitle hover-target">Experience the extraordinary</div>
+
+    <script>
+        const dot = document.getElementById('cursorDot');
+        const follower = document.getElementById('cursorFollower');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let dotX = mouseX;
+        let dotY = mouseY;
+        let followerX = mouseX;
+        let followerY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => {
+                follower.style.width = '200px';
+                follower.style.height = '200px';
+            });
+            target.addEventListener('mouseleave', () => {
+                follower.style.width = '40px';
+                follower.style.height = '40px';
+            });
+        });
+
+        function animate() {
+            dotX += (mouseX - dotX) * 0.4;
+            dotY += (mouseY - dotY) * 0.4;
+            dot.style.transform = `translate3d(calc(${dotX}px - 50%), calc(${dotY}px - 50%), 0)`;
+
+            followerX += (mouseX - followerX) * 0.12;
+            followerY += (mouseY - followerY) * 0.12;
+            follower.style.transform = `translate3d(calc(${followerX}px - 50%), calc(${followerY}px - 50%), 0)`;
+
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>
