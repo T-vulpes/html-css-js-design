@@ -142,9 +142,7 @@
         const dragArea = document.getElementById('dragArea');
         const physicsPanel = document.getElementById('physicsPanel');
         const shoeImg = document.getElementById('shoeImg');
-
-        let panelRect = physicsPanel.getBoundingClientRect();
-        
+        let panelRect = physicsPanel.getBoundingClientRect();        
         const pegs = [
             { yPct: 0.25, hue: 0, color: '#ef4444' },     
             { yPct: 0.50, hue: -90, color: '#a855f7' },   
@@ -153,7 +151,6 @@
 
         let baseLineX = panelRect.width - 50; 
         let pegX = 80; 
-
         pegs.forEach(peg => {
             const pegEl = document.createElement('div');
             pegEl.classList.add('peg');
@@ -168,15 +165,13 @@
         let cpX = pegX;
         let cpY = activePeg.y;
         let targetX = pegX;
-        let targetY = activePeg.y;
-        
+        let targetY = activePeg.y;        
         let vx = 0;
         let vy = 0;
         let tension = 0.12;
         let friction = 0.75;
         let isDragging = false;
         let animId = null;
-
         function updateSvg() {
             path.setAttribute('d', `M ${baseLineX} 0 Q ${cpX} ${cpY} ${baseLineX} ${panelRect.height}`);
         }
@@ -211,14 +206,11 @@
 
         window.addEventListener('mouseup', (e) => {
             if (!isDragging) return;
-            isDragging = false;
-            
+            isDragging = false;            
             const releaseX = e.clientX - panelRect.left;
             const releaseY = e.clientY - panelRect.top;
-
             let closestPeg = pegs[0];
             let minDist = Infinity;
-
             pegs.forEach(peg => {
                 const dist = Math.hypot(releaseX - pegX, releaseY - peg.y);
                 if (dist < minDist) {
@@ -238,18 +230,14 @@
 
         function animatePhysics() {
             if (isDragging) return;
-
             let ax = (targetX - cpX) * tension;
-            let ay = (targetY - cpY) * tension;
-            
+            let ay = (targetY - cpY) * tension;            
             vx += ax;
             vy += ay;
             vx *= friction;
-            vy *= friction;
-            
+            vy *= friction;            
             cpX += vx;
             cpY += vy;
-
             updateSvg();
 
             if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1 || Math.abs(targetX - cpX) > 0.1 || Math.abs(targetY - cpY) > 0.1) {
