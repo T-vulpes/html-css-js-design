@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Elastic Configurator</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #000; color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; user-select: none;
+        }
+
+        .ambient-glow {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw; height: 70vw;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+            z-index: 0; pointer-events: none;
+        }
+
+        .app-container {
+            width: 90vw; max-width: 1200px;
+            height: 85vh; min-height: 600px;
+            background: rgba(20, 20, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8), inset 0 0 40px rgba(255,255,255,0.02);
+            display: flex; position: relative; z-index: 10;
+            overflow: hidden;
+        }
+
+        .left-panel {
+            flex: 1; display: flex; flex-direction: column;
+            justify-content: center; padding: 0 80px;
+            position: relative; z-index: 10;
+        }
+
+        .title {
+            font-size: 4.5rem; font-weight: 900; line-height: 1;
+            letter-spacing: -2px; margin: 0; text-transform: uppercase;
+            background: linear-gradient(135deg, #fff, #666);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.1rem; color: #888; margin: 10px 0 40px 0;
+            text-transform: uppercase; letter-spacing: 4px; font-weight: 600;
+        }
+
+        .price-tag {
+            display: inline-block; padding: 12px 24px;
+            background: #fff; color: #000; border-radius: 100px;
+            font-size: 1.2rem; font-weight: 800; margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+            width: max-content;
+        }
+
+        .shoe-wrapper {
+            width: 100%; max-width: 500px; height: 300px;
+            position: relative; display: flex; align-items: center;
+        }
+
+        .shoe-image {
+            width: 100%; height: auto; object-fit: contain;
+            transform: rotate(-15deg) translateY(-20px) scale(1.1);
+            transition: filter 0.5s ease; filter: hue-rotate(0deg);
+            drop-shadow(0 30px 40px rgba(0,0,0,0.6));
+        }
+
+        .right-panel {
+            width: 280px; position: relative;
+            display: flex; flex-direction: column; justify-content: center;
+            background: linear-gradient(to left, rgba(0,0,0,0.2), transparent);
+            border-left: 1px solid rgba(255,255,255,0.05);
+        }
+
+        svg {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; pointer-events: none; z-index: 5;
+        }
+
+        path {
+            fill: none; stroke: #fff; stroke-width: 4px;
+            stroke-linecap: round; filter: drop-shadow(0 0 12px rgba(255,255,255,0.6));
+        }
+
+        .drag-area {
+            position: absolute; inset: 0; z-index: 10; cursor: grab;
+        }
+        .drag-area:active { cursor: grabbing; }
+
+        .peg {
+            position: absolute; left: 80px; width: 18px; height: 18px;
+            border-radius: 50%; transform: translate(-50%, -50%);
+            box-shadow: 0 0 25px currentColor, inset 0 0 8px rgba(0,0,0,0.6);
+            z-index: 1; pointer-events: none;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .instructions {
+            position: absolute; bottom: 50px; right: 50px;
+            color: #777; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 2px; text-align: right; font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="app-container">
+        
+        <div class="left-panel">
+            <h1 class="title">Aero<br>Max Pro</h1>
+            <div class="subtitle">Custom Edition</div>
+            <div class="price-tag">$199.00</div>
+            
+            <div class="shoe-wrapper">
+                <img id="shoeImg" class="shoe-image" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Sneaker">
+            </div>
+        </div>
+
+        <div class="right-panel" id="physicsPanel">
+            <div class="instructions">Pull to select<br>colorway</div>
+            <div class="drag-area" id="dragArea"></div>
+            
+            <svg id="svg">
+                <path id="elasticPath" d=""></path>
+            </svg>
+        </div>
+
+    </div>
+
+    <script>
+        const path = document.getElementById('elasticPath');
+        const dragArea = document.getElementById('dragArea');
+        const physicsPanel = document.getElementById('physicsPanel');
+        const shoeImg = document.getElementById('shoeImg');
+
+        let panelRect = physicsPanel.getBoundingClientRect();
+        
+        const pegs = [
+            { yPct: 0.25, hue: 0, color: '#ef4444' },     
+            { yPct: 0.50, hue: -90, color: '#a855f7' },   
+            { yPct: 0.75, hue: 120, color: '#0ea5e9' }    
+        ];
+
+        let baseLineX = panelRect.width - 50; 
+        let pegX = 80; 
+
+        pegs.forEach(peg => {
+            const pegEl = document.createElement('div');
+            pegEl.classList.add('peg');
+            pegEl.style.top = `${peg.yPct * 100}%`;
+            pegEl.style.color = peg.color;
+            pegEl.style.background = peg.color;
+            physicsPanel.appendChild(pegEl);
+            peg.y = panelRect.height * peg.yPct;
+        });
+
+        let activePeg = pegs[0];
+        let cpX = pegX;
+        let cpY = activePeg.y;
+        let targetX = pegX;
+        let targetY = activePeg.y;
+        
+        let vx = 0;
+        let vy = 0;
+        let tension = 0.12;
+        let friction = 0.75;
+        let isDragging = false;
+        let animId = null;
+
+        function updateSvg() {
+            path.setAttribute('d', `M ${baseLineX} 0 Q ${cpX} ${cpY} ${baseLineX} ${panelRect.height}`);
+        }
+
+        window.addEventListener('resize', () => {
+            panelRect = physicsPanel.getBoundingClientRect();
+            baseLineX = panelRect.width - 50;
+            pegs.forEach(peg => peg.y = panelRect.height * peg.yPct);
+            if (!isDragging) {
+                targetX = pegX;
+                targetY = activePeg.y;
+                cpX = targetX;
+                cpY = targetY;
+            }
+            updateSvg();
+        });
+
+        dragArea.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            if (animId) cancelAnimationFrame(animId);
+            cpX = e.clientX - panelRect.left;
+            cpY = e.clientY - panelRect.top;
+            updateSvg();
+        });
+
+        dragArea.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            cpX = e.clientX - panelRect.left;
+            cpY = e.clientY - panelRect.top;
+            updateSvg();
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const releaseX = e.clientX - panelRect.left;
+            const releaseY = e.clientY - panelRect.top;
+
+            let closestPeg = pegs[0];
+            let minDist = Infinity;
+
+            pegs.forEach(peg => {
+                const dist = Math.hypot(releaseX - pegX, releaseY - peg.y);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closestPeg = peg;
+                }
+            });
+
+            activePeg = closestPeg;
+            targetX = pegX;
+            targetY = activePeg.y;
+            
+            shoeImg.style.filter = `hue-rotate(${activePeg.hue}deg)`;
+
+            animatePhysics();
+        });
+
+        function animatePhysics() {
+            if (isDragging) return;
+
+            let ax = (targetX - cpX) * tension;
+            let ay = (targetY - cpY) * tension;
+            
+            vx += ax;
+            vy += ay;
+            vx *= friction;
+            vy *= friction;
+            
+            cpX += vx;
+            cpY += vy;
+
+            updateSvg();
+
+            if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1 || Math.abs(targetX - cpX) > 0.1 || Math.abs(targetY - cpY) > 0.1) {
+                animId = requestAnimationFrame(animatePhysics);
+            } else {
+                cpX = targetX;
+                cpY = targetY;
+                updateSvg();
+            }
+        }
+
+        updateSvg();
+    </script>
+</body>
+</html>
