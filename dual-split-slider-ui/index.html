@@ -9,9 +9,8 @@
             margin: 0; padding: 0;
             background-color: #050505; color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            overflow: hidden; /* Scroll çubuğunu gizle, JS ile kontrol edeceğiz */
+            overflow: hidden;
         }
-
         .slider-container {
             position: relative; width: 100vw; height: 100vh;
         }
@@ -22,9 +21,7 @@
             will-change: transform;
         }
 
-        .left-panel { top: 0; left: 0; }
-        
-        /* Sağ panel başlangıçta en yukarıda (son slaytta) durmalı ki aşağı inebilsin */
+        .left-panel { top: 0; left: 0; }        
         .right-panel { top: -200vh; right: 0; }
 
         .slide-content {
@@ -39,7 +36,6 @@
             object-fit: cover;
         }
 
-        /* Sol Panel Renkleri (Modern Dark) */
         .bg-dark-1 { background-color: #0a0a0c; }
         .bg-dark-2 { background-color: #111116; }
         .bg-dark-3 { background-color: #181820; }
@@ -55,7 +51,6 @@
             margin: 0; max-width: 400px; font-weight: 500;
         }
 
-        /* Merkezdeki Glassmorphism Buton */
         .center-button {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -75,7 +70,6 @@
             transform: translate(-50%, -50%) scale(1.1);
         }
 
-        /* Sayfa Göstergeleri */
         .pagination {
             position: absolute; left: 40px; top: 50%;
             transform: translateY(-50%); z-index: 50;
@@ -93,18 +87,12 @@
 <body>
 
     <div class="slider-container">
-        
-        <!-- Merkezdeki Sabit Buton -->
         <div class="center-button">↓</div>
-
-        <!-- Sayfa Göstergeleri -->
         <div class="pagination">
             <div class="dot active"></div>
             <div class="dot"></div>
             <div class="dot"></div>
         </div>
-
-        <!-- SOL PANEL (Yazılar - Yukarı Çıkar) -->
         <div class="left-panel" id="leftPanel">
             <div class="slide-content bg-dark-1">
                 <h1 class="title">Pure<br>Vision</h1>
@@ -119,29 +107,21 @@
                 <p class="desc">Built for the future. Architecture that grows with your audience without breaking a sweat.</p>
             </div>
         </div>
-
-        <!-- SAĞ PANEL (Resimler - Aşağı İner) -->
-        <!-- Resimlerin sırası sol tarafla eşleşmesi için TERS verilmelidir -->
         <div class="right-panel" id="rightPanel">
             <img class="slide-img" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80" alt="Scale">
             <img class="slide-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80" alt="Control">
             <img class="slide-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80" alt="Vision">
         </div>
-
     </div>
-
     <script>
         const leftPanel = document.getElementById('leftPanel');
         const rightPanel = document.getElementById('rightPanel');
         const dots = document.querySelectorAll('.dot');
-        const slidesLength = document.querySelectorAll('.left-panel .slide-content').length;
-        
+        const slidesLength = document.querySelectorAll('.left-panel .slide-content').length;        
         let activeSlideIndex = 0;
         let isAnimating = false;
-
         window.addEventListener('wheel', (e) => {
-            if (isAnimating) return;
-            
+            if (isAnimating) return;            
             if (e.deltaY > 0) {
                 changeSlide('up');
             } else if (e.deltaY < 0) {
@@ -151,7 +131,6 @@
 
         function changeSlide(direction) {
             isAnimating = true;
-
             if (direction === 'up') {
                 activeSlideIndex++;
                 if (activeSlideIndex > slidesLength - 1) {
@@ -164,19 +143,13 @@
                 }
             }
 
-            // Sol panel yukarı çıkar (Negatif Y)
-            leftPanel.style.transform = `translateY(-${activeSlideIndex * 100}vh)`;
-            
-            // Sağ panel aşağı iner (Pozitif Y - Çünkü başlangıçta en yukarıda)
+            leftPanel.style.transform = `translateY(-${activeSlideIndex * 100}vh)`;            
             rightPanel.style.transform = `translateY(${activeSlideIndex * 100}vh)`;
-
-            // Göstergeleri güncelle
             dots.forEach(dot => dot.classList.remove('active'));
             dots[activeSlideIndex].classList.add('active');
-
             setTimeout(() => {
                 isAnimating = false;
-            }, 1000); // CSS transition süresiyle aynı olmalı (1s)
+            }, 1000); 
         }
     </script>
 </body>
