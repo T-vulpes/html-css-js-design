@@ -40,7 +40,6 @@
         }
 
         .layer-bottom p { color: #444; }
-
         .layer-top {
             background: linear-gradient(120deg, #ff0055, #00eeff, #e2ff00, #ff0055);
             background-size: 300% 300%;
@@ -68,11 +67,8 @@
     </style>
 </head>
 <body>
-
-    <div class="container" id="container">
-        
+    <div class="container" id="container">        
         <div class="cursor-ring" id="cursorRing"></div>
-
         <div class="layer layer-bottom">
             <h1>Look<br>Deeper</h1>
             <p>Don't settle for the surface. Move your cursor to uncover the true power of our digital experiences.</p>
@@ -84,21 +80,16 @@
         </div>
 
     </div>
-
     <script>
         const container = document.getElementById('container');
         const mask = document.getElementById('maskLayer');
         const ring = document.getElementById('cursorRing');
-
         let isHovering = false;
-
         container.addEventListener('mousemove', (e) => {
             const x = e.clientX;
             const y = e.clientY;
-
             ring.style.left = `${x}px`;
             ring.style.top = `${y}px`;
-
             if (isHovering) {
                 mask.style.clipPath = `circle(250px at ${x}px ${y}px)`;
             }
@@ -108,11 +99,9 @@
             isHovering = true;
             ring.style.width = '500px';
             ring.style.height = '500px';
-            ring.style.borderColor = 'rgba(255,255,255,0.1)';
-            
+            ring.style.borderColor = 'rgba(255,255,255,0.1)';            
             mask.style.transition = 'clip-path 0.3s cubic-bezier(0.2, 1, 0.3, 1)';
-            mask.style.clipPath = `circle(250px at ${e.clientX}px ${e.clientY}px)`;
-            
+            mask.style.clipPath = `circle(250px at ${e.clientX}px ${e.clientY}px)`;            
             setTimeout(() => {
                 mask.style.transition = 'none';
             }, 300);
@@ -122,8 +111,7 @@
             isHovering = false;
             ring.style.width = '40px';
             ring.style.height = '40px';
-            ring.style.borderColor = 'rgba(255,255,255,0.5)';
-            
+            ring.style.borderColor = 'rgba(255,255,255,0.5)';            
             mask.style.transition = 'clip-path 0.5s cubic-bezier(0.2, 1, 0.3, 1)';
             mask.style.clipPath = `circle(0px at 50% 50%)`;
         });
