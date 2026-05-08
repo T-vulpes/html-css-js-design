@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Ray Mask Reveal</title>
+    <style>
+        body {
+            margin: 0; padding: 0; background: #050505;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative; width: 100vw; height: 100vh;
+            cursor: none; 
+        }
+
+        .layer {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
+
+        h1 {
+            font-size: 7rem; font-weight: 900; margin: 0;
+            text-transform: uppercase; letter-spacing: -2px;
+            line-height: 1; pointer-events: none;
+        }
+
+        p {
+            font-size: 1.5rem; font-weight: 600; max-width: 600px;
+            margin-top: 20px; pointer-events: none;
+        }
+
+        .layer-bottom h1 {
+            color: transparent;
+            -webkit-text-stroke: 2px #333;
+        }
+
+        .layer-bottom p { color: #444; }
+
+        .layer-top {
+            background: linear-gradient(120deg, #ff0055, #00eeff, #e2ff00, #ff0055);
+            background-size: 300% 300%;
+            animation: gradientFlow 6s ease infinite;
+            clip-path: circle(0px at 50% 50%);
+            pointer-events: none;
+        }
+
+        .layer-top h1 { color: #050505; -webkit-text-stroke: 0; }
+        .layer-top p { color: #111; }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .cursor-ring {
+            position: absolute; width: 40px; height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 10;
+            transition: width 0.2s, height 0.2s, border-color 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="container">
+        
+        <div class="cursor-ring" id="cursorRing"></div>
+
+        <div class="layer layer-bottom">
+            <h1>Look<br>Deeper</h1>
+            <p>Don't settle for the surface. Move your cursor to uncover the true power of our digital experiences.</p>
+        </div>
+
+        <div class="layer layer-top" id="maskLayer">
+            <h1>Look<br>Deeper</h1>
+            <p>Don't settle for the surface. Move your cursor to uncover the true power of our digital experiences.</p>
+        </div>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const mask = document.getElementById('maskLayer');
+        const ring = document.getElementById('cursorRing');
+
+        let isHovering = false;
+
+        container.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            ring.style.left = `${x}px`;
+            ring.style.top = `${y}px`;
+
+            if (isHovering) {
+                mask.style.clipPath = `circle(250px at ${x}px ${y}px)`;
+            }
+        });
+
+        container.addEventListener('mouseenter', (e) => {
+            isHovering = true;
+            ring.style.width = '500px';
+            ring.style.height = '500px';
+            ring.style.borderColor = 'rgba(255,255,255,0.1)';
+            
+            mask.style.transition = 'clip-path 0.3s cubic-bezier(0.2, 1, 0.3, 1)';
+            mask.style.clipPath = `circle(250px at ${e.clientX}px ${e.clientY}px)`;
+            
+            setTimeout(() => {
+                mask.style.transition = 'none';
+            }, 300);
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isHovering = false;
+            ring.style.width = '40px';
+            ring.style.height = '40px';
+            ring.style.borderColor = 'rgba(255,255,255,0.5)';
+            
+            mask.style.transition = 'clip-path 0.5s cubic-bezier(0.2, 1, 0.3, 1)';
+            mask.style.clipPath = `circle(0px at 50% 50%)`;
+        });
+    </script>
+</body>
+</html>
