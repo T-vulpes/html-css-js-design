@@ -53,33 +53,24 @@
 <body>
 
     <div class="background-media"></div>
-
     <h1 class="hero-text">REVEAL<br>THE MAGIC</h1>
-
     <div class="grid-container" id="grid"></div>
-
     <script>
         const grid = document.getElementById('grid');
         const tileSize = 60; 
-
         function createGrid() {
-            grid.innerHTML = '';
-            
+            grid.innerHTML = '';            
             const columns = Math.ceil(window.innerWidth / tileSize);
             const rows = Math.ceil(window.innerHeight / tileSize);
             const totalTiles = columns * rows;
-
             const tileWidth = 100 / columns;
             const tileHeight = 100 / rows;
-
             const fragment = document.createDocumentFragment();
-
             for (let i = 0; i < totalTiles; i++) {
                 const tile = document.createElement('div');
                 tile.classList.add('tile');
                 tile.style.width = `${tileWidth}vw`;
-                tile.style.height = `${tileHeight}vh`;
-                
+                tile.style.height = `${tileHeight}vh`;                
                 tile.addEventListener('mouseenter', () => {
                     tile.classList.add('active');
                     setTimeout(() => {
@@ -94,7 +85,6 @@
         }
 
         createGrid();
-
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
