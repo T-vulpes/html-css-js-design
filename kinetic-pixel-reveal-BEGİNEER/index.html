@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinetic Pixel Reveal</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh; background: #050505;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow: hidden; user-select: none;
+        }
+
+        .background-media {
+            position: absolute; inset: 0; z-index: 0;
+            background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80') center/cover;
+        }
+
+        .background-media::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.5), rgba(0, 238, 255, 0.5));
+            mix-blend-mode: overlay;
+        }
+
+        .hero-text {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); z-index: 5;
+            font-size: 8vw; font-weight: 900; color: #fff;
+            text-transform: uppercase; letter-spacing: -0.05em;
+            line-height: 0.9; text-align: center;
+            pointer-events: none; mix-blend-mode: overlay;
+        }
+
+        .grid-container {
+            position: absolute; inset: 0; z-index: 10;
+            display: flex; flex-wrap: wrap; align-content: flex-start;
+        }
+
+        .tile {
+            background-color: #050505;
+            outline: 1px solid rgba(255, 255, 255, 0.02);
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 1.5s ease;
+            will-change: transform, opacity;
+        }
+
+        .tile.active {
+            transform: scale(0.1) rotate(15deg);
+            opacity: 0;
+            transition: transform 0s, opacity 0s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-media"></div>
+
+    <h1 class="hero-text">REVEAL<br>THE MAGIC</h1>
+
+    <div class="grid-container" id="grid"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const tileSize = 60; 
+
+        function createGrid() {
+            grid.innerHTML = '';
+            
+            const columns = Math.ceil(window.innerWidth / tileSize);
+            const rows = Math.ceil(window.innerHeight / tileSize);
+            const totalTiles = columns * rows;
+
+            const tileWidth = 100 / columns;
+            const tileHeight = 100 / rows;
+
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < totalTiles; i++) {
+                const tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.style.width = `${tileWidth}vw`;
+                tile.style.height = `${tileHeight}vh`;
+                
+                tile.addEventListener('mouseenter', () => {
+                    tile.classList.add('active');
+                    setTimeout(() => {
+                        tile.classList.remove('active');
+                    }, 100);
+                });
+
+                fragment.appendChild(tile);
+            }
+
+            grid.appendChild(fragment);
+        }
+
+        createGrid();
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(createGrid, 200);
+        });
+    </script>
+</body>
+</html>
