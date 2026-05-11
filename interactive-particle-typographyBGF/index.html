@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Particle Text</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #050505;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        canvas {
+            display: block; width: 100vw; height: 100vh;
+        }
+
+        .instructions {
+            position: absolute; bottom: 30px; left: 50%;
+            transform: translateX(-50%); color: #888;
+            font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 4px; pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+    <div class="instructions">Interact with the text</div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particleArray = [];
+        let adjustX = 0;
+        let adjustY = 0;
+
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 120
+        };
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
+
+        class Particle {
+            constructor(x, y) {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.baseX = x;
+                this.baseY = y;
+                this.size = Math.random() * 2 + 1;
+                this.density = (Math.random() * 30) + 1;
+                this.color = '#38bdf8';
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.hypot(dx, dy);
+                
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 10;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 10;
+                    }
+                }
+            }
+        }
+
+        function init() {
+            particleArray = [];
+            
+            ctx.fillStyle = 'white';
+            ctx.font = '900 18vw "Segoe UI"';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('CREATE', canvas.width / 2, canvas.height / 2);
+
+            const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let y = 0, y2 = textCoordinates.height; y < y2; y += 6) {
+                for (let x = 0, x2 = textCoordinates.width; x < x2; x += 6) {
+                    if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128) {
+                        let positionX = x + adjustX;
+                        let positionY = y + adjustY;
+                        particleArray.push(new Particle(positionX, positionY));
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particleArray.length; i++) {
+                particleArray[i].draw();
+                particleArray[i].update();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+    </script>
+</body>
+</html>
