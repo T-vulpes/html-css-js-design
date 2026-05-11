@@ -15,7 +15,6 @@
         canvas {
             display: block; width: 100vw; height: 100vh;
         }
-
         .instructions {
             position: absolute; bottom: 30px; left: 50%;
             transform: translateX(-50%); color: #888;
@@ -26,21 +25,16 @@
     </style>
 </head>
 <body>
-
     <canvas id="canvas"></canvas>
     <div class="instructions">Interact with the text</div>
-
     <script>
         const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });        
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         let particleArray = [];
         let adjustX = 0;
         let adjustY = 0;
-
         const mouse = {
             x: null,
             y: null,
@@ -79,17 +73,13 @@
             update() {
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
-                let distance = Math.hypot(dx, dy);
-                
+                let distance = Math.hypot(dx, dy);                
                 let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                
+                let forceDirectionY = dy / distance;                
                 let maxDistance = mouse.radius;
-                let force = (maxDistance - distance) / maxDistance;
-                
+                let force = (maxDistance - distance) / maxDistance;                
                 let directionX = forceDirectionX * force * this.density;
                 let directionY = forceDirectionY * force * this.density;
-
                 if (distance < mouse.radius) {
                     this.x -= directionX;
                     this.y -= directionY;
@@ -107,17 +97,14 @@
         }
 
         function init() {
-            particleArray = [];
-            
+            particleArray = [];            
             ctx.fillStyle = 'white';
             ctx.font = '900 18vw "Segoe UI"';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('CREATE', canvas.width / 2, canvas.height / 2);
-
             const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             for (let y = 0, y2 = textCoordinates.height; y < y2; y += 6) {
                 for (let x = 0, x2 = textCoordinates.width; x < x2; x += 6) {
                     if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128) {
