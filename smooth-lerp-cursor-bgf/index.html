@@ -63,26 +63,21 @@
 <body>
 
     <div class="cursor" id="cursor"></div>
-
     <div class="bg-text">AGENCY</div>
-
     <div class="magnetic-wrapper" id="magneticWrapper">
         <button class="magnetic-btn" id="magneticBtn">
             <span class="btn-text" id="btnText">Explore</span>
         </button>
     </div>
-
     <script>
         const cursor = document.getElementById('cursor');
         const magneticWrapper = document.getElementById('magneticWrapper');
         const magneticBtn = document.getElementById('magneticBtn');
         const btnText = document.getElementById('btnText');
-
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let cursorX = mouseX;
         let cursorY = mouseY;
-
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -90,23 +85,17 @@
 
         function animateCursor() {
             cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            
-            cursor.style.transform = `translate(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%))`;
-            
+            cursorY += (mouseY - cursorY) * 0.15;            
+            cursor.style.transform = `translate(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%))`;            
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
-
         magneticBtn.addEventListener('mousemove', (e) => {
-            const rect = magneticBtn.getBoundingClientRect();
-            
+            const rect = magneticBtn.getBoundingClientRect();            
             const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
+            const centerY = rect.top + rect.height / 2;            
             const distanceX = e.clientX - centerX;
             const distanceY = e.clientY - centerY;
-
             magneticBtn.style.transform = `translate(${distanceX * 0.4}px, ${distanceY * 0.4}px)`;
             btnText.style.transform = `translate(${distanceX * 0.2}px, ${distanceY * 0.2}px)`;
         });
@@ -118,11 +107,9 @@
         });
 
         magneticBtn.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hovered');
-            
+            cursor.classList.remove('hovered');            
             magneticBtn.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-            btnText.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-            
+            btnText.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';            
             magneticBtn.style.transform = `translate(0px, 0px)`;
             btnText.style.transform = `translate(0px, 0px)`;
         });
