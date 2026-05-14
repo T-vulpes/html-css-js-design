@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic Portal - Double Vision</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            height: 400vh; 
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+
+        .sticky-container {
+            position: sticky; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+        }
+
+        .bg-image {
+            position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=1920&q=80') center/cover;
+            z-index: 1; transform: scale(1);
+            will-change: transform;
+        }
+
+        .text-mask {
+            position: absolute; inset: 0;
+            background-color: #050505; 
+            color: #fff; 
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2; transform-origin: 50% 50%;
+            mix-blend-mode: multiply; 
+            will-change: transform;
+        }
+
+        h1 {
+            font-size: 25vw; font-weight: 900;
+            margin: 0; line-height: 1; letter-spacing: -0.05em;
+            text-transform: uppercase; text-align: center;
+            font-family: "Arial Black", Impact, sans-serif;
+        }
+
+        .content-reveal {
+            position: absolute; inset: 0; z-index: 3;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; color: #fff;
+            transition: opacity 1s ease;            
+            background: 
+                linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7)),
+                url('https://images.unsplash.com/photo-1510784722466-f2aa9c52fff6?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .content-reveal.active {
+            opacity: 1; pointer-events: auto;
+        }
+
+        .content-reveal h2 {
+            font-size: 4.5rem; font-weight: 900; margin: 0 0 20px 0;
+            text-shadow: 0 20px 50px rgba(0,0,0,1);
+            letter-spacing: -2px; text-transform: uppercase;
+        }
+
+        .explore-btn {
+            padding: 18px 45px; background: #fff; color: #000;
+            border: none; border-radius: 50px; font-size: 1.2rem;
+            font-weight: 800; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .explore-btn:hover {
+            transform: scale(1.1); background: #38bdf8; color: #fff;
+            box-shadow: 0 15px 40px rgba(56, 189, 248, 0.4);
+        }
+        
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%); z-index: 10;
+            color: #fff; font-size: 0.9rem; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase;
+            animation: pulse 2s infinite; mix-blend-mode: difference;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sticky-container">
+        <div class="bg-image" id="bgImage"></div>
+        
+        <div class="text-mask" id="textMask">
+            <h1>OASIS</h1>
+        </div>
+
+        <div class="content-reveal" id="contentReveal">
+            <h2>Welcome to Reality</h2>
+            <button class="explore-btn">Enter The Grid</button>
+        </div>
+        
+        <div class="scroll-indicator" id="scrollIndicator">Scroll Down ↓</div>
+    </div>
+
+    <script>
+        const textMask = document.getElementById('textMask');
+        const bgImage = document.getElementById('bgImage');
+        const contentReveal = document.getElementById('contentReveal');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const scrollProgress = scrollY / maxScroll;
+
+            const scaleValue = 1 + Math.pow(scrollProgress * 25, 3);
+            textMask.style.transform = `scale(${scaleValue})`;
+            bgImage.style.transform = `scale(${1 + (scrollProgress * 0.4)})`;
+            scrollIndicator.style.opacity = 1 - (scrollProgress * 5);
+
+            if (scaleValue > 70) {
+                contentReveal.classList.add('active');
+            } else {
+                contentReveal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
