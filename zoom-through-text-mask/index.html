@@ -78,8 +78,7 @@
         .explore-btn:hover {
             transform: scale(1.1); background: #38bdf8; color: #fff;
             box-shadow: 0 15px 40px rgba(56, 189, 248, 0.4);
-        }
-        
+        }        
         .scroll-indicator {
             position: absolute; bottom: 40px; left: 50%;
             transform: translateX(-50%); z-index: 10;
@@ -87,7 +86,6 @@
             letter-spacing: 4px; text-transform: uppercase;
             animation: pulse 2s infinite; mix-blend-mode: difference;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 0.4; }
             50% { opacity: 1; }
@@ -95,19 +93,15 @@
     </style>
 </head>
 <body>
-
     <div class="sticky-container">
-        <div class="bg-image" id="bgImage"></div>
-        
+        <div class="bg-image" id="bgImage"></div>        
         <div class="text-mask" id="textMask">
             <h1>OASIS</h1>
         </div>
-
         <div class="content-reveal" id="contentReveal">
             <h2>Welcome to Reality</h2>
             <button class="explore-btn">Enter The Grid</button>
-        </div>
-        
+        </div>        
         <div class="scroll-indicator" id="scrollIndicator">Scroll Down ↓</div>
     </div>
 
@@ -115,18 +109,15 @@
         const textMask = document.getElementById('textMask');
         const bgImage = document.getElementById('bgImage');
         const contentReveal = document.getElementById('contentReveal');
-        const scrollIndicator = document.getElementById('scrollIndicator');
-        
+        const scrollIndicator = document.getElementById('scrollIndicator');        
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             const maxScroll = document.body.scrollHeight - window.innerHeight;
             const scrollProgress = scrollY / maxScroll;
-
             const scaleValue = 1 + Math.pow(scrollProgress * 25, 3);
             textMask.style.transform = `scale(${scaleValue})`;
             bgImage.style.transform = `scale(${1 + (scrollProgress * 0.4)})`;
             scrollIndicator.style.opacity = 1 - (scrollProgress * 5);
-
             if (scaleValue > 70) {
                 contentReveal.classList.add('active');
             } else {
