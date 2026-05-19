@@ -14,7 +14,6 @@
             overflow: hidden; perspective: 1000px;
             user-select: none; touch-action: none;
         }
-
         .portal-loader {
             position: fixed; inset: 0; z-index: 9999;
             background: radial-gradient(circle, #050505 20%, transparent 80%);
@@ -22,16 +21,13 @@
             opacity: 1; transition: opacity 1s ease-out;
             pointer-events: none;
         }
-
         .loader-ring {
             width: 60px; height: 60px;
             border: 3px solid #fff; border-radius: 50%;
             border-top-color: #ff0055; border-right-color: #00eeff; border-bottom-color: #e2ff00;
             animation: ringSpin 1.5s linear infinite;
         }
-
         @keyframes ringSpin { to { transform: rotate(360deg); } }
-
         .scene {
             position: relative; 
             width: 170px; 
@@ -39,13 +35,11 @@
             transform-style: preserve-3d;
             transform: rotateX(-12deg);
         }
-
         .carousel {
             position: absolute; inset: 0;
             transform-style: preserve-3d;
             will-change: transform;
         }
-
         .card {
             position: absolute; inset: 0;
             background: rgba(10, 10, 15, 0.4);
@@ -58,18 +52,15 @@
             will-change: transform, opacity;
             -webkit-box-reflect: below 15px linear-gradient(transparent 50%, rgba(0,0,0,0.3));
         }
-
         .card img {
             width: 100%; height: 100%; object-fit: cover;
             position: absolute; inset: 0; z-index: 1;
             transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), filter 0.6s;
         }
-
         .card:hover img {
             transform: scale(1.1) translateY(-5px);
             filter: blur(6px) brightness(40%);
         }
-
         .card-info {
             position: absolute; bottom: 0; left: 0; width: 100%;
             height: 80px; 
@@ -78,7 +69,6 @@
             justify-content: space-between; transform: translateY(20px);
             opacity: 0; transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.5s ease;
         }
-
         .card:hover .card-info {
             transform: translateY(0); opacity: 1;
         }
@@ -97,11 +87,9 @@
             padding: 3px 6px; border-radius: 50px; text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .tech-cyan { background: rgba(0, 238, 255, 0.1); color: #00eeff; border: 1px solid rgba(0, 238, 255, 0.3); }
         .tech-purple { background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
         .tech-pink { background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid rgba(255, 0, 85, 0.3); }
-
         .card:nth-child(1) { transform: rotateY(0deg) translateZ(240px); animation-delay: 0.2s; }
         .card:nth-child(2) { transform: rotateY(45deg) translateZ(240px); animation-delay: 0.3s; }
         .card:nth-child(3) { transform: rotateY(90deg) translateZ(240px); animation-delay: 0.4s; }
@@ -110,18 +98,14 @@
         .card:nth-child(6) { transform: rotateY(225deg) translateZ(240px); animation-delay: 0.7s; }
         .card:nth-child(7) { transform: rotateY(270deg) translateZ(240px); animation-delay: 0.8s; }
         .card:nth-child(8) { transform: rotateY(315deg) translateZ(240px); animation-delay: 0.9s; }
-
     </style>
 </head>
 <body>
-
     <div class="portal-loader" id="portalLoader">
         <div class="loader-ring"></div>
     </div>
-
     <div class="scene">
-        <div class="carousel" id="carousel">
-            
+        <div class="carousel" id="carousel">            
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" alt="Web3">
                 <div class="card-info">
@@ -132,7 +116,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80" alt="AI">
                 <div class="card-info">
@@ -143,7 +126,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=600&q=80" alt="E-Commerce">
                 <div class="card-info">
@@ -154,7 +136,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80" alt="3D">
                 <div class="card-info">
@@ -165,7 +146,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Fintech">
                 <div class="card-info">
@@ -176,7 +156,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=600&q=80" alt="Agency">
                 <div class="card-info">
@@ -187,7 +166,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80" alt="Mobile">
                 <div class="card-info">
@@ -198,7 +176,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Data">
                 <div class="card-info">
@@ -209,24 +186,19 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
     <script>
         const loader = document.getElementById('portalLoader');
         const carousel = document.getElementById('carousel');
-        const cards = document.querySelectorAll('.card');
-        
+        const cards = document.querySelectorAll('.card');        
         let isDragging = false;
         let startX = 0;
         let currentRotation = 0;
         let targetRotation = 0;
-
         window.addEventListener('load', () => {
             setTimeout(() => {
-                loader.style.opacity = '0';
-                
+                loader.style.opacity = '0';                
                 cards.forEach((card, index) => {
                     card.animate([
                         { opacity: 0, transform: `rotateY(${index * 45}deg) translateZ(500px) rotateX(-90deg)` },
@@ -240,14 +212,12 @@
                 });
             }, 500);
         });
-
         window.addEventListener('pointerdown', (e) => {
             isDragging = true;
             startX = e.clientX;
             document.body.style.cursor = 'grabbing';
             carousel.style.transition = 'none';
         });
-
         window.addEventListener('pointermove', (e) => {
             if (!isDragging) return;
             const deltaX = e.clientX - startX;
@@ -259,7 +229,6 @@
             isDragging = false;
             document.body.style.cursor = 'default';
         });
-
         function animate() {
             currentRotation += (targetRotation - currentRotation) * 0.08; 
             targetRotation *= 0.98; 
@@ -267,7 +236,6 @@
             carousel.style.transform = `rotateY(${currentRotation}deg)`;
             requestAnimationFrame(animate);
         }
-
         animate();
     </script>
 </body>
