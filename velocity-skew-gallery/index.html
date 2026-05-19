@@ -70,72 +70,58 @@
             opacity: 1; filter: grayscale(0%);
         }
     </style>
-</head>
-<body>
-
+</head><body>
     <div class="menu" id="menu">
         <div class="menu-item" data-text="Architecture" data-index="0">Architecture</div>
         <div class="menu-item" data-text="Editorial" data-index="1">Editorial</div>
         <div class="menu-item" data-text="Campaigns" data-index="2">Campaigns</div>
         <div class="menu-item" data-text="Digital Art" data-index="3">Digital Art</div>
     </div>
-
     <div class="cursor-gallery" id="cursorGallery">
         <img class="gallery-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="Architecture">
         <img class="gallery-img" src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=600&q=80" alt="Editorial">
         <img class="gallery-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Campaigns">
         <img class="gallery-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Digital Art">
     </div>
-
     <script>
         const menuItems = document.querySelectorAll('.menu-item');
         const cursorGallery = document.getElementById('cursorGallery');
         const images = document.querySelectorAll('.gallery-img');
-
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let currentX = mouseX;
         let currentY = mouseY;
         let isHovering = false;
-
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
-
         menuItems.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 isHovering = true;
-                cursorGallery.classList.add('active');
-                
+                cursorGallery.classList.add('active');                
                 images.forEach(img => img.classList.remove('active'));
                 const index = item.getAttribute('data-index');
                 images[index].classList.add('active');
             });
-
             item.addEventListener('mouseleave', () => {
                 isHovering = false;
                 cursorGallery.classList.remove('active');
             });
         });
-
         function animateGallery() {
             currentX += (mouseX - currentX) * 0.1;
             currentY += (mouseY - currentY) * 0.1;
-
             const velocityX = mouseX - currentX;
             const skewAmount = velocityX * 0.1; 
             const rotateAmount = velocityX * 0.05;
-
             if (isHovering) {
                 cursorGallery.style.transform = `translate(${currentX}px, ${currentY}px) skewX(${skewAmount}deg) rotate(${rotateAmount}deg) scale(1)`;
             } else {
                 cursorGallery.style.transform = `translate(${currentX}px, ${currentY}px) skewX(0deg) rotate(0deg) scale(0.5)`;
             }
-
             requestAnimationFrame(animateGallery);
         }
-
         animateGallery();
     </script>
 </body>
