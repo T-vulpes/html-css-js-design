@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinetic Velocity Gallery</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #050505; color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; cursor: default;
+        }
+
+        .menu {
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 10;
+        }
+
+        .menu-item {
+            font-size: 7vw; font-weight: 900;
+            text-transform: uppercase; letter-spacing: -2px;
+            color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            line-height: 1.1; margin: 10px 0;
+            position: relative;
+        }
+
+        .menu-item::before {
+            content: attr(data-text);
+            position: absolute; inset: 0;
+            color: #fff; -webkit-text-stroke: 0px;
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+            transition: clip-path 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .menu-item:hover {
+            transform: scale(1.05);
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item:hover::before {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .cursor-gallery {
+            position: fixed; top: -200px; left: -150px;
+            width: 300px; height: 400px;
+            pointer-events: none; z-index: 5;
+            opacity: 0; transform: scale(0.5);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity;
+        }
+
+        .cursor-gallery.active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .gallery-img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transition: opacity 0.4s ease;
+            filter: grayscale(100%);
+        }
+
+        .gallery-img.active {
+            opacity: 1; filter: grayscale(0%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu" id="menu">
+        <div class="menu-item" data-text="Architecture" data-index="0">Architecture</div>
+        <div class="menu-item" data-text="Editorial" data-index="1">Editorial</div>
+        <div class="menu-item" data-text="Campaigns" data-index="2">Campaigns</div>
+        <div class="menu-item" data-text="Digital Art" data-index="3">Digital Art</div>
+    </div>
+
+    <div class="cursor-gallery" id="cursorGallery">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="Architecture">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=600&q=80" alt="Editorial">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Campaigns">
+        <img class="gallery-img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Digital Art">
+    </div>
+
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+        const cursorGallery = document.getElementById('cursorGallery');
+        const images = document.querySelectorAll('.gallery-img');
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let currentX = mouseX;
+        let currentY = mouseY;
+        let isHovering = false;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                isHovering = true;
+                cursorGallery.classList.add('active');
+                
+                images.forEach(img => img.classList.remove('active'));
+                const index = item.getAttribute('data-index');
+                images[index].classList.add('active');
+            });
+
+            item.addEventListener('mouseleave', () => {
+                isHovering = false;
+                cursorGallery.classList.remove('active');
+            });
+        });
+
+        function animateGallery() {
+            currentX += (mouseX - currentX) * 0.1;
+            currentY += (mouseY - currentY) * 0.1;
+
+            const velocityX = mouseX - currentX;
+            const skewAmount = velocityX * 0.1; 
+            const rotateAmount = velocityX * 0.05;
+
+            if (isHovering) {
+                cursorGallery.style.transform = `translate(${currentX}px, ${currentY}px) skewX(${skewAmount}deg) rotate(${rotateAmount}deg) scale(1)`;
+            } else {
+                cursorGallery.style.transform = `translate(${currentX}px, ${currentY}px) skewX(0deg) rotate(0deg) scale(0.5)`;
+            }
+
+            requestAnimationFrame(animateGallery);
+        }
+
+        animateGallery();
+    </script>
+</body>
+</html>
