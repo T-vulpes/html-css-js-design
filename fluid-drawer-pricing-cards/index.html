@@ -35,13 +35,11 @@
             cursor: pointer;
         }
 
-        /* Hover anında kartın dışına tatlı bir parlama ve yükselme veriyoruz */
         .pricing-card:hover {
             transform: translateY(-10px);
             background: rgba(25, 25, 30, 0.95);
         }
 
-        /* Üst Kısım (Her zaman görünen alan) */
         .card-header {
             display: flex; flex-direction: column; position: relative;
         }
@@ -69,7 +67,6 @@
             color: #fff;
         }
 
-        /* İŞTE SİHİRLİ ÇEKMECE BÖLÜMÜ (Açılıp kapanan alan) */
         .card-drawer {
             display: grid;
             grid-template-rows: 0fr;
@@ -77,7 +74,7 @@
         }
 
         .pricing-card:hover .card-drawer {
-            grid-template-rows: 1fr; /* Hover olunca 1 frame'e genişler */
+            grid-template-rows: 1fr; 
         }
 
         .drawer-content {
