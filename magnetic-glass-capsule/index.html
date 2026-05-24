@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Ocean Magnetic Capsule</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #010409;
+            background-image: radial-gradient(circle at 50% 0%, #0c213d 0%, #010409 80%);
+            display: flex; justify-content: center; align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow: hidden;
+        }
+
+        .ocean-rays {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(14, 165, 233, 0.05) 0%, transparent 100%);
+            filter: blur(40px); pointer-events: none; z-index: 1;
+        }
+
+        .magnetic-area {
+            width: 400px; height: 300px;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10; cursor: pointer;
+        }
+
+        .glass-capsule {
+            width: 320px; height: 160px;
+            background: rgba(14, 165, 233, 0.03);
+            border: 1px solid rgba(14, 165, 233, 0.15);
+            border-radius: 100px; /* Hap/Kapsül formu */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(14, 165, 233, 0.05);
+            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), background 0.4s, border-color 0.4s;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .glow-core {
+            position: absolute; width: 120px; height: 120px;
+            background: #0ea5e9; border-radius: 50%;
+            filter: blur(45px); opacity: 0;
+            transition: opacity 0.5s ease, transform 0.2s;
+            pointer-events: none; z-index: 0;
+        }
+
+        .magnetic-area:hover .glass-capsule {
+            background: rgba(14, 165, 233, 0.08);
+            border-color: rgba(14, 165, 233, 0.4);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px rgba(14, 165, 233, 0.2);
+            animation-play-state: paused; 
+        }
+
+        .magnetic-area:hover .glow-core { opacity: 0.6; }
+        .message-content {
+            position: relative; z-index: 2; text-align: center;
+            padding: 0 40px;
+        }
+
+        .tag {
+            color: #0ea5e9; font-size: 0.7rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 3px;
+            display: block; margin-bottom: 12px;
+            opacity: 0.5; transition: opacity 0.4s;
+        }
+
+        .message-text {
+            color: #e2e8f0; font-size: 1.05rem; font-weight: 500; margin: 0;
+            line-height: 1.5; letter-spacing: -0.5px; font-style: italic;
+            filter: blur(6px); opacity: 0.3; 
+            transition: filter 0.6s ease, opacity 0.6s ease;
+        }
+
+        .magnetic-area:hover .message-text {
+            filter: blur(0px); opacity: 1;
+        }
+        .magnetic-area:hover .tag { opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+    <div class="ocean-rays"></div>
+
+    <div class="magnetic-area" id="magneticArea">
+        <div class="glass-capsule" id="capsule">
+            <div class="glow-core" id="glow"></div>
+            <div class="message-content">
+                <span class="tag">Encrypted Drop</span>
+                <p class="message-text">"Some secrets are meant to be tossed into the digital sea..."</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const magneticArea = document.getElementById('magneticArea');
+        const capsule = document.getElementById('capsule');
+        const glow = document.getElementById('glow');
+        magneticArea.addEventListener('mousemove', (e) => {
+            const rect = magneticArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const pullX = (x - centerX) * 0.4;
+            const pullY = (y - centerY) * 0.4;
+
+            capsule.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
+            glow.style.transform = `translate(${x - centerX}px, ${y - centerY}px)`;
+        });
+
+        magneticArea.addEventListener('mouseleave', () => {
+            capsule.style.transform = `translate(0px, 0px) scale(1)`;
+            glow.style.transform = `translate(0px, 0px)`;
+        });
+    </script>
+</body>
+</html>
