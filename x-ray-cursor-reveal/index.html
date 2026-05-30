@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Ray Cinematic Reveal</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            cursor: none; 
+            background: #050505;
+            overflow: hidden;
+        }
+
+        .hero {
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .layer-base {
+            position: absolute; inset: 0;
+            background: #050505;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            z-index: 1;
+        }
+
+        .layer-base h1 {
+            color: #fff; font-size: 8vw; margin: 0;
+            font-weight: 900; letter-spacing: -2px; text-transform: uppercase;
+        }
+
+        .layer-base p {
+            color: #444; font-size: 1.5vw; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 10px; margin-top: 10px;
+        }
+
+        .layer-reveal {
+            position: absolute; inset: 0;
+            background: linear-gradient(45deg, #ff0055, #00eeff, #e2ff00);
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            z-index: 2; pointer-events: none;            
+            clip-path: circle(0px at 50% 50%);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .layer-reveal h1 {
+            color: #050505; font-size: 8vw; margin: 0;
+            font-weight: 900; letter-spacing: -2px; text-transform: uppercase;
+        }
+
+        .layer-reveal p {
+            color: #050505; font-size: 1.5vw; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 10px; margin-top: 10px;
+        }
+
+        .cursor-dot {
+            position: fixed; top: 0; left: 0;
+            width: 8px; height: 8px; background: #fff; border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 100; mix-blend-mode: difference;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" id="cursor"></div>
+
+    <section class="hero" id="hero">
+        
+        <div class="layer-base">
+            <h1>I Write Code.</h1>
+            <p>Software Developer</p>
+        </div>
+
+        <div class="layer-reveal" id="revealLayer">
+            <h1>I Create Art.</h1>
+            <p>UI/UX Designer</p>
+        </div>
+
+    </section>
+
+    <script>
+        const hero = document.getElementById('hero');
+        const revealLayer = document.getElementById('revealLayer');
+        const cursor = document.getElementById('cursor');
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        
+        let cursorX = mouseX;
+        let cursorY = mouseY;
+        let maskSize = 0;
+        let targetMaskSize = 40; 
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;            
+            cursor.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        });
+
+        hero.addEventListener('mouseenter', () => targetMaskSize = 350);
+        hero.addEventListener('mouseleave', () => targetMaskSize = 0);
+        function animate() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+             maskSize += (targetMaskSize - maskSize) * 0.1;
+            revealLayer.style.clipPath = `circle(${maskSize}px at ${cursorX}px ${cursorY}px)`;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
