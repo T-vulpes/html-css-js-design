@@ -84,17 +84,13 @@
             <h1>I Create Art.</h1>
             <p>UI/UX Designer</p>
         </div>
-
     </section>
-
     <script>
         const hero = document.getElementById('hero');
         const revealLayer = document.getElementById('revealLayer');
         const cursor = document.getElementById('cursor');
-
         let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        
+        let mouseY = window.innerHeight / 2;        
         let cursorX = mouseX;
         let cursorY = mouseY;
         let maskSize = 0;
@@ -104,7 +100,6 @@
             mouseY = e.clientY;            
             cursor.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
         });
-
         hero.addEventListener('mouseenter', () => targetMaskSize = 350);
         hero.addEventListener('mouseleave', () => targetMaskSize = 0);
         function animate() {
@@ -115,7 +110,6 @@
 
             requestAnimationFrame(animate);
         }
-
         animate();
     </script>
 </body>
