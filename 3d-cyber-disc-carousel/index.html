@@ -105,7 +105,6 @@
         .tech-cyan { background: rgba(0, 238, 255, 0.1); color: #00eeff; border: 1px solid rgba(0, 238, 255, 0.3); }
         .tech-purple { background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
         .tech-pink { background: rgba(255, 0, 85, 0.1); color: #ff0055; border: 1px solid rgba(255, 0, 85, 0.3); }
-
         .card:nth-child(1) { transform: rotateY(0deg) translateZ(260px); }
         .card:nth-child(2) { transform: rotateY(45deg) translateZ(260px); }
         .card:nth-child(3) { transform: rotateY(90deg) translateZ(260px); }
@@ -114,7 +113,6 @@
         .card:nth-child(6) { transform: rotateY(225deg) translateZ(240px); }
         .card:nth-child(7) { transform: rotateY(270deg) translateZ(260px); }
         .card:nth-child(8) { transform: rotateY(315deg) translateZ(260px); }
-
     </style>
 </head>
 <body>
@@ -220,17 +218,14 @@
     <script>
         const loader = document.getElementById('portalLoader');
         const carousel = document.getElementById('carousel');
-        const cards = document.querySelectorAll('.card');
-        
+        const cards = document.querySelectorAll('.card');        
         let isDragging = false;
         let startX = 0;
         let currentRotation = 0;
         let targetRotation = 0;
-
         window.addEventListener('load', () => {
             setTimeout(() => {
-                loader.style.opacity = '0';
-                
+                loader.style.opacity = '0';                
                 cards.forEach((card, index) => {
                     card.animate([
                         { opacity: 0, transform: `rotateY(${index * 45}deg) translateZ(500px) scale(0.5)` },
@@ -266,12 +261,10 @@
 
         function animate() {
             currentRotation += (targetRotation - currentRotation) * 0.08; 
-            targetRotation *= 0.98; 
-            
+            targetRotation *= 0.98;             
             carousel.style.transform = `rotateY(${currentRotation}deg)`;
             requestAnimationFrame(animate);
         }
-
         animate();
     </script>
 </body>
