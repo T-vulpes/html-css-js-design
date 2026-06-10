@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic Full-Screen Menu</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #030712;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow-x: hidden;
+        }
+
+       
+        .dummy-content {
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            color: #fff; font-size: 3rem; font-weight: 900; letter-spacing: -2px;
+            background: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
+        }
+
+        /* 1. KUSURSUZ HAMBURGER BUTONU */
+        .menu-btn {
+            position: fixed; top: 40px; right: 40px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 9999; cursor: pointer;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            gap: 6px; transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), background 0.3s;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.1); background: rgba(0, 243, 255, 0.1);
+            border-color: rgba(0, 243, 255, 0.3);
+        }
+
+        
+        .line {
+            width: 24px; height: 2px; background: #fff;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .menu-btn.active .line:nth-child(1) { transform: translateY(8px) rotate(45deg); background: #00f3ff; }
+        .menu-btn.active .line:nth-child(2) { opacity: 0; transform: translateX(20px); }
+        .menu-btn.active .line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); background: #00f3ff; }
+
+        
+        .full-menu {
+            position: fixed; inset: 0; z-index: 9998;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            display: flex; align-items: center; padding-left: 10vw;
+          
+            clip-path: circle(0px at calc(100% - 70px) 70px);
+            transition: clip-path 0.8s cubic-bezier(0.75, 0, 0.25, 1);
+        }
+
+       
+        .full-menu.active {
+            clip-path: circle(150% at calc(100% - 70px) 70px);
+        }
+
+       
+        .bg-layer {
+            position: absolute; inset: 0; z-index: -1;
+            opacity: 0.3; filter: grayscale(100%);
+            transition: opacity 0.5s ease, filter 0.5s ease;
+        }
+
+        .bg-img {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transition: opacity 0.6s ease, transform 6s linear;
+            transform: scale(1.1);
+        }
+
+        .bg-img.show { opacity: 1; transform: scale(1); }
+
+        
+        .nav-list {
+            list-style: none; padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .nav-item {
+            transform: translateY(60px); opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.6s ease;
+        }
+
+        .full-menu.active .nav-item { transform: translateY(0); opacity: 1; }
+        .full-menu.active .nav-item:nth-child(1) { transition-delay: 0.2s; }
+        .full-menu.active .nav-item:nth-child(2) { transition-delay: 0.3s; }
+        .full-menu.active .nav-item:nth-child(3) { transition-delay: 0.4s; }
+        .full-menu.active .nav-item:nth-child(4) { transition-delay: 0.5s; }
+
+        .nav-link {
+            text-decoration: none; font-size: 6vw; font-weight: 900;
+            text-transform: uppercase; letter-spacing: -2px;
+            display: flex; align-items: center; gap: 20px;
+          
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .nav-number {
+            font-size: 1.5rem; font-weight: 600; color: #00f3ff;
+            -webkit-text-stroke: 0; opacity: 0; transform: translateX(-20px);
+            transition: all 0.4s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff; -webkit-text-stroke: 0;
+            transform: translateX(30px);
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-link:hover .nav-number {
+            opacity: 1; transform: translateX(0);
+        }
+
+        /* Diğer linkler soluklaşır (Focus Effect) */
+        .nav-list:hover .nav-item:not(:hover) {
+            opacity: 0.2; filter: blur(3px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="dummy-content">Scroll Down ↓</div>
+
+    <div class="menu-btn" id="menuBtn">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+
+    <div class="full-menu" id="fullMenu">
+        
+        <div class="bg-layer">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80" class="bg-img show" id="bg-default">
+            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1920&q=80" class="bg-img" id="bg-1">
+            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1920&q=80" class="bg-img" id="bg-2">
+            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1920&q=80" class="bg-img" id="bg-3">
+        </div>
+
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bg="bg-1">
+                    <span class="nav-number">01</span> Flutter UI
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bg="bg-2">
+                    <span class="nav-number">02</span> Python Labs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bg="bg-3">
+                    <span class="nav-number">03</span> Creator Hub
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bg="bg-default">
+                    <span class="nav-number">04</span> Contact
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const fullMenu = document.getElementById('fullMenu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const bgImages = document.querySelectorAll('.bg-img');
+
+        // Menü Açma/Kapama Tetikleyicisi
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            fullMenu.classList.toggle('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+               
+                const targetBg = link.getAttribute('data-bg');
+                
+                bgImages.forEach(img => img.classList.remove('show'));
+                
+               
+                document.getElementById(targetBg).classList.add('show');
+            });
+        });
+    </script>
+</body>
+</html>
