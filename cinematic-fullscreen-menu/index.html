@@ -19,7 +19,6 @@
             background: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
         }
 
-        /* 1. KUSURSUZ HAMBURGER BUTONU */
         .menu-btn {
             position: fixed; top: 40px; right: 40px;
             width: 60px; height: 60px; border-radius: 50%;
@@ -121,7 +120,6 @@
             opacity: 1; transform: translateX(0);
         }
 
-        /* Diğer linkler soluklaşır (Focus Effect) */
         .nav-list:hover .nav-item:not(:hover) {
             opacity: 0.2; filter: blur(3px);
         }
@@ -131,15 +129,13 @@
 <body>
 
     <div class="dummy-content">Scroll Down ↓</div>
-
     <div class="menu-btn" id="menuBtn">
         <div class="line"></div>
         <div class="line"></div>
         <div class="line"></div>
     </div>
 
-    <div class="full-menu" id="fullMenu">
-        
+    <div class="full-menu" id="fullMenu">        
         <div class="bg-layer">
             <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80" class="bg-img show" id="bg-default">
             <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1920&q=80" class="bg-img" id="bg-1">
@@ -176,21 +172,15 @@
         const fullMenu = document.getElementById('fullMenu');
         const navLinks = document.querySelectorAll('.nav-link');
         const bgImages = document.querySelectorAll('.bg-img');
-
-        // Menü Açma/Kapama Tetikleyicisi
         menuBtn.addEventListener('click', () => {
             menuBtn.classList.toggle('active');
             fullMenu.classList.toggle('active');
         });
 
         navLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-               
-                const targetBg = link.getAttribute('data-bg');
-                
-                bgImages.forEach(img => img.classList.remove('show'));
-                
-               
+            link.addEventListener('mouseenter', () => {               
+                const targetBg = link.getAttribute('data-bg');                
+                bgImages.forEach(img => img.classList.remove('show'));                           
                 document.getElementById(targetBg).classList.add('show');
             });
         });
