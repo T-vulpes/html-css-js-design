@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Neon Travel Menu - Fixed</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh;
+            background-color: #050505;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .nav-section {
+            width: 50%; height: 100vh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding-left: 8vw; box-sizing: border-box;
+            position: relative; z-index: 10;
+        }
+
+        .subtitle {
+            color: #888; font-size: 1rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .nav-list {
+            list-style: none; padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .nav-item {
+            position: relative; cursor: pointer;
+            width: max-content;
+        }
+
+        .nav-link {
+            font-size: 5.5vw; font-weight: 900; line-height: 1.1;
+            text-transform: uppercase; letter-spacing: -2px;
+            margin: 0; transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            color: transparent;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.3);
+            position: relative; z-index: 2;
+        }
+
+        .nav-item:nth-child(1):hover .nav-link { color: #00f3ff; -webkit-text-stroke: 0; text-shadow: 0 0 40px rgba(0, 243, 255, 0.6); transform: translateX(30px); }
+        .nav-item:nth-child(2):hover .nav-link { color: #ff0055; -webkit-text-stroke: 0; text-shadow: 0 0 40px rgba(255, 0, 85, 0.6); transform: translateX(30px); }
+        .nav-item:nth-child(3):hover .nav-link { color: #e2ff00; -webkit-text-stroke: 0; text-shadow: 0 0 40px rgba(226, 255, 0, 0.6); transform: translateX(30px); }
+        .nav-item:nth-child(4):hover .nav-link { color: #a855f7; -webkit-text-stroke: 0; text-shadow: 0 0 40px rgba(168, 85, 247, 0.6); transform: translateX(30px); }
+
+        .image-section {
+            width: 50%; height: 100vh;
+            position: relative; overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        .city-img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%; object-fit: cover;
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s ease;
+            transform: scale(1.2);
+            filter: brightness(0.8) contrast(1.2);
+        }
+
+        .city-img.active {
+            clip-path: inset(0 0 0 0);
+            transform: scale(1);
+        }
+
+        .image-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to right, #050505 0%, transparent 50%);
+            z-index: 5; pointer-events: none;
+        }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .nav-section { width: 100%; height: 50vh; padding-left: 20px; align-items: center; text-align: center; }
+            .image-section { width: 100%; height: 50vh; }
+            .nav-link { font-size: 3.5rem; }
+            .image-overlay { background: linear-gradient(to bottom, #050505 0%, transparent 50%); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-section">
+        <div class="subtitle">Select Destination</div>
+        <ul class="nav-list">
+            <li class="nav-item" data-target="img-tokyo"><h1 class="nav-link">Tokyo</h1></li>
+            <li class="nav-item" data-target="img-seoul"><h1 class="nav-link">Seoul</h1></li>
+            <li class="nav-item" data-target="img-dubai"><h1 class="nav-link">Dubai</h1></li>
+            <li class="nav-item" data-target="img-london"><h1 class="nav-link">London</h1></li>
+        </ul>
+    </div>
+
+    <div class="image-section">
+        <div class="image-overlay"></div>
+        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=80" class="city-img" id="img-tokyo">
+        <img src="https://images.musement.com/cover/0142/75/adobestock-306923135-jpeg_header-14174873.jpeg" class="city-img" id="img-seoul">
+        <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80" class="city-img" id="img-dubai">
+        <img src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=1200&q=80" class="city-img" id="img-london">
+    </div>
+
+    <script>
+        const navItems = document.querySelectorAll('.nav-item');
+        const images = document.querySelectorAll('.city-img');
+
+        document.getElementById('img-tokyo').classList.add('active');
+        navItems[0].querySelector('.nav-link').style.color = '#00f3ff';
+        navItems[0].querySelector('.nav-link').style.webkitTextStroke = '0';
+
+        navItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const targetId = item.getAttribute('data-target');
+                images.forEach(img => img.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                navItems.forEach(nav => {
+                    nav.querySelector('.nav-link').style.color = '';
+                    nav.querySelector('.nav-link').style.webkitTextStroke = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
