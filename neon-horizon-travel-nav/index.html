@@ -108,17 +108,14 @@
     <script>
         const navItems = document.querySelectorAll('.nav-item');
         const images = document.querySelectorAll('.city-img');
-
         document.getElementById('img-tokyo').classList.add('active');
         navItems[0].querySelector('.nav-link').style.color = '#00f3ff';
         navItems[0].querySelector('.nav-link').style.webkitTextStroke = '0';
-
         navItems.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 const targetId = item.getAttribute('data-target');
                 images.forEach(img => img.classList.remove('active'));
                 document.getElementById(targetId).classList.add('active');
-
                 navItems.forEach(nav => {
                     nav.querySelector('.nav-link').style.color = '';
                     nav.querySelector('.nav-link').style.webkitTextStroke = '';
