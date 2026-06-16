@@ -51,7 +51,7 @@ body {
     -webkit-mask: radial-gradient(
         circle 250px at var(--x) var(--y), 
         rgba(0, 0, 0, 1) 0%, 
-        rgba(0, 0, 0, 0) 100%
+        rgba(0, 0, 0, 0) 100% 
     );
     mask: radial-gradient(
         circle 250px at var(--x) var(--y), 
