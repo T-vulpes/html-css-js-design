@@ -1,0 +1,61 @@
+:root {
+    --x: 50%;
+    --y: 50%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #050505;
+    color: #d4af37; 
+    font-family: 'Playfair Display', serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark-layer {
+    text-align: center;
+    z-index: 1;
+}
+
+.dark-layer h1 {
+    font-size: 8rem;
+    font-weight: 700;
+    letter-spacing: 15px;
+    opacity: 0.8;
+}
+
+.dark-layer p {
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-top: 10px;
+    color: #888;
+}
+
+.mask-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+    z-index: 2;
+    pointer-events: none;     
+    -webkit-mask: radial-gradient(
+        circle 250px at var(--x) var(--y), 
+        rgba(0, 0, 0, 1) 0%, 
+        rgba(0, 0, 0, 0) 100%
+    );
+    mask: radial-gradient(
+        circle 250px at var(--x) var(--y), 
+        rgba(0, 0, 0, 1) 0%, 
+        rgba(0, 0, 0, 0) 100%
+    );
+}
