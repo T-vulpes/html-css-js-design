@@ -1,4 +1,3 @@
-// Real fashion photos (via Unsplash)
 const products = [
     { id: 1, name: "Black Oversized T-Shirt", price: 450, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80" },
     { id: 2, name: "Cargo Parachute Pants", price: 850, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&q=80" },
@@ -16,8 +15,6 @@ const overlay = document.getElementById('overlay');
 const cartItemsContainer = document.getElementById('cart-items');
 const cartCount = document.getElementById('cart-count');
 const totalPriceEl = document.getElementById('total-price');
-
-// Display products with images
 function renderProducts() {
     productsContainer.innerHTML = "";
     products.forEach(product => {
@@ -33,23 +30,18 @@ function renderProducts() {
     });
 }
 
-// Add product to cart
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     cart.push(product);
     updateCartUI();
-    
-    // Cart icon animation
     cartCount.style.transform = "scale(1.4)";
     setTimeout(() => cartCount.style.transform = "scale(1)", 200);
 }
 
-// Update cart panel (with images)
 function updateCartUI() {
     cartCount.innerText = cart.length;
     cartItemsContainer.innerHTML = "";
     let total = 0;
-
     cart.forEach((item) => {
         total += item.price;
         const itemEl = document.createElement('div');
@@ -67,7 +59,6 @@ function updateCartUI() {
     totalPriceEl.innerText = total;
 }
 
-// Open / Close Cart
 cartBtn.addEventListener('click', () => {
     cartSidebar.classList.add('open');
     overlay.classList.add('show');
@@ -75,7 +66,6 @@ cartBtn.addEventListener('click', () => {
 
 closeCartBtn.addEventListener('click', closeCart);
 overlay.addEventListener('click', closeCart);
-
 function closeCart() {
     cartSidebar.classList.remove('open');
     overlay.classList.remove('show');
