@@ -1,12 +1,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
 body {
-    background-color: #0a0a0a; /* Premium derin siyah */
-    color: #f5f5f5; /* Yumuşak beyaz */
+    background-color: #0a0a0a; 
+    color: #f5f5f5; 
     overflow-x: hidden;
 }
 
-/* Navbar */
 .navbar {
     display: flex; justify-content: space-between; align-items: center;
     padding: 25px 50px; 
@@ -17,9 +16,7 @@ body {
 }
 
 .brand { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; color: #fff;}
-
 .cart-icon { font-size: 1.5rem; cursor: pointer; position: relative; }
-
 #cart-count {
     position: absolute; top: -5px; right: -10px;
     background: #fff; color: #000; font-size: 0.75rem; font-weight: bold;
@@ -27,7 +24,6 @@ body {
     display: flex; justify-content: center; align-items: center;
 }
 
-/* Fotoğraflı Ürün Vitrini */
 .products-grid {
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -39,22 +35,19 @@ body {
     cursor: pointer; group;
 }
 
-/* Moda sitelerindeki gibi uzun ve keskin fotoğraflar */
 .product-image {
     width: 100%; height: 400px; 
-    object-fit: cover; /* Resmi kırpmadan sığdırır */
+    object-fit: cover; 
     margin-bottom: 15px;
     transition: opacity 0.3s;
 }
 
 .product-card:hover .product-image {
-    opacity: 0.8; /* Üzerine gelince zarif bir solma efekti */
+    opacity: 0.8; 
 }
 
 .product-title { font-size: 1rem; font-weight: 400; color: #ccc; margin-bottom: 5px; }
 .product-price { font-weight: 600; font-size: 1.1rem; color: #fff; margin-bottom: 15px; }
-
-/* Buton artık neon değil, modern ve keskin */
 .add-btn {
     width: 100%; padding: 12px; background: transparent; 
     border: 1px solid #fff; color: #fff; 
@@ -63,8 +56,6 @@ body {
 }
 
 .add-btn:hover { background: #fff; color: #000; }
-
-/* Sepet Paneli */
 .cart-sidebar {
     position: fixed; top: 0; right: 0; width: 400px; height: 100vh;
     background: #121212; border-left: 1px solid #333;
@@ -74,14 +65,10 @@ body {
 }
 
 .cart-sidebar.open { transform: translateX(0); }
-
 .cart-header { display: flex; justify-content: space-between; padding: 30px; border-bottom: 1px solid #333; }
 .cart-header h2 { font-weight: 400; letter-spacing: 1px; }
 #close-cart { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-
 .cart-items { flex: 1; overflow-y: auto; padding: 30px; }
-
-/* Sepetteki ürünlerin resimli görünümü */
 .cart-item { 
     display: flex; align-items: center; gap: 15px;
     margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #222;
@@ -95,7 +82,6 @@ body {
 .cart-footer { padding: 30px; background: #0a0a0a; border-top: 1px solid #333; }
 .total { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; display: flex; justify-content: space-between;}
 .checkout-btn { width: 100%; padding: 15px; background: #fff; color: #000; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
-
 .overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.7); z-index: 99;
