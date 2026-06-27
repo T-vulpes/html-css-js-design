@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Route Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="map-container">
+        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2000&auto=format&fit=crop" class="map-bg" alt="Global Dark Map">
+        
+        <div class="marker" style="top: 30%; left: 48%;" data-id="1"></div>
+        <div class="marker" style="top: 45%; left: 20%;" data-id="2"></div>
+        <div class="marker" style="top: 40%; left: 75%;" data-id="3"></div>
+
+        <div class="location-card" id="info-card">
+            <button class="close-btn" id="close-card"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="loc-title">Location</h2>
+            <p id="loc-desc">Loading details...</p>
+            
+            <div class="route-details">
+                <div class="detail-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="loc-distance">-- km</span>
+                </div>
+            </div>
+            
+            <button class="action-btn">Add to Route</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
