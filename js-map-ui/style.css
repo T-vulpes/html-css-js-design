@@ -18,30 +18,24 @@ body { background-color: #0a0a0a; overflow: hidden; }
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
-/* Dinamik Konumlu Kart */
 .location-card {
     position: absolute; 
     width: 320px;
     background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 25px;
-    color: #fff; z-index: 20; 
-    
+    color: #fff; z-index: 20;     
     opacity: 0; transform: scale(0.9); pointer-events: none;
     transform-origin: top left;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .location-card.active { opacity: 1; transform: scale(1); pointer-events: all; }
-
 .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #888; cursor: pointer; transition: 0.3s;}
 .close-btn:hover { color: #fff; }
-
 .location-card h2 { font-size: 1.3rem; margin-bottom: 8px; letter-spacing: 1px; }
 .location-card p { font-size: 0.85rem; color: #aaa; line-height: 1.5; margin-bottom: 20px; }
-
 .route-details { display: flex; gap: 15px; margin-bottom: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 15px;}
 .detail-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #ddd; }
 .detail-item i { color: #fff; }
-
 .action-btn { width: 100%; padding: 12px; background: #fff; color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.3s; }
 .action-btn:hover { background: #ddd; }
