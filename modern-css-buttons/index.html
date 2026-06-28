@@ -7,16 +7,13 @@
     <style>
         body {
             margin: 0; min-height: 100vh;
-            background-color: #030305; /* Derin, asil, uzay siyahı */
+            background-color: #030305; 
             background-image: radial-gradient(circle at 50% 50%, #111 0%, #030305 80%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             gap: 45px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             padding: 50px 0;
         }
 
-        /* -----------------------------------------------------
-           1. AURORA GLASS (Dönen Işık Hüzmeli Buzlu Cam)
-           ----------------------------------------------------- */
         .btn-aurora {
             position: relative;
             padding: 16px 45px;
@@ -31,7 +28,6 @@
             z-index: 1;
         }
 
-        /* Dönen gizli renk katmanı (Conic Gradient) */
         .btn-aurora::before {
             content: ''; position: absolute; inset: -5px; z-index: -1;
             background: conic-gradient(from 0deg, #ff0055, #00f3ff, #e2ff00, #ff0055);
@@ -45,16 +41,13 @@
 
         @keyframes spinAurora { 100% { transform: rotate(360deg); } }
 
-        /* -----------------------------------------------------
-           2. OLD MONEY GOLD (Zamansız, Asil, Minimal Lüks)
-           ----------------------------------------------------- */
         .btn-oldmoney {
             padding: 15px 50px;
             background-color: #0a0a0a;
-            border: 1px solid rgba(212, 175, 55, 0.3); /* Zarif altın sarısı */
+            border: 1px solid rgba(212, 175, 55, 0.3); 
             border-radius: 4px;
             color: #d4af37; font-size: 0.95rem; font-weight: 400;
-            font-family: "Georgia", serif; /* Tırnaklı asil font */
+            font-family: "Georgia", serif; 
             letter-spacing: 4px; text-transform: uppercase;
             cursor: pointer; position: relative;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -67,17 +60,13 @@
             border-color: #d4af37; transform: translateY(-2px);
         }
 
-        /* -----------------------------------------------------
-           3. OBSIDIAN NEUMORPHISM (Karanlık Madde, Pürüzsüz Derinlik)
-           ----------------------------------------------------- */
         .btn-obsidian {
             padding: 18px 45px;
-            background: #111216; /* Orijinal arka planın bir ton açığı */
+            background: #111216; 
             border: none; border-radius: 50px;
             color: #64748b; font-size: 1.05rem; font-weight: 700;
             letter-spacing: 2px; text-transform: uppercase;
             cursor: pointer;
-            /* Işık sol üstten hafifçe vuruyor, gölge sağ alta düşüyor */
             box-shadow: 6px 6px 14px #070709, -6px -6px 14px #1b1d23;
             transition: all 0.3s ease;
         }
@@ -85,14 +74,10 @@
         .btn-obsidian:hover { color: #fff; }
 
         .btn-obsidian:active {
-            /* Tıklanınca içeriye doğru lüks bir çökme hissi */
             box-shadow: inset 6px 6px 10px #070709, inset -6px -6px 10px #1b1d23;
             color: #38bdf8;
         }
 
-        /* -----------------------------------------------------
-           4. LIQUID TITANIUM (Parlak, Akışkan, Endüstriyel)
-           ----------------------------------------------------- */
         .btn-titanium {
             padding: 16px 50px;
             background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #2a2a2a 100%);
@@ -102,7 +87,6 @@
             color: #fff; font-size: 1rem; font-weight: 800;
             letter-spacing: 3px; text-transform: uppercase;
             cursor: pointer;
-            /* Cammımsı bir şişkinlik veren iç gölgeler */
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 10px 20px rgba(0,0,0,0.8);
             transition: all 0.4s ease;
         }
@@ -115,15 +99,11 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        /* -----------------------------------------------------
-           5. NEON PLASMA (İçi Boş Kinetik Tipografi)
-           ----------------------------------------------------- */
         .btn-plasma {
             padding: 15px 40px;
             background: transparent;
             border: 1px solid rgba(0, 243, 255, 0.2);
             border-radius: 50px;
-            /* İçi boş (Stroke) yazı tekniği */
             color: transparent; font-size: 1.1rem; font-weight: 900;
             -webkit-text-stroke: 1px rgba(0, 243, 255, 0.6);
             letter-spacing: 4px; text-transform: uppercase;
@@ -131,7 +111,6 @@
             transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        /* Hover anında butona sıvı gibi dolan ışık hüzmesi */
         .btn-plasma::before {
             content: ''; position: absolute; inset: 0; z-index: -1;
             background: #00f3ff;
@@ -140,7 +119,7 @@
         }
 
         .btn-plasma:hover {
-            color: #000; /* Yazı rengi siyaha döner */
+            color: #000; 
             -webkit-text-stroke: 0;
             border-color: #00f3ff;
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
@@ -148,7 +127,6 @@
         }
         
         .btn-plasma:hover::before { transform: scaleX(1); }
-
     </style>
 </head>
 <body>
