@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Tracker UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="tracker-card">
+        <div class="progress-container">
+            <div class="progress-circle" id="progress-circle" style="--progress: 0deg;">
+                <div class="progress-inner">
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="task-header">
+            <h2>Daily Workout</h2>
+            <p>Track your daily routine</p>
+        </div>
+
+        <ul class="task-list">
+            <li>
+                <input type="checkbox" id="task1" class="task-check">
+                <label for="task1">Strength Training (45 Min)</label>
+            </li>
+            <li>
+                <input type="checkbox" id="task2" class="task-check">
+                <label for="task2">Treadmill Session (30 Min)</label>
+            </li>
+            <li>
+                <input type="checkbox" id="task3" class="task-check">
+                <label for="task3">Core & Abs Routine</label>
+            </li>
+            <li>
+                <input type="checkbox" id="task4" class="task-check">
+                <label for="task4">Post-Workout Stretching</label>
+            </li>
+        </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
