@@ -1,0 +1,91 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Playfair Display', serif; }
+
+body { 
+    /* Arka plana asil ve karanlık bir doku (Örn: Siyah mermer veya karanlık salon) */
+    background: url('https://images.unsplash.com/photo-1507676184212-d03305f55c3e?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+    background-color: #050505; 
+    display: flex; justify-content: center; align-items: center; 
+    min-height: 100vh; color: #d4af37; 
+}
+
+/* JavaScript ile Tilt edilecek dış kapsayıcı */
+.tilt-container {
+    perspective: 1500px;
+}
+
+.invitation-wrapper {
+    width: 380px; height: 550px;
+    transition: transform 0.1s ease-out; /* Tilt animasyonu için yumuşatıcı */
+    transform-style: preserve-3d;
+}
+
+.card-inner {
+    width: 100%; height: 100%; position: relative;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.card-inner.is-flipped { transform: rotateY(180deg); }
+
+/* Glassmorphism (Cam Efekti) Eklenmiş Ön ve Arka Yüzler */
+.card-front, .card-back {
+    width: 100%; height: 100%; position: absolute;
+    backface-visibility: hidden; 
+    background: rgba(10, 10, 10, 0.65); /* Yarı saydam siyah */
+    backdrop-filter: blur(15px); /* Büyülü cam efekti */
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px; padding: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+}
+
+.border-frame {
+    width: 100%; height: 100%;
+    border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 6px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 30px; text-align: center;
+}
+
+/* Ön Yüz Tasarımı */
+.subtitle { font-style: italic; font-size: 1.1rem; color: #aaa; margin-bottom: 20px; }
+.card-front h1 { font-size: 2.8rem; font-weight: 400; line-height: 1.1; margin-bottom: 20px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+.divider { width: 50px; height: 1px; background: #d4af37; margin: 0 auto 20px auto; }
+.details { font-size: 1.1rem; line-height: 1.6; margin-bottom: 10px; color: #e0e0e0; }
+.location { font-style: italic; color: #aaa; margin-bottom: 40px; }
+
+/* Arka Yüz (Form) */
+.card-back { transform: rotateY(180deg); }
+.card-back h2 { font-size: 2rem; font-weight: 400; margin-bottom: 30px; }
+
+.rsvp-form { width: 100%; display: flex; flex-direction: column; gap: 25px; }
+
+input[type="text"] {
+    width: 100%; padding: 12px 5px; background: transparent;
+    border: none; border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+    color: #fff; font-size: 1rem; outline: none; transition: 0.3s;
+}
+input[type="text"]:focus { border-bottom-color: #d4af37; }
+input::placeholder { color: #888; font-style: italic; }
+
+/* Gelişmiş Seçim Kutu (Custom Radio) Tasarımı */
+.attendance-options { display: flex; flex-direction: column; gap: 10px; }
+.custom-radio { cursor: pointer; }
+.custom-radio input { display: none; /* Standart yuvarlağı gizle */ }
+.radio-box {
+    display: block; width: 100%; padding: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 4px;
+    color: #aaa; font-size: 0.95rem; transition: all 0.3s ease;
+}
+/* Seçildiğinde altın rengine boya */
+.custom-radio input:checked + .radio-box {
+    background: rgba(212, 175, 55, 0.15); border-color: #d4af37; color: #d4af37;
+}
+
+/* Butonlar */
+.rsvp-btn, .submit-btn {
+    padding: 14px 30px; background: #d4af37; color: #050505;
+    border: none; font-size: 0.95rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 2px; cursor: pointer; transition: 0.3s; width: 100%; border-radius: 4px;
+}
+.rsvp-btn:hover, .submit-btn:hover { background: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+.back-btn { background: transparent; border: none; color: #aaa; font-style: italic; cursor: pointer; margin-top: 5px; transition: 0.3s; }
+.back-btn:hover { color: #d4af37; }

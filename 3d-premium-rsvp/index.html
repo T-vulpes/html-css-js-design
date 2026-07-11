@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Digital Invitation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="tilt-container" id="tilt-container">
+        <div class="invitation-wrapper">
+            <div class="card-inner" id="invite-card">
+                
+                <div class="card-front">
+                    <div class="border-frame">
+                        <p class="subtitle">You are cordially invited to</p>
+                        <h1>The Annual Gala</h1>
+                        <div class="divider"></div>
+                        <p class="details">Saturday, October 24th<br>Eight o'clock in the evening</p>
+                        <p class="location">The Grand Hotel, NY</p>
+                        <button class="rsvp-btn" id="open-rsvp">RSVP Now</button>
+                    </div>
+                </div>
+
+                <div class="card-back">
+                    <div class="border-frame">
+                        <h2>Reservation</h2>
+                        <form class="rsvp-form" id="rsvp-form">
+                            <input type="text" placeholder="Full Name" required>
+                            
+                            <div class="attendance-options">
+                                <label class="custom-radio">
+                                    <input type="radio" name="attendance" value="yes" required>
+                                    <span class="radio-box">Joyfully Accept</span>
+                                </label>
+                                <label class="custom-radio">
+                                    <input type="radio" name="attendance" value="no">
+                                    <span class="radio-box">Regretfully Decline</span>
+                                </label>
+                            </div>
+
+                            <button type="button" class="submit-btn" id="submit-btn">Confirm</button>
+                            <button type="button" class="back-btn" id="close-rsvp">Back to Invitation</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
