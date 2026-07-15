@@ -11,27 +11,21 @@ body {
     width: 90vw;
     max-width: 1200px;
     height: 70vh;
-    gap: 15px; /* Paneller arası boşluk */
+    gap: 15px; 
 }
 
-/* --- Panel Tasarımı ve İşin Animasyon Sırrı --- */
 .panel {
     background-size: cover;
     background-position: center;
     border-radius: 40px;
     position: relative;
     cursor: pointer;
-    overflow: hidden;
-    
-    /* Kapalı durumdaki genişlik (Oran: 0.5) */
-    flex: 0.5; 
-    
-    /* Yaylanma (Spring) hissi veren animasyon transition'ı */
+    overflow: hidden;    
+    flex: 0.5;     
     transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1.15), 
                 filter 0.5s ease;
 }
 
-/* Karanlık Filtre (Kapalıyken siyahlaşsın) */
 .panel::before {
     content: '';
     position: absolute;
@@ -40,33 +34,24 @@ body {
     transition: background 0.5s ease;
 }
 
-/* --- AKTİF PANEL DURUMU --- */
-.panel.active {
-    /* Açık durumdaki genişlik (Oran: 4. Diğerlerini ezip büyür) */
-    flex: 4; 
-}
+.panel.active { flex: 4; }
 
-/* Aktif olunca karanlık filtre kalksın ve parlasın */
 .panel.active::before {
     background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
 }
 
-/* --- Metin ve İçerik Animasyonları --- */
 .panel-content {
     position: absolute;
     bottom: 30px; left: 30px;
-    display: flex; align-items: center; gap: 20px;
-    
-    /* Başlangıçta gizli ve aşağıda */
+    display: flex; 
+    align-items: center; 
+    gap: 20px;    
     opacity: 0;
-    transform: translateY(30px);
-    
-    /* Panel büyüdükten hemen sonra gecikmeli olarak ortaya çıksın (0.3s delay) */
+    transform: translateY(30px);    
     transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) 0.3s;
 }
 
 .panel.active .panel-content {
-    /* Aktif olunca görünür ol ve yerine gel */
     opacity: 1;
     transform: translateY(0);
 }
