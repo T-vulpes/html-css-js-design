@@ -24,20 +24,16 @@
 </head>
 <body>
 
-    <h1 class="center-text">NEURAL</h1>
-    
+    <h1 class="center-text">NEURAL</h1>    
     <canvas id="networkCanvas"></canvas>
 
     <script>
         const canvas = document.getElementById('networkCanvas');
         const ctx = canvas.getContext('2d');
-
-        // Tuvali tam ekran yap
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let particlesArray = [];
-        
+        let particlesArray = [];        
         const mouse = {
             x: null,
             y: null,
@@ -87,13 +83,12 @@
 
         function init() {
             particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000;
-            
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;            
             for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1; // 1 ile 3 piksel arası büyüklük
+                let size = (Math.random() * 2) + 1; 
                 let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
                 let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 2) - 1; // Hareket hızı
+                let directionX = (Math.random() * 2) - 1; 
                 let directionY = (Math.random() * 2) - 1;
                 let color = '#00ffcc';
 
@@ -136,7 +131,6 @@
         function animate() {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
             }
@@ -148,7 +142,6 @@
             canvas.height = window.innerHeight;
             init();
         });
-
         init();
         animate();
     </script>
